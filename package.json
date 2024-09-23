@@ -7,7 +7,10 @@
 		"build": "next build",
 		"start": "next start",
 		"lint": "next lint",
-		"db:push": "drizzle-kit push:postgres --config ./drizzle.config.ts"
+		"db:push": "drizzle-kit push:postgres --config ./drizzle.config.ts",
+		"db:generate": "drizzle-kit generate:pg",
+		"db:migrate": "cross-env DB_MIGRATING=true tsx src/db/migrate.ts",
+		"db:seed": "cross-env DB_SEEDING=true tsx src/db/seed.ts"
 	},
 	"dependencies": {
 		"@apollo/client": "^3.11.8",
