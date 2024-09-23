@@ -1,42 +1,43 @@
 {
-  "name": "edu-help-assign",
-  "version": "0.1.0",
-  "private": true,
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
-  },
-  "dependencies": {
-    "@apollo/server": "^4.11.0",
-    "@radix-ui/react-icons": "^1.3.0",
-    "@vercel/postgres": "^0.10.0",
-    "class-variance-authority": "^0.7.0",
-    "clsx": "^2.1.1",
-    "dotenv": "^16.4.5",
-    "drizzle-orm": "^0.33.0",
-    "drizzle-zod": "^0.5.1",
-    "graphql": "^16.9.0",
-    "lucide-react": "^0.445.0",
-    "next": "14.2.13",
-    "next-auth": "^4.24.7",
-    "react": "^18",
-    "react-dom": "^18",
-    "sst": "^3.1.32",
-    "tailwind-merge": "^2.5.2",
-    "tailwindcss-animate": "^1.0.7",
-    "zod": "^3.23.8"
-  },
-  "devDependencies": {
-    "@types/node": "^20",
-    "@types/react": "^18",
-    "@types/react-dom": "^18",
-    "drizzle-kit": "^0.24.2",
-    "eslint": "^8",
-    "eslint-config-next": "14.2.13",
-    "postcss": "^8",
-    "tailwindcss": "^3.4.1",
-    "typescript": "^5"
-  }
+	"name": "edu-help-assign",
+	"version": "0.1.0",
+	"private": true,
+	"scripts": {
+		"dev": "next dev",
+		"build": "next build",
+		"start": "next start",
+		"lint": "next lint",
+		"db:push": "drizzle-kit push:postgres --config ./drizzle.config.ts"
+	},
+	"dependencies": {
+		"@apollo/server": "^4.11.0",
+		"@radix-ui/react-icons": "^1.3.0",
+		"@vercel/postgres": "^0.10.0",
+		"class-variance-authority": "^0.7.0",
+		"clsx": "^2.1.1",
+		"dotenv": "^16.4.5",
+		"drizzle-orm": "^0.33.0",
+		"drizzle-zod": "^0.5.1",
+		"graphql": "^16.9.0",
+		"lucide-react": "^0.445.0",
+		"next": "14.2.13",
+		"next-auth": "^4.24.7",
+		"react": "^18",
+		"react-dom": "^18",
+		"sst": "^3.1.32",
+		"tailwind-merge": "^2.5.2",
+		"tailwindcss-animate": "^1.0.7",
+		"zod": "^3.23.8"
+	},
+	"devDependencies": {
+		"@types/node": "^20",
+		"@types/react": "^18",
+		"@types/react-dom": "^18",
+		"drizzle-kit": "^0.24.2",
+		"eslint": "^8",
+		"eslint-config-next": "14.2.13",
+		"postcss": "^8",
+		"tailwindcss": "^3.4.1",
+		"typescript": "^5"
+	}
 }
