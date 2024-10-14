@@ -1,11 +1,12 @@
-import { SignInViewPage } from '@/sections/auth/view';
-import { Metadata } from 'next';
+import SigninForm from '@/components/SigninForm';
+import React from 'react';
 
-export const metadata: Metadata = {
-  title: 'Authentication | Sign In',
-  description: 'Sign In page for authentication.'
+const page = () => {
+	return (
+		<div>
+			<SigninForm />
+		</div>
+	);
 };
 
-export default function Page() {
-  return <SignInViewPage />;
-}
+export default page;
