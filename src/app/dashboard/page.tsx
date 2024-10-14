@@ -1,7 +1,9 @@
-import React from 'react';
+import { OverViewPageView } from '@/sections/overview/view';
 
-const DashBoardPage = () => {
-	return <div>DashBoardPage</div>;
+export const metadata = {
+  title: 'Dashboard : Overview'
 };
 
-export default DashBoardPage;
+export default function page() {
+  return <OverViewPageView />;
+}
