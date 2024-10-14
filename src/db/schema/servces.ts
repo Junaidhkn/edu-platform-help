@@ -18,11 +18,16 @@ const id = () => {
 		.$default(() => randomUUID());
 };
 
-const serviceCategoryEnum = pgEnum('service_category', ['AI', 'Data Analysis']);
+export const serviceCategoryEnum = pgEnum('service_category', [
+	'AI',
+	'Data Analysis',
+	'Accounting',
+	'Essay Writing',
+]);
 
 const service = pgTable('services', {
 	id: id(),
-	serviceCategory: serviceCategoryEnum(status),
+	serviceCategory: serviceCategoryEnum('status'),
 	estimatedDeliveryTime: timestamp('estimated_delivery_time', {
 		mode: 'string',
 	}).notNull(),

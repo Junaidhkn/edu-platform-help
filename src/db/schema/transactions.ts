@@ -1,25 +1,11 @@
-import {
-	pgTable,
-	serial,
-	integer,
-	timestamp,
-	text,
-	boolean,
-} from 'drizzle-orm/pg-core';
+import { pgTable, integer, timestamp, uuid } from 'drizzle-orm/pg-core';
 
 import customer from './customer';
 import order from './order';
 import { relations } from 'drizzle-orm';
-import { randomUUID } from 'crypto';
-
-const id = () => {
-	return text('trasaction_id')
-		.primaryKey()
-		.$default(() => randomUUID());
-};
 
 const transaction = pgTable('transaction', {
-	id: id(),
+	id: uuid('id').defaultRandom().primaryKey(),
 	orderId: integer('order_id')
 		.notNull()
 		.references(() => order.id),
