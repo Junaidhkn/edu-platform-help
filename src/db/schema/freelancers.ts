@@ -30,6 +30,8 @@ const freelancer = pgTable('freelancers', {
 	email: varchar('email', { length: 255 }).notNull().unique(),
 	skills: text('skills').notNull(),
 	profileDescription: text('profile_description').notNull(),
+	profileLink: text('profile_link').notNull(),
+	imageURI: text('image_uri').notNull(),
 	password: varchar('password', { length: 255 }).notNull(),
 	rating: integer('rating'),
 	availabilityStatus: availabilityStatusEnum('status'),
