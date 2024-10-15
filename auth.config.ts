@@ -2,7 +2,7 @@ import { NextAuthConfig } from 'next-auth';
 import CredentialProvider from 'next-auth/providers/credentials';
 import Google from 'next-auth/providers/google';
 import { DrizzleAdapter } from '@auth/drizzle-adapter';
-import db from './src/db';
+import db from '@/src/db';
 import {
 	accounts,
 	sessions,
@@ -18,7 +18,10 @@ const authConfig = {
 		verificationTokensTable: verificationTokens,
 	}),
 	providers: [
-		Google,
+		Google({
+			clientId: process.env.GOOGLE_CLIENT_ID,
+			clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+		}),
 		CredentialProvider({
 			credentials: {
 				email: {
@@ -46,6 +49,16 @@ const authConfig = {
 			},
 		}),
 	],
+	callbacks: {
+		jwt({ token, user }) {
+			if (user) token.role = user.role;
+			return token;
+		},
+		session({ session, token }) {
+			session.user.role = token.role;
+			return session;
+		},
+	},
 	pages: {
 		signIn: '/', //sigin page
 	},
