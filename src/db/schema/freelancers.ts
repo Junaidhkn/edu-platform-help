@@ -5,17 +5,11 @@ import {
 	pgTable,
 	text,
 	timestamp,
+	uuid,
 	varchar,
 } from 'drizzle-orm/pg-core';
 
 import order from './order';
-import { randomUUID } from 'crypto';
-
-const id = () => {
-	return text('freelancer_id')
-		.primaryKey()
-		.$default(() => randomUUID());
-};
 
 const availabilityStatusEnum = pgEnum('availability_status', [
 	'available',
@@ -23,12 +17,12 @@ const availabilityStatusEnum = pgEnum('availability_status', [
 ]);
 
 const freelancer = pgTable('freelancers', {
-	id: id(),
+	id: uuid('id').primaryKey(),
 	firstName: varchar('name', { length: 255 }).notNull(),
 	lastName: varchar('name', { length: 255 }).notNull(),
 	phone: varchar('contact_phone', { length: 255 }).notNull().unique(),
 	email: varchar('email', { length: 255 }).notNull().unique(),
-	skills: text('skills').notNull(),
+	skills: text('skills').array().notNull(),
 	profileDescription: text('profile_description').notNull(),
 	profileLink: text('profile_link').notNull(),
 	imageURI: text('image_uri').notNull(),
