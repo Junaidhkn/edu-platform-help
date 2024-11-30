@@ -2,34 +2,26 @@ import type { NextAuthConfig } from 'next-auth';
 import { DrizzleAdapter } from '@auth/drizzle-adapter';
 import Google from 'next-auth/providers/google';
 import Github from 'next-auth/providers/github';
+import db from '@/drizzle';
+import * as schema from '@/drizzle/schema';
 import { oauthVerifyEmailAction } from '@/actions/oauth-verify-email-action';
 import { USER_ROLES } from '@/lib/constants';
 import type { AdapterUser } from '@auth/core/adapters';
 import { getTableColumns } from 'drizzle-orm';
 import { findAdminUserEmailAddresses } from './resources/admin-user-email-address-queries';
-import db from '@/src/db';
-import { users } from './src/db/schema';
-import {
-	accounts,
-	authenticators,
-	sessions,
-	verificationTokens,
-} from './src/db/schema/user';
-
-const adaptor = DrizzleAdapter(db, {
-	accountsTable: accounts,
-	usersTable: users,
-	authenticatorsTable: authenticators,
-	sessionsTable: sessions,
-	verificationTokensTable: verificationTokens,
-});
 
 export const authConfig = {
 	adapter: {
-		...adaptor,
+		...DrizzleAdapter(db, {
+			accountsTable: schema.accounts,
+			usersTable: schema.users,
+			authenticatorsTable: schema.authenticators,
+			sessionsTable: schema.sessions,
+			verificationTokensTable: schema.verificationTokens,
+		}),
 		async createUser(data: AdapterUser) {
 			const { id, ...insertData } = data;
-			const hasDefaultId = getTableColumns(users)['id']['hasDefault'];
+			const hasDefaultId = getTableColumns(schema.users)['id']['hasDefault'];
 
 			const adminEmails = await findAdminUserEmailAddresses();
 			const isAdmin = adminEmails.includes(insertData.email.toLowerCase());
@@ -39,7 +31,7 @@ export const authConfig = {
 			}
 
 			return db
-				.insert(users)
+				.insert(schema.users)
 				.values(hasDefaultId ? insertData : { ...insertData, id })
 				.returning()
 				.then((res) => res[0]);
