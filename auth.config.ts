@@ -16,15 +16,17 @@ import {
 	verificationTokens,
 } from './src/db/schema/user';
 
+const adaptor = DrizzleAdapter(db, {
+	accountsTable: accounts,
+	usersTable: users,
+	authenticatorsTable: authenticators,
+	sessionsTable: sessions,
+	verificationTokensTable: verificationTokens,
+});
+
 export const authConfig = {
 	adapter: {
-		...DrizzleAdapter(db, {
-			accountsTable: accounts,
-			usersTable: users,
-			authenticatorsTable: authenticators,
-			sessionsTable: sessions,
-			verificationTokensTable: verificationTokens,
-		}),
+		...adaptor,
 		async createUser(data: AdapterUser) {
 			const { id, ...insertData } = data;
 			const hasDefaultId = getTableColumns(users)['id']['hasDefault'];
