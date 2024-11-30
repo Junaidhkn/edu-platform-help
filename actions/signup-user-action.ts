@@ -10,7 +10,8 @@ import { findAdminUserEmailAddresses } from '@/resources/admin-user-email-addres
 import { createVerificationTokenAction } from '@/actions/create-verification-token-action';
 import { sendSignupUserEmail } from '@/actions/mail/send-signup-user-email';
 import db from '@/src/db';
-import users, { lower } from '@/src/db/schema/user';
+import { users } from '@/src/db/schema';
+import { lower } from '@/src/db/schema/user';
 
 type Res =
 	| { success: true }
