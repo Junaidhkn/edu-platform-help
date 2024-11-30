@@ -45,7 +45,11 @@ export const users: User[] = [
 		id: 5,
 		name: 'Emma Wilson',
 		company: 'TechGuru',
+<<<<<<< HEAD
 		role: 'service Manager',
+=======
+		role: 'Product Manager',
+>>>>>>> auth
 		verified: true,
 		status: 'Active',
 	},
@@ -110,7 +114,11 @@ export type Employee = {
 	profile_picture?: string | null; // Profile picture can be a string (URL) or null (if no picture)
 };
 
+<<<<<<< HEAD
 export type service = {
+=======
+export type Product = {
+>>>>>>> auth
 	photo_url: string;
 	name: string;
 	description: string;
@@ -135,10 +143,17 @@ export const navItems: NavItem[] = [
 		label: 'employee',
 	},
 	{
+<<<<<<< HEAD
 		title: 'service',
 		href: '/dashboard/service',
 		icon: 'service',
 		label: 'service',
+=======
+		title: 'Product',
+		href: '/dashboard/product',
+		icon: 'product',
+		label: 'product',
+>>>>>>> auth
 	},
 	{
 		title: 'Profile',

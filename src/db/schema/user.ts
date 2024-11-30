@@ -1,3 +1,4 @@
+import { sql, SQL } from 'drizzle-orm';
 import {
 	boolean,
 	timestamp,
@@ -5,18 +6,52 @@ import {
 	text,
 	primaryKey,
 	integer,
+	pgEnum,
+	type AnyPgColumn,
+	uniqueIndex,
 } from 'drizzle-orm/pg-core';
+
 import type { AdapterAccountType } from 'next-auth/adapters';
 
-export const users = pgTable('user', {
-	id: text('id')
-		.primaryKey()
-		.$defaultFn(() => crypto.randomUUID()),
-	name: text('name'),
-	email: text('email').unique(),
-	emailVerified: timestamp('emailVerified', { mode: 'date' }),
-	image: text('image'),
-});
+// custom lower function
+export function lower(email: AnyPgColumn): SQL {
+	return sql`lower(${email})`;
+}
+
+export const roleEnum = pgEnum('role', ['user', 'admin']);
+
+export const users = pgTable(
+	'user',
+	{
+		id: text('id')
+			.primaryKey()
+			.$defaultFn(() => crypto.randomUUID()),
+		name: text('name'),
+		email: text('email').notNull(),
+		emailVerified: timestamp('emailVerified', { mode: 'date' }),
+		image: text('image'),
+		password: text('password'),
+		role: roleEnum('role').notNull().default('user'),
+	},
+	(table) => ({
+		emailUniqueIndex: uniqueIndex('emailUniqueIndex').on(lower(table.email)),
+	}),
+);
+
+export const adminUserEmailAddresses = pgTable(
+	'adminUserEmailAddresses',
+	{
+		id: text('id')
+			.primaryKey()
+			.$defaultFn(() => crypto.randomUUID()),
+		email: text('email').notNull(),
+	},
+	(table) => ({
+		adminEmailUniqueIndex: uniqueIndex('adminEmailUniqueIndex').on(
+			lower(table.email),
+		),
+	}),
+);
 
 export const accounts = pgTable(
 	'account',
@@ -84,3 +119,5 @@ export const authenticators = pgTable(
 		}),
 	}),
 );
+
+export default users;
