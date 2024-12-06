@@ -13,7 +13,6 @@
 		"db:seed": "cross-env DB_SEEDING=true tsx src/db/seed.ts"
 	},
 	"dependencies": {
-		"@auth/core": "^0.34.1",
 		"@auth/drizzle-adapter": "^1.4.1",
 		"@hookform/resolvers": "^3.9.0",
 		"@icons-pack/react-simple-icons": "^10.2.0",
@@ -42,7 +41,7 @@
 		"@types/node": "20.5.7",
 		"@types/react": "18.2.21",
 		"@types/react-dom": "18.2.7",
-		"@uploadthing/react": "^5.7.0",
+		"@uploadthing/react": "^7.1.2",
 		"@vercel/postgres": "^0.10.0",
 		"argon2": "^0.41.1",
 		"autoprefixer": "10.4.15",
@@ -59,7 +58,7 @@
 		"lucide-react": "^0.447.0",
 		"match-sorter": "^6.3.4",
 		"next": "^14.2.3",
-		"next-auth": "^5.0.0-beta.18",
+		"next-auth": "^5.0.0-beta.19",
 		"next-themes": "^0.2.1",
 		"nextjs-toploader": "^1.6.12",
 		"nodemailer": "^6.9.16",
