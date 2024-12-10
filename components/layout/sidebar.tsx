@@ -1,5 +1,5 @@
 'use client';
-import { DashboardNav } from '@/components/dashboard-nav';
+import DashboardNav from '@/components/dashboard-nav';
 import { navItems } from '@/constants/data';
 import { useSidebar } from '@/hooks/useSidebar';
 import { cn } from '@/lib/utils';
