@@ -8,7 +8,7 @@
 		"start": "next start",
 		"lint": "next lint",
 		"db:push": "drizzle-kit push:postgres --config ./drizzle.config.ts",
-		"db:generate": "drizzle-kit generate:pg",
+		"db:generate": "drizzle-kit generate",
 		"db:migrate": "cross-env DB_MIGRATING=true tsx src/db/migrate.ts",
 		"db:seed": "cross-env DB_SEEDING=true tsx src/db/seed.ts"
 	},
@@ -48,6 +48,7 @@
 		"class-variance-authority": "^0.7.0",
 		"clsx": "^2.0.0",
 		"cmdk": "^1.0.0",
+		"cross-env": "^7.0.3",
 		"date-fns": "^2.30.0",
 		"dotenv": "^16.4.5",
 		"dotenv-expand": "^11.0.6",
