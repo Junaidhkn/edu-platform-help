@@ -20,11 +20,11 @@ interface DashboardNavProps {
 	isMobileNav?: boolean;
 }
 
-export default function DashboardNav({
+const DashboardNav = ({
 	items,
 	setOpen,
 	isMobileNav = false,
-}: DashboardNavProps) {
+}: DashboardNavProps) => {
 	const path = usePathname();
 	const { isMinimized } = useSidebar();
 
@@ -74,4 +74,5 @@ export default function DashboardNav({
 			</TooltipProvider>
 		</nav>
 	);
-}
+};
+export default DashboardNav;
