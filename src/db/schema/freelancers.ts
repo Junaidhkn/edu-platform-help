@@ -28,7 +28,9 @@ const freelancer = pgTable('freelancers', {
 	imageURI: text('image_uri').notNull(),
 	password: varchar('password', { length: 255 }).notNull(),
 	rating: integer('rating'),
-	availabilityStatus: availabilityStatusEnum('status'),
+	availabilityStatus: availabilityStatusEnum('availability_status')
+		.notNull()
+		.default('available'),
 	createdAt: timestamp('created_at', { mode: 'string' }).notNull().defaultNow(),
 	updatedAt: timestamp('updated_at', { mode: 'string' }).notNull().defaultNow(),
 });

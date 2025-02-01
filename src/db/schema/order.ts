@@ -9,7 +9,6 @@ import {
 } from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
 
-import orderStatus from './orderStatus';
 import customer from './customer';
 
 const orderStatusEnum = pgEnum('order_status', [
@@ -27,18 +26,18 @@ const order = pgTable('orders', {
 	costomerId: integer('customer_id')
 		.notNull()
 		.references(() => customer.id),
+	orderStatus: orderStatusEnum('order_status').notNull().default('pending'),
 	assignmentDetail: text('assignment_detail').notNull(),
 	price: numeric('price', { precision: 12, scale: 2 }).notNull(),
 	createdAt: timestamp('created_at', { mode: 'string' }).notNull().defaultNow(),
 	updatedAt: timestamp('updated_at', { mode: 'string' }).notNull().defaultNow(),
 });
 
-export const orderRelations = relations(order, ({ one, many }) => ({
+export const orderRelations = relations(order, ({ one }) => ({
 	user: one(customer, {
 		fields: [order.costomerId],
 		references: [customer.id],
 	}),
-	orderStatuses: many(orderStatus),
 }));
 
 export default order;

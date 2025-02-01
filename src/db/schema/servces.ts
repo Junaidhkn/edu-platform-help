@@ -9,7 +9,6 @@ import {
 import { relations } from 'drizzle-orm';
 
 import user from './customer';
-import orderStatus from './orderStatus';
 import { randomUUID } from 'crypto';
 
 const id = () => {
@@ -27,7 +26,9 @@ export const serviceCategoryEnum = pgEnum('service_category', [
 
 const service = pgTable('services', {
 	id: id(),
-	serviceCategory: serviceCategoryEnum('status'),
+	serviceCategory: serviceCategoryEnum('service_category')
+		.notNull()
+		.default('Essay Writing'),
 	estimatedDeliveryTime: timestamp('estimated_delivery_time', {
 		mode: 'string',
 	}).notNull(),
@@ -40,12 +41,11 @@ const service = pgTable('services', {
 	updatedAt: timestamp('updated_at', { mode: 'string' }).notNull().defaultNow(),
 });
 
-export const orderRelations = relations(service, ({ one, many }) => ({
+export const orderRelations = relations(service, ({ one }) => ({
 	user: one(user, {
 		fields: [service.userId],
 		references: [user.id],
 	}),
-	orderStatuses: many(orderStatus),
 }));
 
 export default service;

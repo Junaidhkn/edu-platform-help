@@ -21,7 +21,7 @@ const id = () => {
 };
 
 const review = pgTable('reviews', {
-	id: serial('id').primaryKey(),
+	id: id(),
 	orderId: integer('order_id')
 		.notNull()
 		.references(() => order.id),

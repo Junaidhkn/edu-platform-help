@@ -20,7 +20,9 @@ const customer = pgTable('customers', {
 	lastName: varchar('name', { length: 255 }).notNull(),
 	phone: varchar('contact_phone', { length: 255 }).notNull().unique(),
 	email: varchar('email', { length: 255 }).notNull().unique(),
-	academicLevel: academicLevelEnum('status'),
+	academicLevel: academicLevelEnum('academic_level')
+		.notNull()
+		.default('undergraduate'),
 	password: varchar('password', { length: 255 }).notNull(),
 	createdAt: timestamp('created_at', { mode: 'string' }).notNull().defaultNow(),
 	updatedAt: timestamp('updated_at', { mode: 'string' }).notNull().defaultNow(),
