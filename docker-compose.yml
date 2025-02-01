@@ -6,9 +6,8 @@ services:
       POSTGRES_USER: ${DB_USER:-amahh}
       POSTGRES_PASSWORD: ${DB_PASSWORD:-amahh}
       POSTGRES_DB: ${DB_NAME:-edu-help-assign}
-      POSTGRES_PORT: ${DB_PORT:-5438}
     ports:
-      - '5438:5438'
+      - '5438:5432' # Expose 5432 inside container, map to 5438 outside
     volumes:
       - postgres_data:/var/lib/postgresql/data
 volumes:
