@@ -7,7 +7,7 @@ services:
       POSTGRES_PASSWORD: ${DB_PASSWORD:-amahh}
       POSTGRES_DB: ${DB_NAME:-edu-help-assign}
     ports:
-      - '5438:5432' # Expose 5432 inside container, map to 5438 outside
+      - ${DB_PORT}:5432
     volumes:
       - postgres_data:/var/lib/postgresql/data
 volumes:

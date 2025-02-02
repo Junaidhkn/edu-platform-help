@@ -23,7 +23,7 @@ const order = pgTable('orders', {
 	deadline: timestamp('estimated_delivery_time', {
 		mode: 'string',
 	}).notNull(),
-	costomerId: integer('customer_id')
+	costomerId: text('customer_id')
 		.notNull()
 		.references(() => customer.id),
 	orderStatus: orderStatusEnum('order_status').notNull().default('pending'),

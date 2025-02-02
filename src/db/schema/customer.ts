@@ -3,9 +3,11 @@ import { pgEnum, pgTable, text, timestamp, varchar } from 'drizzle-orm/pg-core';
 
 import order from './order';
 import { randomUUID } from 'crypto';
+
 const academicLevelEnum = pgEnum('academic_level', [
 	'undergraduate',
 	'graduate',
+	'doctrate',
 ]);
 
 const id = () => {
@@ -16,8 +18,8 @@ const id = () => {
 
 const customer = pgTable('customers', {
 	id: id(),
-	firstName: varchar('name', { length: 255 }).notNull(),
-	lastName: varchar('name', { length: 255 }).notNull(),
+	firstName: varchar('first_name', { length: 255 }).notNull(),
+	lastName: varchar('last_name', { length: 255 }).notNull(),
 	phone: varchar('contact_phone', { length: 255 }).notNull().unique(),
 	email: varchar('email', { length: 255 }).notNull().unique(),
 	academicLevel: academicLevelEnum('academic_level')
