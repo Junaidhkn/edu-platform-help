@@ -19,16 +19,16 @@ const id = () => {
 
 export const serviceCategoryEnum = pgEnum('service_category', [
 	'AI',
-	'Data Analysis',
+	'Data_Analysis',
 	'Accounting',
-	'Essay Writing',
+	'Essay_Writing',
 ]);
 
 const service = pgTable('services', {
 	id: id(),
 	serviceCategory: serviceCategoryEnum('service_category')
 		.notNull()
-		.default('Essay Writing'),
+		.default('Essay_Writing'),
 	estimatedDeliveryTime: timestamp('estimated_delivery_time', {
 		mode: 'string',
 	}).notNull(),

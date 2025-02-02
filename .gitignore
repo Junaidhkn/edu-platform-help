@@ -13,6 +13,7 @@ src/db/migrations/*
 # next.js
 /.next/
 /out/
+/db-data
 
 # production
 /build
