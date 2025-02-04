@@ -17,36 +17,16 @@ const id = () => {
 		.$default(() => randomUUID());
 };
 
-export const typeCategoryEnum = pgEnum('category', [
-	'coursework',
-	'bookreport',
-	'researchpaper',
-	'thesis',
-	'proposal',
-]);
-
-const academicLevelEnum = pgEnum('academic_level', [
-	'undergraduate',
-	'graduate',
-	'doctorate',
-]);
-
-const subjectEnum = pgEnum('subject', ['arts', 'business', 'cs', 'em']);
-
 const service = pgTable('services', {
 	id: id(),
-	typeCategory: typeCategoryEnum('type_category')
-		.notNull()
-		.default('coursework'),
-	subjectCategory: subjectEnum('subject_category').notNull().default('arts'),
+	typeCategory: text('type_category').notNull().default('coursework'),
+	subjectCategory: text('subject_category').notNull().default('arts'),
 	estimatedDeliveryTime: timestamp('estimated_delivery_time', {
 		mode: 'string',
 	}).notNull(),
 	pages: integer('pages').notNull(),
 	uploadedfileslink: text('file_links').notNull(),
-	academicLevel: academicLevelEnum('academic_level')
-		.notNull()
-		.default('undergraduate'),
+	academicLevel: text('academic_level').notNull().default('undergraduate'),
 	price: numeric('price', { precision: 12, scale: 2 }).notNull(),
 	description: text('description').notNull(),
 });

@@ -17,7 +17,9 @@ const availabilityStatusEnum = pgEnum('availability_status', [
 ]);
 
 const freelancer = pgTable('freelancers', {
-	id: uuid('id').primaryKey(),
+	id: text('id')
+		.primaryKey()
+		.$defaultFn(() => crypto.randomUUID()),
 	firstName: varchar('name', { length: 255 }).notNull(),
 	lastName: varchar('name', { length: 255 }).notNull(),
 	phone: varchar('contact_phone', { length: 255 }).notNull().unique(),
@@ -35,7 +37,7 @@ const freelancer = pgTable('freelancers', {
 	updatedAt: timestamp('updated_at', { mode: 'string' }).notNull().defaultNow(),
 });
 
-export const customerRelations = relations(freelancer, ({ many }) => ({
+export const freelancerRelations = relations(freelancer, ({ many }) => ({
 	orders: many(order),
 }));
 

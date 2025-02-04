@@ -20,12 +20,12 @@ const id = () => {
 
 const review = pgTable('reviews', {
 	id: id(),
-	userId: integer('user_id')
+	userId: text('user_id')
 		.notNull()
 		.references(() => user.id),
-	orderId: integer('order_id').references(() => order.id),
-	serviceId: integer('service_id').references(() => service.id),
-	freelanceId: integer('freelance_id').references(() => freelancer.id),
+	orderId: text('order_id').references(() => order.id),
+	serviceId: text('service_id').references(() => service.id),
+	freelanceId: text('freelance_id').references(() => freelancer.id),
 	reviewText: text('review_text').notNull(),
 	rating: numeric('rating', { precision: 2, scale: 1 }).notNull(),
 	createdAt: timestamp('created_at', { mode: 'string' }).notNull().defaultNow(),
