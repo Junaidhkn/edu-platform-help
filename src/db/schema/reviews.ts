@@ -7,7 +7,7 @@ import {
 	boolean,
 } from 'drizzle-orm/pg-core';
 
-import customer from './customer';
+import user from './user';
 import order from './order';
 import { relations } from 'drizzle-orm';
 import { randomUUID } from 'crypto';
@@ -27,7 +27,7 @@ const review = pgTable('reviews', {
 		.references(() => order.id),
 	customerId: integer('customer_id')
 		.notNull()
-		.references(() => customer.id),
+		.references(() => user.id),
 	freelanceId: integer('freelance_id')
 		.notNull()
 		.references(() => freelancer.id),
@@ -41,9 +41,9 @@ const review = pgTable('reviews', {
 });
 
 export const commentRelations = relations(review, ({ one }) => ({
-	user: one(customer, {
+	user: one(user, {
 		fields: [review.customerId],
-		references: [customer.id],
+		references: [user.id],
 	}),
 	order: one(order, {
 		fields: [review.orderId],

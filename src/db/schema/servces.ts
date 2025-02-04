@@ -8,7 +8,7 @@ import {
 } from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
 
-import user from './customer';
+import user from './user';
 import { randomUUID } from 'crypto';
 
 const id = () => {
@@ -17,28 +17,40 @@ const id = () => {
 		.$default(() => randomUUID());
 };
 
-export const serviceCategoryEnum = pgEnum('service_category', [
-	'AI',
-	'Data_Analysis',
-	'Accounting',
-	'Essay_Writing',
+export const typeCategoryEnum = pgEnum('type_category', [
+	'coursework',
+	'bookreport',
+	'researchpaper',
+	'thesis',
+	'proposal',
 ]);
+
+const academicLevelEnum = pgEnum('academic_level', [
+	'undergraduate',
+	'graduate',
+	'doctorate',
+]);
+
+const subjectEnum = pgEnum('subject', ['arts', 'business', 'cs', 'em']);
 
 const service = pgTable('services', {
 	id: id(),
-	serviceCategory: serviceCategoryEnum('service_category')
+	typeCategory: typeCategoryEnum('type_category')
 		.notNull()
-		.default('Essay_Writing'),
+		.default('coursework'),
+	subjectCategory: subjectEnum('subject').notNull().default('arts'),
 	estimatedDeliveryTime: timestamp('estimated_delivery_time', {
 		mode: 'string',
 	}).notNull(),
+	pages: integer('pages').notNull(),
+	academicLevel: academicLevelEnum('academic_level')
+		.notNull()
+		.default('undergraduate'),
 	userId: integer('user_id')
 		.notNull()
 		.references(() => user.id),
 	price: numeric('price', { precision: 12, scale: 2 }).notNull(),
 	description: text('description').notNull(),
-	createdAt: timestamp('created_at', { mode: 'string' }).notNull().defaultNow(),
-	updatedAt: timestamp('updated_at', { mode: 'string' }).notNull().defaultNow(),
 });
 
 export const orderRelations = relations(service, ({ one }) => ({

@@ -1,4 +1,4 @@
-import { sql, SQL } from 'drizzle-orm';
+import { relations, sql, SQL } from 'drizzle-orm';
 import {
 	boolean,
 	timestamp,
@@ -10,6 +10,7 @@ import {
 	type AnyPgColumn,
 	uniqueIndex,
 } from 'drizzle-orm/pg-core';
+import order from './order';
 
 import type { AdapterAccountType } from 'next-auth/adapters';
 
@@ -20,7 +21,7 @@ export function lower(email: AnyPgColumn): SQL {
 
 export const roleEnum = pgEnum('role', ['user', 'admin']);
 
-export const users = pgTable(
+export const user = pgTable(
 	'user',
 	{
 		id: text('id')
@@ -58,7 +59,7 @@ export const accounts = pgTable(
 	{
 		userId: text('userId')
 			.notNull()
-			.references(() => users.id, { onDelete: 'cascade' }),
+			.references(() => user.id, { onDelete: 'cascade' }),
 		type: text('type').$type<AdapterAccountType>().notNull(),
 		provider: text('provider').notNull(),
 		providerAccountId: text('providerAccountId').notNull(),
@@ -81,7 +82,7 @@ export const sessions = pgTable('session', {
 	sessionToken: text('sessionToken').primaryKey(),
 	userId: text('userId')
 		.notNull()
-		.references(() => users.id, { onDelete: 'cascade' }),
+		.references(() => user.id, { onDelete: 'cascade' }),
 	expires: timestamp('expires', { mode: 'date' }).notNull(),
 });
 
@@ -105,7 +106,7 @@ export const authenticators = pgTable(
 		credentialID: text('credentialID').notNull().unique(),
 		userId: text('userId')
 			.notNull()
-			.references(() => users.id, { onDelete: 'cascade' }),
+			.references(() => user.id, { onDelete: 'cascade' }),
 		providerAccountId: text('providerAccountId').notNull(),
 		credentialPublicKey: text('credentialPublicKey').notNull(),
 		counter: integer('counter').notNull(),
@@ -120,4 +121,8 @@ export const authenticators = pgTable(
 	}),
 );
 
-export default users;
+export const userRelations = relations(user, ({ many }) => ({
+	orders: many(order),
+}));
+
+export default user;

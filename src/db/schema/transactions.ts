@@ -1,6 +1,6 @@
 import { pgTable, integer, timestamp, uuid } from 'drizzle-orm/pg-core';
 
-import customer from './customer';
+import user from './user';
 import order from './order';
 import { relations } from 'drizzle-orm';
 
@@ -9,17 +9,17 @@ const transaction = pgTable('transaction', {
 	orderId: integer('order_id')
 		.notNull()
 		.references(() => order.id),
-	customerId: integer('customer_id')
+	userId: integer('user_id')
 		.notNull()
-		.references(() => customer.id),
+		.references(() => user.id),
 	amount: integer('amount').notNull(),
 	createdAt: timestamp('created_at', { mode: 'string' }).notNull().defaultNow(),
 });
 
 export const commentRelations = relations(transaction, ({ one }) => ({
-	user: one(customer, {
-		fields: [transaction.customerId],
-		references: [customer.id],
+	user: one(user, {
+		fields: [transaction.userId],
+		references: [user.id],
 	}),
 	order: one(order, {
 		fields: [transaction.orderId],
