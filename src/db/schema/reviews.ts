@@ -1,11 +1,4 @@
-import {
-	pgTable,
-	serial,
-	integer,
-	timestamp,
-	text,
-	boolean,
-} from 'drizzle-orm/pg-core';
+import { pgTable, integer, timestamp, text } from 'drizzle-orm/pg-core';
 
 import user from './user';
 import order from './order';
@@ -25,7 +18,7 @@ const review = pgTable('reviews', {
 	orderId: integer('order_id')
 		.notNull()
 		.references(() => order.id),
-	customerId: integer('customer_id')
+	userId: integer('user_id')
 		.notNull()
 		.references(() => user.id),
 	freelanceId: integer('freelance_id')
@@ -42,7 +35,7 @@ const review = pgTable('reviews', {
 
 export const commentRelations = relations(review, ({ one }) => ({
 	user: one(user, {
-		fields: [review.customerId],
+		fields: [review.userId],
 		references: [user.id],
 	}),
 	order: one(order, {

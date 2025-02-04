@@ -1,6 +1,6 @@
 import { relations } from 'drizzle-orm';
 import {
-	integer,
+	numeric,
 	pgEnum,
 	pgTable,
 	text,
@@ -24,10 +24,10 @@ const freelancer = pgTable('freelancers', {
 	email: varchar('email', { length: 255 }).notNull().unique(),
 	skills: text('skills').array().notNull(),
 	profileDescription: text('profile_description').notNull(),
-	profileLink: text('profile_link').notNull(),
-	imageURI: text('image_uri').notNull(),
+	profileLink: text('profile_link'),
+	imageURI: text('image_uri'),
 	password: varchar('password', { length: 255 }).notNull(),
-	rating: integer('rating'),
+	rating: numeric('rating'),
 	availabilityStatus: availabilityStatusEnum('availability_status')
 		.notNull()
 		.default('available'),

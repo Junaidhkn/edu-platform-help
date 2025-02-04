@@ -8,8 +8,8 @@ import {
 } from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
 
-import user from './user';
 import { randomUUID } from 'crypto';
+import order from './order';
 
 const id = () => {
 	return text('service_id')
@@ -43,21 +43,16 @@ const service = pgTable('services', {
 		mode: 'string',
 	}).notNull(),
 	pages: integer('pages').notNull(),
+	uploadedfileslink: text('file_links').notNull(),
 	academicLevel: academicLevelEnum('academic_level')
 		.notNull()
 		.default('undergraduate'),
-	userId: integer('user_id')
-		.notNull()
-		.references(() => user.id),
 	price: numeric('price', { precision: 12, scale: 2 }).notNull(),
 	description: text('description').notNull(),
 });
 
-export const orderRelations = relations(service, ({ one }) => ({
-	user: one(user, {
-		fields: [service.userId],
-		references: [user.id],
-	}),
+export const serviceRelations = relations(service, ({ many }) => ({
+	orders: many(order),
 }));
 
 export default service;
