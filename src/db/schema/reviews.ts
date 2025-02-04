@@ -1,11 +1,16 @@
-import { pgTable, integer, timestamp, text } from 'drizzle-orm/pg-core';
-
+import {
+	pgTable,
+	integer,
+	timestamp,
+	text,
+	numeric,
+} from 'drizzle-orm/pg-core';
 import user from './user';
 import order from './order';
+import service from './services';
+import freelancer from './freelancers';
 import { relations } from 'drizzle-orm';
 import { randomUUID } from 'crypto';
-import freelancer from './freelancers';
-import service from './servces';
 
 const id = () => {
 	return text('review_id')
@@ -15,25 +20,19 @@ const id = () => {
 
 const review = pgTable('reviews', {
 	id: id(),
-	orderId: integer('order_id')
-		.notNull()
-		.references(() => order.id),
 	userId: integer('user_id')
 		.notNull()
 		.references(() => user.id),
-	freelanceId: integer('freelance_id')
-		.notNull()
-		.references(() => freelancer.id),
-	serviceId: integer('service_id')
-		.notNull()
-		.references(() => service.id),
+	orderId: integer('order_id').references(() => order.id),
+	serviceId: integer('service_id').references(() => service.id),
+	freelanceId: integer('freelance_id').references(() => freelancer.id),
 	reviewText: text('review_text').notNull(),
-	rating: integer('rating').notNull(),
+	rating: numeric('rating', { precision: 2, scale: 1 }).notNull(),
 	createdAt: timestamp('created_at', { mode: 'string' }).notNull().defaultNow(),
 	updatedAt: timestamp('updated_at', { mode: 'string' }).notNull().defaultNow(),
 });
 
-export const commentRelations = relations(review, ({ one }) => ({
+export const reviewRelations = relations(review, ({ one }) => ({
 	user: one(user, {
 		fields: [review.userId],
 		references: [user.id],
@@ -41,6 +40,14 @@ export const commentRelations = relations(review, ({ one }) => ({
 	order: one(order, {
 		fields: [review.orderId],
 		references: [order.id],
+	}),
+	service: one(service, {
+		fields: [review.serviceId],
+		references: [service.id],
+	}),
+	freelancer: one(freelancer, {
+		fields: [review.freelanceId],
+		references: [freelancer.id],
 	}),
 }));
 

@@ -10,7 +10,7 @@ import {
 import { relations } from 'drizzle-orm';
 
 import user from './user';
-import service from './servces';
+import service from './services';
 import freelancer from './freelancers';
 
 const orderStatusEnum = pgEnum('order_status', [
