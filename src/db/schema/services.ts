@@ -17,7 +17,7 @@ const id = () => {
 		.$default(() => randomUUID());
 };
 
-export const typeCategoryEnum = pgEnum('type_category', [
+export const typeCategoryEnum = pgEnum('category', [
 	'coursework',
 	'bookreport',
 	'researchpaper',
@@ -38,7 +38,7 @@ const service = pgTable('services', {
 	typeCategory: typeCategoryEnum('type_category')
 		.notNull()
 		.default('coursework'),
-	subjectCategory: subjectEnum('subject').notNull().default('arts'),
+	subjectCategory: subjectEnum('subject_category').notNull().default('arts'),
 	estimatedDeliveryTime: timestamp('estimated_delivery_time', {
 		mode: 'string',
 	}).notNull(),
