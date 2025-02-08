@@ -8,7 +8,7 @@ import {
 	authenticators,
 	sessions,
 	verificationTokens,
-	users,
+	user,
 } from '@/src/db/schema/user';
 import { oauthVerifyEmailAction } from '@/actions/oauth-verify-email-action';
 import { USER_ROLES } from '@/lib/constants';
@@ -20,14 +20,14 @@ export const authConfig = {
 	adapter: {
 		...DrizzleAdapter(db, {
 			accountsTable: accounts,
-			usersTable: users,
+			usersTable: user,
 			authenticatorsTable: authenticators,
 			sessionsTable: sessions,
 			verificationTokensTable: verificationTokens,
 		}),
 		async createUser(data: AdapterUser) {
 			const { id, ...insertData } = data;
-			const hasDefaultId = getTableColumns(users)['id']['hasDefault'];
+			const hasDefaultId = getTableColumns(user)['id']['hasDefault'];
 
 			const adminEmails = await findAdminUserEmailAddresses();
 			const isAdmin = adminEmails.includes(insertData.email.toLowerCase());
@@ -37,7 +37,7 @@ export const authConfig = {
 			}
 
 			return db
-				.insert(users)
+				.insert(user)
 				.values(hasDefaultId ? insertData : { ...insertData, id })
 				.returning()
 				.then((res) => res[0]);

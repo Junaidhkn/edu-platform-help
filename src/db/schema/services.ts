@@ -4,7 +4,6 @@ import {
 	timestamp,
 	numeric,
 	text,
-	pgEnum,
 } from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
 

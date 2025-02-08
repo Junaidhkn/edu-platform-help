@@ -19,6 +19,8 @@ export function lower(email: AnyPgColumn): SQL {
 	return sql`lower(${email})`;
 }
 
+const userRole = pgEnum('role', ['user', 'admin']);
+
 export const user = pgTable(
 	'user',
 	{
@@ -30,7 +32,7 @@ export const user = pgTable(
 		emailVerified: timestamp('emailVerified', { mode: 'date' }),
 		image: text('image'),
 		password: text('password'),
-		role: text('role').notNull().default('user'),
+		role: userRole('role').notNull().default('user'),
 	},
 	(table) => ({
 		emailUniqueIndex: uniqueIndex('emailUniqueIndex').on(lower(table.email)),

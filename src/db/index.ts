@@ -25,4 +25,6 @@ import { config } from 'dotenv';
 config({ path: '.env' }); // or .env.local
 
 const sql = neon(process.env.DATABASE_URL!);
-export const db = drizzle({ client: sql });
+const db = drizzle({ client: sql });
+
+export default db;
