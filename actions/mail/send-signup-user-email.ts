@@ -18,7 +18,7 @@ export async function sendSignupUserEmail({
 		subject: 'Verify your email address',
 		html: `
     <div style="font-family: Arial, sans-serif; color: #333; line-height: 1.6; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #eaeaea; border-radius: 10px;">
-      <h2 style="text-align: center; color: #3b82f6;">Authy</h2>
+      <h2 style="text-align: center; color: #3b82f6;">Edu-assign-help</h2>
 
       <p>Hi there,</p>
 
