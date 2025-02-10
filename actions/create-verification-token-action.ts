@@ -8,7 +8,6 @@ export async function createVerificationTokenAction(
 	identifier: (typeof verificationTokens.$inferSelect)['identifier'],
 ) {
 	const expires = new Date(Date.now() + VERIFICATION_TOKEN_EXP_MIN * 60 * 1000);
-
 	const token = Math.random().toString(36).substring(2);
 
 	const newVerificationToken = await db
