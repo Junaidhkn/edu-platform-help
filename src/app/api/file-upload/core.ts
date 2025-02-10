@@ -33,8 +33,8 @@ export const ourFileRouter = {
 		}),
 	profilePictureUploader: f({
 		image: {
-			maxFileSize: '128MB',
-			maxFileCount: 20,
+			maxFileSize: '16MB',
+			maxFileCount: 1,
 		},
 	})
 		.middleware(async ({ req }) => {
