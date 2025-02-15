@@ -2,10 +2,10 @@ import Link from 'next/link';
 import { auth } from '@/auth';
 import { Button } from '@/components/ui/button';
 import { type User } from 'next-auth';
+import { findOrdersbyUserId } from '../../../resources/queries';
 
-export default async function ProfilePage({ user }: { user: User }) {
+export default async function ProfilePage() {
 	const session = await auth();
-
 	return (
 		<main className='mt-4'>
 			<div className='container'>
@@ -23,11 +23,65 @@ export default async function ProfilePage({ user }: { user: User }) {
 	);
 }
 
-const SignedIn = ({ user }: { user: User }) => {
+const SignedIn = async ({ user }: { user: User }) => {
+	const orders = await findOrdersbyUserId(user.id as string);
+	console.log('orders', orders);
 	return (
 		<>
 			<div className='flex items-center justify-between'>
-				<h2 className='text-2xl font-bold tracking-tight'>Order summary:</h2>
+				<h2 className='text-2xl font-bold tracking-tight'>
+					Your Order summary:
+				</h2>
+			</div>
+			<div className='mt-4 flex-col justify-evenly '>
+				{/* Order Summary Section */}
+				<div className='w-full flex justify-center items-center mb-6'>
+					<div>
+						<h3 className='text-xl font-semibold'>Order Summary:</h3>
+						{orders && orders.length > 0 ? (
+							<ul className='mt-2 space-y-2'>
+								{orders.map((order) => (
+									<li
+										key={order.id}
+										className='p-4 border rounded-lg'>
+										<div className='flex justify-between'>
+											<span>Order ID: {order.createdAt}</span>
+											<span>Order ID: {order.deadline}</span>
+											<span>Status: {order.orderStatus}</span>
+										</div>
+									</li>
+								))}
+							</ul>
+						) : (
+							<div>
+								<p className='mt-2'>You are yet to place any order!</p>
+								<span className='mt-2 text-sm text-gray-600'>
+									Click the button below or contact our customer service before
+									submitting any order
+								</span>
+							</div>
+						)}
+						<Button
+							asChild
+							className='mt-4'>
+							<Link href='/profile/place-order'>Place an Order</Link>
+						</Button>
+					</div>
+				</div>
+
+				{/* Customer Service Section */}
+				<div>
+					<h3 className='text-xl font-semibold'>Customer Service</h3>
+					<p className='mt-2'>
+						If you have any questions or need assistance before placing an
+						order, please contact our customer service team. We are here to help
+						you.
+					</p>
+					<p className='mt-2 text-sm text-gray-600'>
+						Please note that you can contact us through WhatsApp currently, as
+						our real-time chat feature is under development.
+					</p>
+				</div>
 			</div>
 			{/* button that takes to the form to generate order */}
 			{/* if you want to discuss, contact our team here */}

@@ -2,7 +2,7 @@
 
 import db from '@/src/db';
 import { users } from '@/src/db/schema';
-import { findUserByEmail } from '@/resources/user-queries';
+import { findUserByEmail } from '@/resources/queries';
 import { findVerificationTokenByToken } from '@/resources/verification-token-queries';
 import { eq } from 'drizzle-orm';
 import { verificationTokens } from '@/src/db/schema/user';

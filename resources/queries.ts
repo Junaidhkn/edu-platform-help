@@ -3,6 +3,7 @@ import 'server-only';
 import db from '@/src/db';
 import { lower } from '@/src/db/schema/user';
 import { users } from '@/src/db/schema';
+import { order } from '@/src/db/schema';
 import {
 	desc,
 	eq,
@@ -80,3 +81,12 @@ export const findUserByEmail = async (
 
 //   return user;
 // };
+
+export const findOrdersbyUserId = async (userId: string) => {
+	const orders = await db
+		.select()
+		.from(order)
+		.where(eq(order.userId, userId))
+		.orderBy(order.createdAt);
+	return orders;
+};

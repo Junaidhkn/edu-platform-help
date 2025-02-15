@@ -1,5 +1,6 @@
 import { NextSSRPlugin } from '@uploadthing/react/next-ssr-plugin';
 import { extractRouterConfig } from 'uploadthing/server';
+import FooterSection from '@/components/sections/FooterSection';
 
 import { ourFileRouter } from '@/src/app/api/file-upload/core';
 
@@ -21,6 +22,7 @@ export default function RootLayout({
 					routerConfig={extractRouterConfig(ourFileRouter)}
 				/>
 				{children}
+				<FooterSection />
 			</body>
 		</html>
 	);

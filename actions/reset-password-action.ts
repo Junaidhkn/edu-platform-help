@@ -1,6 +1,6 @@
 'use server';
 
-import { findUserByEmail } from '@/resources/user-queries';
+import { findUserByEmail } from '@/resources/queries';
 import { findVerificationTokenByToken } from '@/resources/verification-token-queries';
 import { ResetPasswordSchema } from '@/validators/reset-password-validator';
 import * as v from 'valibot';
