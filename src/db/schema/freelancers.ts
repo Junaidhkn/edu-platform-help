@@ -5,7 +5,6 @@ import {
 	pgTable,
 	text,
 	timestamp,
-	uuid,
 	varchar,
 } from 'drizzle-orm/pg-core';
 
@@ -24,7 +23,7 @@ const freelancer = pgTable('freelancers', {
 	lastName: varchar('name', { length: 255 }).notNull(),
 	phone: varchar('contact_phone', { length: 255 }).notNull().unique(),
 	email: varchar('email', { length: 255 }).notNull().unique(),
-	skills: text('skills').array().notNull(),
+	skills: text('skills').notNull(),
 	profileDescription: text('profile_description').notNull(),
 	profileLink: text('profile_link'),
 	imageURI: text('image_uri'),
