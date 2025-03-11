@@ -1,4 +1,4 @@
-import { pgTable, integer, timestamp, uuid } from 'drizzle-orm/pg-core';
+import { pgTable, integer, timestamp, uuid, text } from 'drizzle-orm/pg-core';
 
 import user from './user';
 import order from './order';
@@ -6,10 +6,10 @@ import { relations } from 'drizzle-orm';
 
 const transaction = pgTable('transaction', {
 	id: uuid('id').defaultRandom().primaryKey(),
-	orderId: integer('order_id')
+	orderId: text('order_id')
 		.notNull()
 		.references(() => order.id),
-	userId: integer('user_id')
+	userId: text('user_id')
 		.notNull()
 		.references(() => user.id),
 	amount: integer('amount').notNull(),

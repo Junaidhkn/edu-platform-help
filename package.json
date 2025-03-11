@@ -7,7 +7,7 @@
 		"build": "next build",
 		"start": "next start",
 		"lint": "next lint",
-		"db:push": "drizzle-kit push:postgres --config ./drizzle.config.ts",
+		"db:push": "drizzle-kit push --config ./drizzle.config.ts",
 		"db:generate": "drizzle-kit generate",
 		"db:migrate": "tsx ./src/db/migrate.ts",
 		"db:seed": "cross-env DB_SEEDING=true tsx src/db/seed.ts"
