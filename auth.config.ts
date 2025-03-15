@@ -51,17 +51,28 @@ export const authConfig = {
 			const { nextUrl } = request;
 
 			const isLoggedIn = !!auth?.user;
+			const isAdmin = auth?.user?.role === USER_ROLES.ADMIN;
 			const isOnProfile = nextUrl.pathname.startsWith('/profile');
 			const isOnAuth = nextUrl.pathname.startsWith('/auth');
+			const isOnDashboard = nextUrl.pathname.startsWith('/dashboard');
 
-			if (isOnProfile) {
-				if (isLoggedIn) return true;
-				return Response.redirect(new URL('/auth/signin', nextUrl));
+			// For dashboard access: require both login and admin role
+			if (isOnDashboard) {
+				if (!isLoggedIn) return false; // Will redirect to sign in
+				if (!isAdmin) return false; // Will redirect to home
+				return true;
 			}
 
+			// For profile access: only require login
+			if (isOnProfile) {
+				return isLoggedIn;
+			}
+
+			// Let auth pages be accessed by non-logged in users
 			if (isOnAuth) {
 				if (!isLoggedIn) return true;
-				return Response.redirect(new URL('/profile', nextUrl));
+				// Auth callbacks will handle redirections after login
+				return true;
 			}
 
 			return true;
