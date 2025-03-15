@@ -1,15 +1,12 @@
 import OverViewPageView from '@/sections/overview/view/overview';
 import { CreateAdminButton } from '@/components/admin/CreateAdminButton';
-import { initializeAdminUser } from '@/src/lib/admin/init-admin';
 
 export const metadata = {
-	title: 'Dashboard : Overview',
+	title: 'Dashboard : Admin Overview',
 };
 
-export default async function DashboardPage() {
-	// Ensure admin is initialized
-	await initializeAdminUser();
-	
+export default function DashboardPage() {
+	// Admin check happens at the layout level
 	return (
 		<div className="space-y-6">
 			<div className="flex justify-between items-center p-4 bg-muted rounded-lg">

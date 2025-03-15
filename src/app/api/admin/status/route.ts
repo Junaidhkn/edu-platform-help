@@ -1,23 +1,17 @@
 import { NextResponse } from 'next/server';
-import { initializeAdminUser } from '@/src/lib/admin/init-admin';
-import { auth } from '@/auth';
-import { USER_ROLES } from '@/lib/constants';
+import { ensureAdmin } from '@/src/lib/admin/ensure-admin';
 
 export async function GET() {
   try {
-    // Check if the default admin has been initialized
-    const isInitialized = await initializeAdminUser();
-    
-    // Get the current user's admin status
-    const session = await auth();
-    const isUserAdmin = session?.user?.role === USER_ROLES.ADMIN;
+    // Check admin status without redirecting
+    const { isAuthenticated, isAdmin, user } = await ensureAdmin({ redirectOnFailure: false });
     
     return NextResponse.json({
-      initialized: isInitialized,
-      isAdmin: isUserAdmin,
-      user: session?.user ? {
-        email: session.user.email,
-        role: session.user.role
+      isAuthenticated,
+      isAdmin,
+      user: user ? {
+        email: user.email,
+        role: user.role
       } : null
     });
   } catch (error) {

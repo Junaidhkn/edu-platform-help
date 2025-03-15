@@ -1,26 +1,41 @@
 import { NextResponse } from 'next/server';
 import { initializeAdminUser } from '@/src/lib/admin/init-admin';
 
-// Initialize admin user during server startup
+// Tracking initialization status
 let initialized = false;
+let initializationPromise: Promise<boolean> | null = null;
 
-// Self-executing initialization
-(async () => {
-  if (!initialized) {
-    try {
-      initialized = await initializeAdminUser();
-      console.log('Admin user auto-initialization completed');
-    } catch (error) {
-      console.error('Error during admin auto-initialization:', error);
-    }
+// Create a singleton initialization function
+async function ensureInitialization() {
+  if (initialized) return true;
+  
+  if (!initializationPromise) {
+    // Only create the promise once to avoid multiple concurrent initializations
+    initializationPromise = initializeAdminUser()
+      .then(result => {
+        initialized = result;
+        console.log(`Admin initialization ${result ? 'succeeded' : 'failed'}`);
+        return result;
+      })
+      .catch(error => {
+        console.error('Admin initialization error:', error);
+        return false;
+      });
   }
-})();
+  
+  return initializationPromise;
+}
+
+// Start initialization when this module is loaded
+ensureInitialization();
 
 export async function GET() {
+  const success = await ensureInitialization();
+  
   return NextResponse.json({
-    success: initialized,
-    message: initialized 
+    success,
+    message: success 
       ? 'Admin initialization completed successfully' 
-      : 'Admin initialization failed or is pending'
+      : 'Admin initialization failed'
   });
 } 
