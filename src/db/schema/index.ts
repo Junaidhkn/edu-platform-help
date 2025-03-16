@@ -10,3 +10,4 @@ export { roleEnum, adminUserEmailAddresses, accounts, authenticators, sessions, 
 export { freelancerRelations } from './freelancers';
 export { orderRelations } from './order';
 export { reviewRelations } from './reviews';
+export { transactionRelations, paymentStatusEnum } from './transactions';

@@ -4,6 +4,7 @@ import {
 	numeric,
 	text,
 	integer,
+	boolean,
 } from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
 
@@ -31,11 +32,14 @@ const order = pgTable('orders', {
 	freelancerId: text('freelancer_id').references(() => freelancer.id),
 	orderStatus: text('order_status').notNull().default('pending'),
 	total_price: numeric('total_price', { precision: 12, scale: 2 }).notNull(),
+	isPaid: boolean('is_paid').default(false),
+	paymentMethod: text('payment_method'),
+	paymentDate: timestamp('payment_date', { mode: 'string' }),
 	createdAt: timestamp('created_at', { mode: 'string' }).notNull().defaultNow(),
 	updatedAt: timestamp('updated_at', { mode: 'string' }).notNull().defaultNow(),
 });
 
-export const orderRelations = relations(order, ({ one }) => ({
+export const orderRelations = relations(order, ({ one, many }) => ({
 	user: one(user, {
 		fields: [order.userId],
 		references: [user.id],
@@ -43,6 +47,9 @@ export const orderRelations = relations(order, ({ one }) => ({
 	freelancer: one(freelancer, {
 		fields: [order.freelancerId],
 		references: [freelancer.id],
+	}),
+	transactions: many(order, {
+		relationName: 'order_transactions',
 	}),
 }));
 
