@@ -28,7 +28,7 @@ export default auth((request) => {
 
     if (!isAdmin) {
       console.log("User is not an admin, redirecting to home page");
-      return Response.redirect(new URL("/", nextUrl));
+      return Response.redirect(new URL("/not-found", nextUrl));
     }
 
     return NextResponse.next();

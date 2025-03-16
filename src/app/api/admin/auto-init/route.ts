@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { initializeAdminUser } from '@/src/lib/admin/init-admin';
+import { initializeAdminUser } from '@/lib/admin/init-admin';
 
 // Tracking initialization status
 let initialized = false;

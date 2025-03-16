@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { ensureAdmin } from '@/src/lib/admin/ensure-admin';
+import { ensureAdmin } from '@/lib/admin/ensure-admin';
 
 export async function GET() {
   try {
