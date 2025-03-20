@@ -40,7 +40,7 @@ export default async function TransactionsPage() {
       <div className="bg-white rounded-lg shadow overflow-hidden">
         <div className="p-6">
           <h2 className="text-lg font-medium mb-4">Transaction History</h2>
-          <TransactionsTable transactions={transactions} />
+          <TransactionsTable transactions={transactions as any[]} />
         </div>
       </div>
       

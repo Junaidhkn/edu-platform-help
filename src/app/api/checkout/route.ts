@@ -1,10 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
+import Stripe from 'stripe';
 import stripe from '@/src/lib/stripe-server';
 import { auth } from '@/auth';
 import db from '@/src/db';
-import transaction from '@/src/db/schema/transactions';
 import order from '@/src/db/schema/order';
 import { eq } from 'drizzle-orm';
+import { neon } from '@neondatabase/serverless';
+import env from '@/src/env';
 
 export async function POST(req: NextRequest) {
   try {
@@ -13,12 +15,28 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const { orderId } = await req.json();
+    // Get orderId from query parameters (form submission) or request body (JSON)
+    let requestOrderId: string | null = null;
+    
+    // Check if this is a form submission
+    const contentType = req.headers.get('content-type');
+    if (contentType?.includes('application/x-www-form-urlencoded')) {
+      // This is a form submission
+      requestOrderId = req.nextUrl.searchParams.get('orderId');
+    } else {
+      // This is a JSON submission
+      const body = await req.json();
+      requestOrderId = body.orderId;
+    }
+    
+    if (!requestOrderId) {
+      return NextResponse.json({ error: 'Order ID is required' }, { status: 400 });
+    }
     
     // Fetch the order
     const orderResult = await db.select()
       .from(order)
-      .where(eq(order.id, orderId))
+      .where(eq(order.id, requestOrderId))
       .limit(1);
       
     if (!orderResult.length) {
@@ -47,24 +65,38 @@ export async function POST(req: NextRequest) {
         },
       ],
       mode: 'payment',
-      success_url: `${req.headers.get('origin')}/profile/orders/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${req.headers.get('origin')}/profile/orders/cancel?order_id=${orderData.id}`,
+      success_url: `${req.headers.get('origin') || process.env.NEXTAUTH_URL}/profile/orders/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${req.headers.get('origin') || process.env.NEXTAUTH_URL}/profile/orders/cancel?order_id=${orderData.id}`,
       metadata: {
         orderId: orderData.id,
         userId: session.user.id
       }
-    });
+    } as Stripe.Checkout.SessionCreateParams);
     
-    // Record the transaction
-    await db.insert(transaction).values({
-      orderId: orderData.id,
-      userId: session.user.id,
-      amount,
-      status: 'pending',
-      stripeSessionId: checkoutSession.id
-    });
+    // Make sure we have a session ID before proceeding
+    if (!checkoutSession.id) {
+      throw new Error("Failed to create Stripe checkout session");
+    }
     
-    return NextResponse.json({ sessionId: checkoutSession.id, url: checkoutSession.url });
+    // Use raw SQL for direct database access
+    const sql = neon(env.DATABASE_URL);
+    
+    // Insert the transaction using a raw SQL query
+    await sql`
+      INSERT INTO "transaction" (order_id, user_id, amount, status, stripe_session_id) 
+      VALUES (${orderData.id}, ${session.user.id}, ${amount}, 'pending', ${checkoutSession.id})
+    `;
+    
+    // For form submission, redirect directly to Stripe
+    if (contentType?.includes('application/x-www-form-urlencoded')) {
+      return NextResponse.redirect(checkoutSession.url || '/profile/orders');
+    }
+    
+    // For JSON submissions, return the session data
+    return NextResponse.json({ 
+      sessionId: checkoutSession.id, 
+      url: checkoutSession.url 
+    });
   } catch (error) {
     console.error('Checkout error:', error);
     return NextResponse.json(

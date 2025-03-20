@@ -3,7 +3,7 @@ import { auth } from '@/auth';
 import db from '@/src/db';
 import order from '@/src/db/schema/order';
 import { eq } from 'drizzle-orm';
-import { CheckoutButton } from '@/components/payment/CheckoutButton';
+import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 
 export default async function OrderCheckoutPage({
@@ -95,7 +95,11 @@ export default async function OrderCheckoutPage({
             <span className="text-lg font-semibold">Total Amount:</span>
             <span className="text-xl font-bold">${parseFloat(orderData.total_price.toString()).toFixed(2)}</span>
           </div>
-          <CheckoutButton orderId={orderId} />
+          <form action={`/api/checkout?orderId=${orderId}`} method="POST">
+            <Button type="submit" className="w-full">
+              Proceed to Payment
+            </Button>
+          </form>
         </CardFooter>
       </Card>
     </div>

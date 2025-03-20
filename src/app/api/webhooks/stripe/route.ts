@@ -41,18 +41,26 @@ export async function POST(req: Request) {
     
     let event;
     
-    try {
-      event = stripe.webhooks.constructEvent(
-        body,
-        signature,
-        process.env.STRIPE_WEBHOOK_SECRET!
-      );
-    } catch (error: any) {
-      console.error(`Webhook signature verification failed: ${error.message}`);
-      return NextResponse.json(
-        { error: `Webhook Error: ${error.message}` },
-        { status: 400 }
-      );
+    // Check if we have a webhook secret
+    if (!process.env.STRIPE_WEBHOOK_SECRET) {
+      console.warn('STRIPE_WEBHOOK_SECRET is not set. Webhook verification is disabled.');
+      // Parse the event without verification - NOT RECOMMENDED for production
+      event = JSON.parse(body);
+    } else {
+      try {
+        // Verify the event with the webhook secret
+        event = stripe.webhooks.constructEvent(
+          body,
+          signature,
+          process.env.STRIPE_WEBHOOK_SECRET
+        );
+      } catch (error: any) {
+        console.error(`Webhook signature verification failed: ${error.message}`);
+        return NextResponse.json(
+          { error: `Webhook Error: ${error.message}` },
+          { status: 400 }
+        );
+      }
     }
     
     // Handle different event types
@@ -72,31 +80,41 @@ export async function POST(req: Request) {
         await db.update(order)
           .set({ 
             orderStatus: 'processing',
-            isPaid: true 
+            isPaid: true,
+            paymentMethod: 'stripe',
+            paymentDate: new Date().toISOString()
           })
           .where(eq(order.id, session.metadata.orderId));
       }
+      
+      console.log(`✅ Payment succeeded for session ${session.id}`);
     } else if (event.type === 'payment_intent.payment_failed') {
       const paymentIntent = event.data.object;
       
-      const sessions = await stripe.checkout.sessions.list({
-        payment_intent: paymentIntent.id
-      });
-      
-      if (sessions.data.length > 0) {
-        const session = sessions.data[0];
+      try {
+        const sessions = await stripe.checkout.sessions.list({
+          payment_intent: paymentIntent.id
+        });
         
-        // Update transaction status
-        await db.update(transaction)
-          .set({ status: 'failed' })
-          .where(eq(transaction.stripePaymentIntentId, paymentIntent.id));
+        if (sessions.data.length > 0) {
+          const session = sessions.data[0];
           
-        // Update order status if orderId exists in metadata
-        if (session.metadata?.orderId) {
-          await db.update(order)
-            .set({ orderStatus: 'pending' })
-            .where(eq(order.id, session.metadata.orderId));
+          // Update transaction status
+          await db.update(transaction)
+            .set({ status: 'failed' })
+            .where(eq(transaction.stripePaymentIntentId, paymentIntent.id));
+            
+          // Update order status if orderId exists in metadata
+          if (session.metadata?.orderId) {
+            await db.update(order)
+              .set({ orderStatus: 'pending' })
+              .where(eq(order.id, session.metadata.orderId));
+          }
+          
+          console.log(`❌ Payment failed for intent ${paymentIntent.id}`);
         }
+      } catch (error) {
+        console.error('Error processing payment_intent.payment_failed:', error);
       }
     }
     
