@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
-import stripe from '@/src/lib/stripe-server';
+import stripe from '@/lib/stripe-server';
 import { auth } from '@/auth';
 import db from '@/src/db';
 import order from '@/src/db/schema/order';
