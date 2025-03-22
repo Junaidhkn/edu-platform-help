@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState } from 'react'
-import { UploadDropzone } from "@/lib/uploadthing"
+import { UploadDropzone } from "@/lib/uploadThing"
 import { toast } from 'sonner'
 import { FileIcon, Loader2, XIcon } from 'lucide-react'
 import { cn } from '@/lib/utils'
