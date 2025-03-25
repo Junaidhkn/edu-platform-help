@@ -1,10 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '@/auth';
 import db from '@/src/db';
-import {order} from '@/src/db/schema';
+import { order } from '@/src/db/schema';
 import { z } from 'zod';
 
 const orderCreateSchema = z.object({
+  user_id: z.string(),
   wordCount: z.number().min(250),
   pages: z.number().optional(),
   subject: z.string(),
@@ -15,6 +16,8 @@ const orderCreateSchema = z.object({
   fileUrls: z.array(z.string()).optional(),
   price: z.number().min(0),
   totalPrice: z.number().min(0),
+  status: z.string(),
+  isPaid: z.boolean(),
 });
 
 
@@ -36,9 +39,12 @@ export async function POST(req: NextRequest) {
     // Calculate pages if not provided
     const pages = validatedData.pages || Math.ceil(validatedData.wordCount / 250);
     
+    // Try checking the exact field names defined in your schema
+    console.log(Object.keys(order));
+
     // Create the order
     const newOrder = await db.insert(order).values({
-      userId: session.user.id,
+      user_id: session.user.id,
       word_count: validatedData.wordCount,
       pages,
       subject: validatedData.subject,
