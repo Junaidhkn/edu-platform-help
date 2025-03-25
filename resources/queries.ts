@@ -3,7 +3,7 @@ import 'server-only';
 import db from '@/src/db';
 import { lower } from '@/src/db/schema/user';
 import { users } from '@/src/db/schema';
-import { order } from '@/src/db/schema';
+import { order } from '@/src/db/schema/order';
 import {
 	desc,
 	eq,

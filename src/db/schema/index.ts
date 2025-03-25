@@ -1,7 +1,7 @@
 // First export the tables without relations
 export { default as users } from './user';
 export { default as freelancers } from './freelancers';
-export { default as order } from './order';
+export { default as orders } from './order';
 export { default as transaction } from './transactions';
 export { default as review } from './reviews';
 

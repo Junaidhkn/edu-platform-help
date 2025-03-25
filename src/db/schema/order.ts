@@ -11,7 +11,7 @@ import { relations } from 'drizzle-orm';
 import user from './user';
 import freelancer from './freelancers';
 
-const order = pgTable('orders', {
+export const order = pgTable('orders', {
 	id: text('id')
 		.primaryKey()
 		.$defaultFn(() => crypto.randomUUID()),
