@@ -78,3 +78,22 @@
     height: 100dvh;
   }
 }
+
+
+@keyframes animateGradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.gradient-text {
+  background: linear-gradient(45deg, 
+      #ff0000, #ff7300, #ffea00, #00ff00, #00ffee, 
+      #007bff, #4b00ff, #ff00ea, #ff0000);
+  background-size: 500%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  animation: animateGradient 6s infinite linear;
+}

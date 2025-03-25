@@ -14,7 +14,7 @@ import {
 	Laptop,
 	LayoutDashboardIcon,
 	Loader2,
-	LogIn,
+	LogOut,
 	LucideIcon,
 	LucideProps,
 	LucideShoppingBag,
@@ -38,7 +38,7 @@ export type Icon = LucideIcon;
 export const Icons = {
 	dashboard: LayoutDashboardIcon,
 	logo: Command,
-	login: LogIn,
+	LogOut: LogOut,
 	close: X,
 	service: LucideShoppingBag,
 	spinner: Loader2,

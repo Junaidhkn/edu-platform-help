@@ -21,9 +21,6 @@ export default async function DashboardLayout({
       <Sidebar />
       <main className="w-full flex-1 overflow-hidden">
         <Header />
-        <div className="bg-muted/50 p-2 text-center font-medium text-sm">
-          ADMIN DASHBOARD
-        </div>
         {children}
       </main>
     </div>
