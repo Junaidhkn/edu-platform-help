@@ -1,7 +1,6 @@
 import { pgTable, timestamp, text, numeric } from 'drizzle-orm/pg-core';
 import user from './user';
 import order from './order';
-import service from './services';
 import freelancer from './freelancers';
 import { relations } from 'drizzle-orm';
 import { randomUUID } from 'crypto';
