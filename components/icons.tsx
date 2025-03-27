@@ -31,6 +31,7 @@ import {
 	UserPen,
 	UserX2Icon,
 	X,
+	BadgeDollarSign
 } from 'lucide-react';
 
 export type Icon = LucideIcon;
@@ -40,6 +41,7 @@ export const Icons = {
 	logo: Command,
 	LogOut: LogOut,
 	close: X,
+	money:BadgeDollarSign,
 	service: LucideShoppingBag,
 	spinner: Loader2,
 	kanban: CircuitBoardIcon,

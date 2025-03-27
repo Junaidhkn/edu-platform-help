@@ -20,7 +20,7 @@ export const metadata = {
 export default async function AcceptOrderPage({ params }: AcceptOrderPageProps) {
   const session = await auth();
   
-  if (!session?.user || session.user.role !== 'ADMIN') {
+  if (!session?.user || session.user.role !== 'admin') {
     redirect('/');
   }
   

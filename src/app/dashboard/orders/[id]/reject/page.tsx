@@ -3,7 +3,6 @@ import { redirect } from 'next/navigation';
 import db from '@/src/db';
 import { orders } from '@/src/db/schema';
 import { eq } from 'drizzle-orm';
-import Link from 'next/link';
 import OrderRejectForm from '@/components/admin/OrderRejectForm';
 
 interface RejectOrderPageProps {
@@ -20,7 +19,7 @@ export const metadata = {
 export default async function RejectOrderPage({ params }: RejectOrderPageProps) {
   const session = await auth();
   
-  if (!session?.user || session.user.role !== 'ADMIN') {
+  if (!session?.user || session.user.role !== '=admin') {
     redirect('/');
   }
   

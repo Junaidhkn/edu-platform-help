@@ -146,5 +146,11 @@ export const navItems: NavItem[] = [
 		href: '/dashboard/service',
 		label: 'service',
 	},
+	{
+		title: 'Transactions',
+		href: '/dashboard/transactions',
+		label: 'transactions',
+		icon: 'money',
+	}
 	
 ];
