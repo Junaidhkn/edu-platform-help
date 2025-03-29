@@ -13,7 +13,7 @@ export async function sendForgotPasswordEmail({
 	console.log(`Sending email to ${email} with token ${token}`);
 
 	await transport.sendMail({
-		from: `"Edu-assign-help" <${process.env.NODEMAILER_GOOGLE_SMTP_USER}>`,
+		from: `"Edu-assign-help" <${process.env.BREVO_SMTP_USER}>`,
 		to: email,
 		subject: 'Reset your password',
 		html: `

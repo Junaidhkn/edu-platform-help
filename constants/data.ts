@@ -140,17 +140,16 @@ export const navItems: NavItem[] = [
 		icon: 'userPen',
 		label: 'profile',
 	},
-	
+
 	{
 		title: 'Services',
-		href: '/dashboard/service',
-		label: 'service',
+		href: '/dashboard/services',
+		label: 'services',
 	},
 	{
 		title: 'Transactions',
 		href: '/dashboard/transactions',
 		label: 'transactions',
 		icon: 'money',
-	}
-	
+	},
 ];

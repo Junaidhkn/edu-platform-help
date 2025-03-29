@@ -7,7 +7,7 @@ import Link from 'next/link';
 import { formatCurrency } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { ArrowLeft, CheckCircle, XCircle, Mail } from 'lucide-react';
+import { ArrowLeft, CheckCircle, XCircle, Mail, UserPlus } from 'lucide-react';
 
 interface OrderDetailPageProps {
   params: {
@@ -234,6 +234,14 @@ export default async function OrderDetailPage({ params }: OrderDetailPageProps) 
                     </Button>
                   </Link>
                 </>
+              )}
+              {order.orderStatus === 'accepted' && !order.freelancerId && (
+                <Link href={`/dashboard/orders/${order.id}/assign`}>
+                  <Button className="w-full" variant="default">
+                    <UserPlus className="h-4 w-4 mr-2" />
+                    Assign to Freelancer
+                  </Button>
+                </Link>
               )}
               <Link href={`/dashboard/orders/${order.id}/contact`}>
                 <Button className="w-full" variant="outline">

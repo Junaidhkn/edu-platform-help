@@ -28,9 +28,9 @@ const EnvSchema = z.object({
 	GITHUB_CLIENT_ID: z.string(),
 	GITHUB_CLIENT_SECRET: z.string(),
 	ADMIN_EMAIL_ADDRESSES: z.string(),
-	NODEMAILER_GOOGLE_SMTP_USER: z.string(),
-	NODEMAILER_GOOGLE_ACCESS_TOKEN: z.string(),
-	NODEMAILER_GOOGLE_REFRESH_TOKEN: z.string(),
+	// NODEMAILER_GOOGLE_SMTP_USER: z.string(),
+	// NODEMAILER_GOOGLE_ACCESS_TOKEN: z.string(),
+	// NODEMAILER_GOOGLE_REFRESH_TOKEN: z.string(),
 });
 
 export type EnvSchema = z.infer<typeof EnvSchema>;

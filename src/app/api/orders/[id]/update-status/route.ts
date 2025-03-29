@@ -21,7 +21,7 @@ export async function POST(
   try {
     // Check authentication
     const session = await auth();
-    if (!session?.user || session.user.role !== 'ADMIN') {
+    if (!session?.user || session.user.role !== 'admin') {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
@@ -109,7 +109,7 @@ async function sendOrderStatusEmail({
   }[status] || '#64748b';
   
   await transport.sendMail({
-    from: `"Edu-assign-help Team" <${process.env.NODEMAILER_GOOGLE_SMTP_USER}>`,
+    from: `"Edu-assign-help Team" <${process.env.BREVO_SMTP_USER}>`,
     to: email,
     subject: statusTitle,
     html: `

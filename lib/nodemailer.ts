@@ -1,29 +1,24 @@
-import "server-only";
+import 'server-only';
 
-import nodemailer from "nodemailer";
-
+import nodemailer from 'nodemailer';
 
 const transport = nodemailer.createTransport({
-  host: "smtp.gmail.com",
-  port: 465,
-  secure: true,
-  auth: {
-    type: "OAuth2",
-    user: process.env.NODEMAILER_GOOGLE_SMTP_USER,
-    clientId: process.env.GOOGLE_CLIENT_ID,
-    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    refreshToken: process.env.NODEMAILER_GOOGLE_REFRESH_TOKEN,
-    accessToken: process.env.NODEMAILER_GOOGLE_ACCESS_TOKEN,
-  },
+	host: 'smtp-relay.brevo.com',
+	port: 587,
+	secure: false,
+	auth: {
+		user: process.env.BREVO_SMTP_USER,
+		pass: process.env.BREVO_SMTP_PASSWORD,
+	},
 });
 
 // Verify the connection configuration
 transport.verify(function (error, success) {
-  if (error) {
-    console.log("SMTP server connection error: ", error);
-  } else {
-    console.log("SMTP server connection verified");
-  }
+	if (error) {
+		console.log('SMTP server connection error: ', error);
+	} else {
+		console.log('SMTP server connection verified');
+	}
 });
 
 export default transport;

@@ -2,16 +2,16 @@ import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '@/auth';
 import { z } from 'zod';
 import db from '@/src/db';
-import { subjectCategories } from '@/src/db/schema';
+import { assignmentTypes } from '@/src/db/schema';
 import { eq } from 'drizzle-orm';
 
-// Validation schema for the update request body
-const updateCategorySchema = z.object({
-  name: z.string().min(3).optional(),
-  priceModifier: z.number().min(0.1).max(5).optional(),
+// Validation schema for updating an assignment type
+const updateAssignmentTypeSchema = z.object({
+  name: z.string().min(2).optional(),
+  priceAdjustment: z.number().min(0).max(1000).optional(),
 });
 
-// Get a specific subject category
+// Get a specific assignment type
 export async function GET(
   req: NextRequest,
   { params }: { params: { id: string } }
@@ -23,28 +23,28 @@ export async function GET(
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const category = await db
+    const type = await db
       .select()
-      .from(subjectCategories)
-      .where(eq(subjectCategories.id, params.id))
+      .from(assignmentTypes)
+      .where(eq(assignmentTypes.id, params.id))
       .limit(1)
       .then((results) => results[0] || null);
     
-    if (!category) {
-      return NextResponse.json({ error: 'Subject category not found' }, { status: 404 });
+    if (!type) {
+      return NextResponse.json({ error: 'Assignment type not found' }, { status: 404 });
     }
     
-    return NextResponse.json(category);
+    return NextResponse.json(type);
   } catch (error) {
-    console.error('Error fetching subject category:', error);
+    console.error('Error fetching assignment type:', error);
     return NextResponse.json({
-      error: 'Failed to fetch subject category',
+      error: 'Failed to fetch assignment type',
       details: error instanceof Error ? error.message : 'Unknown error',
     }, { status: 500 });
   }
 }
 
-// Update a subject category
+// Update an assignment type
 export async function PATCH(
   req: NextRequest,
   { params }: { params: { id: string } }
@@ -58,7 +58,7 @@ export async function PATCH(
 
     // Parse and validate request body
     const body = await req.json();
-    const validationResult = updateCategorySchema.safeParse(body);
+    const validationResult = updateAssignmentTypeSchema.safeParse(body);
     
     if (!validationResult.success) {
       return NextResponse.json({
@@ -69,15 +69,15 @@ export async function PATCH(
     
     const updates = validationResult.data;
     
-    // Check if the category exists
-    const existingCategory = await db
-      .select({ id: subjectCategories.id })
-      .from(subjectCategories)
-      .where(eq(subjectCategories.id, params.id))
+    // Check if the assignment type exists
+    const existingType = await db
+      .select({ id: assignmentTypes.id })
+      .from(assignmentTypes)
+      .where(eq(assignmentTypes.id, params.id))
       .limit(1);
     
-    if (existingCategory.length === 0) {
-      return NextResponse.json({ error: 'Subject category not found' }, { status: 404 });
+    if (existingType.length === 0) {
+      return NextResponse.json({ error: 'Assignment type not found' }, { status: 404 });
     }
     
     // Prepare update data
@@ -89,31 +89,31 @@ export async function PATCH(
       updateData.name = updates.name;
     }
     
-    if (updates.priceModifier !== undefined) {
-      updateData.priceModifier = updates.priceModifier.toString();
+    if (updates.priceAdjustment !== undefined) {
+      updateData.priceAdjustment = updates.priceAdjustment.toString();
     }
     
-    // Update the category
-    const updatedCategory = await db
-      .update(subjectCategories)
+    // Update the assignment type
+    const updatedType = await db
+      .update(assignmentTypes)
       .set(updateData)
-      .where(eq(subjectCategories.id, params.id))
+      .where(eq(assignmentTypes.id, params.id))
       .returning();
     
     return NextResponse.json({
-      message: 'Subject category updated successfully',
-      category: updatedCategory[0],
+      message: 'Assignment type updated successfully',
+      assignmentType: updatedType[0],
     });
   } catch (error) {
-    console.error('Error updating subject category:', error);
+    console.error('Error updating assignment type:', error);
     return NextResponse.json({
-      error: 'Failed to update subject category',
+      error: 'Failed to update assignment type',
       details: error instanceof Error ? error.message : 'Unknown error',
     }, { status: 500 });
   }
 }
 
-// Delete a subject category
+// Delete an assignment type
 export async function DELETE(
   req: NextRequest,
   { params }: { params: { id: string } }
@@ -125,29 +125,29 @@ export async function DELETE(
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
     
-    // Check if the category exists
-    const existingCategory = await db
-      .select({ id: subjectCategories.id })
-      .from(subjectCategories)
-      .where(eq(subjectCategories.id, params.id))
+    // Check if the assignment type exists
+    const existingType = await db
+      .select({ id: assignmentTypes.id })
+      .from(assignmentTypes)
+      .where(eq(assignmentTypes.id, params.id))
       .limit(1);
     
-    if (existingCategory.length === 0) {
-      return NextResponse.json({ error: 'Subject category not found' }, { status: 404 });
+    if (existingType.length === 0) {
+      return NextResponse.json({ error: 'Assignment type not found' }, { status: 404 });
     }
     
-    // Delete the category
+    // Delete the assignment type
     await db
-      .delete(subjectCategories)
-      .where(eq(subjectCategories.id, params.id));
+      .delete(assignmentTypes)
+      .where(eq(assignmentTypes.id, params.id));
     
     return NextResponse.json({
-      message: 'Subject category deleted successfully',
+      message: 'Assignment type deleted successfully',
     });
   } catch (error) {
-    console.error('Error deleting subject category:', error);
+    console.error('Error deleting assignment type:', error);
     return NextResponse.json({
-      error: 'Failed to delete subject category',
+      error: 'Failed to delete assignment type',
       details: error instanceof Error ? error.message : 'Unknown error',
     }, { status: 500 });
   }

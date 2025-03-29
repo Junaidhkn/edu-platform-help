@@ -2,17 +2,17 @@ import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '@/auth';
 import { z } from 'zod';
 import db from '@/src/db';
-import { subjectCategories } from '@/src/db/schema';
+import { assignmentTypes } from '@/src/db/schema';
 import { eq } from 'drizzle-orm';
 
-// Validation schema for the request body
-const categorySchema = z.object({
+// Validation schema for assignment types
+const assignmentTypeSchema = z.object({
   id: z.string().min(1),
-  name: z.string().min(3),
-  priceModifier: z.number().min(0.1).max(5),
+  name: z.string().min(2),
+  priceAdjustment: z.number().min(0).max(1000),
 });
 
-// Get all subject categories
+// Get all assignment types
 export async function GET() {
   try {
     // Check authentication
@@ -21,19 +21,19 @@ export async function GET() {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const categories = await db.select().from(subjectCategories).orderBy(subjectCategories.name);
+    const types = await db.select().from(assignmentTypes).orderBy(assignmentTypes.name);
     
-    return NextResponse.json(categories);
+    return NextResponse.json(types);
   } catch (error) {
-    console.error('Error fetching subject categories:', error);
+    console.error('Error fetching assignment types:', error);
     return NextResponse.json({
-      error: 'Failed to fetch subject categories',
+      error: 'Failed to fetch assignment types',
       details: error instanceof Error ? error.message : 'Unknown error',
     }, { status: 500 });
   }
 }
 
-// Create a new subject category
+// Create a new assignment type
 export async function POST(req: NextRequest) {
   try {
     // Check authentication
@@ -44,7 +44,7 @@ export async function POST(req: NextRequest) {
     
     // Parse and validate request body
     const body = await req.json();
-    const validationResult = categorySchema.safeParse(body);
+    const validationResult = assignmentTypeSchema.safeParse(body);
     
     if (!validationResult.success) {
       return NextResponse.json({
@@ -53,40 +53,40 @@ export async function POST(req: NextRequest) {
       }, { status: 400 });
     }
     
-    const { id, name, priceModifier } = validationResult.data;
+    const { id, name, priceAdjustment } = validationResult.data;
     
-    // Check if the category ID already exists
-    const existingCategory = await db
-      .select({ id: subjectCategories.id })
-      .from(subjectCategories)
-      .where(eq(subjectCategories.id, id))
+    // Check if the assignment type ID already exists
+    const existingType = await db
+      .select({ id: assignmentTypes.id })
+      .from(assignmentTypes)
+      .where(eq(assignmentTypes.id, id))
       .limit(1);
     
-    if (existingCategory.length > 0) {
+    if (existingType.length > 0) {
       return NextResponse.json({
-        error: 'Subject category with this ID already exists',
+        error: 'Assignment type with this ID already exists',
       }, { status: 409 });
     }
     
-    // Create the new category
-    const newCategory = await db
-      .insert(subjectCategories)
+    // Create the new assignment type
+    const newType = await db
+      .insert(assignmentTypes)
       .values({
         id,
         name,
-        priceModifier: priceModifier.toString(),
+        priceAdjustment: priceAdjustment.toString(),
         updatedAt: new Date().toISOString(),
       })
       .returning();
     
     return NextResponse.json({
-      message: 'Subject category created successfully',
-      category: newCategory[0],
+      message: 'Assignment type created successfully',
+      assignmentType: newType[0],
     }, { status: 201 });
   } catch (error) {
-    console.error('Error creating subject category:', error);
+    console.error('Error creating assignment type:', error);
     return NextResponse.json({
-      error: 'Failed to create subject category',
+      error: 'Failed to create assignment type',
       details: error instanceof Error ? error.message : 'Unknown error',
     }, { status: 500 });
   }

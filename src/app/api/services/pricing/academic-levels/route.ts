@@ -2,17 +2,17 @@ import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '@/auth';
 import { z } from 'zod';
 import db from '@/src/db';
-import { subjectCategories } from '@/src/db/schema';
+import { academicLevels } from '@/src/db/schema';
 import { eq } from 'drizzle-orm';
 
-// Validation schema for the request body
-const categorySchema = z.object({
+// Validation schema for the academic level
+const academicLevelSchema = z.object({
   id: z.string().min(1),
-  name: z.string().min(3),
-  priceModifier: z.number().min(0.1).max(5),
+  name: z.string().min(2),
+  basePrice: z.number().min(0).max(1000),
 });
 
-// Get all subject categories
+// Get all academic levels
 export async function GET() {
   try {
     // Check authentication
@@ -21,19 +21,19 @@ export async function GET() {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const categories = await db.select().from(subjectCategories).orderBy(subjectCategories.name);
+    const levels = await db.select().from(academicLevels).orderBy(academicLevels.name);
     
-    return NextResponse.json(categories);
+    return NextResponse.json(levels);
   } catch (error) {
-    console.error('Error fetching subject categories:', error);
+    console.error('Error fetching academic levels:', error);
     return NextResponse.json({
-      error: 'Failed to fetch subject categories',
+      error: 'Failed to fetch academic levels',
       details: error instanceof Error ? error.message : 'Unknown error',
     }, { status: 500 });
   }
 }
 
-// Create a new subject category
+// Create a new academic level
 export async function POST(req: NextRequest) {
   try {
     // Check authentication
@@ -44,7 +44,7 @@ export async function POST(req: NextRequest) {
     
     // Parse and validate request body
     const body = await req.json();
-    const validationResult = categorySchema.safeParse(body);
+    const validationResult = academicLevelSchema.safeParse(body);
     
     if (!validationResult.success) {
       return NextResponse.json({
@@ -53,40 +53,40 @@ export async function POST(req: NextRequest) {
       }, { status: 400 });
     }
     
-    const { id, name, priceModifier } = validationResult.data;
+    const { id, name, basePrice } = validationResult.data;
     
-    // Check if the category ID already exists
-    const existingCategory = await db
-      .select({ id: subjectCategories.id })
-      .from(subjectCategories)
-      .where(eq(subjectCategories.id, id))
+    // Check if the academic level ID already exists
+    const existingLevel = await db
+      .select({ id: academicLevels.id })
+      .from(academicLevels)
+      .where(eq(academicLevels.id, id))
       .limit(1);
     
-    if (existingCategory.length > 0) {
+    if (existingLevel.length > 0) {
       return NextResponse.json({
-        error: 'Subject category with this ID already exists',
+        error: 'Academic level with this ID already exists',
       }, { status: 409 });
     }
     
-    // Create the new category
-    const newCategory = await db
-      .insert(subjectCategories)
+    // Create the new academic level
+    const newLevel = await db
+      .insert(academicLevels)
       .values({
         id,
         name,
-        priceModifier: priceModifier.toString(),
+        basePrice: basePrice.toString(),
         updatedAt: new Date().toISOString(),
       })
       .returning();
     
     return NextResponse.json({
-      message: 'Subject category created successfully',
-      category: newCategory[0],
+      message: 'Academic level created successfully',
+      academicLevel: newLevel[0],
     }, { status: 201 });
   } catch (error) {
-    console.error('Error creating subject category:', error);
+    console.error('Error creating academic level:', error);
     return NextResponse.json({
-      error: 'Failed to create subject category',
+      error: 'Failed to create academic level',
       details: error instanceof Error ? error.message : 'Unknown error',
     }, { status: 500 });
   }

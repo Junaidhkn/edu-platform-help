@@ -35,6 +35,8 @@ export const order = pgTable('orders', {
 	isPaid: boolean('is_paid').default(false),
 	paymentMethod: text('payment_method'),
 	paymentDate: timestamp('payment_date', { mode: 'string' }),
+	completedFileUrls: text('completed_file_urls'),
+	comments: text('comments'),
 	createdAt: timestamp('created_at', { mode: 'string' }).notNull().defaultNow(),
 	updatedAt: timestamp('updated_at', { mode: 'string' }).notNull().defaultNow(),
 });

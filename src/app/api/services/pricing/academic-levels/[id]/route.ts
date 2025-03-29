@@ -2,16 +2,16 @@ import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '@/auth';
 import { z } from 'zod';
 import db from '@/src/db';
-import { subjectCategories } from '@/src/db/schema';
+import { academicLevels } from '@/src/db/schema';
 import { eq } from 'drizzle-orm';
 
-// Validation schema for the update request body
-const updateCategorySchema = z.object({
-  name: z.string().min(3).optional(),
-  priceModifier: z.number().min(0.1).max(5).optional(),
+// Validation schema for updating an academic level
+const updateAcademicLevelSchema = z.object({
+  name: z.string().min(2).optional(),
+  basePrice: z.number().min(0).max(1000).optional(),
 });
 
-// Get a specific subject category
+// Get a specific academic level
 export async function GET(
   req: NextRequest,
   { params }: { params: { id: string } }
@@ -23,28 +23,28 @@ export async function GET(
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const category = await db
+    const level = await db
       .select()
-      .from(subjectCategories)
-      .where(eq(subjectCategories.id, params.id))
+      .from(academicLevels)
+      .where(eq(academicLevels.id, params.id))
       .limit(1)
       .then((results) => results[0] || null);
     
-    if (!category) {
-      return NextResponse.json({ error: 'Subject category not found' }, { status: 404 });
+    if (!level) {
+      return NextResponse.json({ error: 'Academic level not found' }, { status: 404 });
     }
     
-    return NextResponse.json(category);
+    return NextResponse.json(level);
   } catch (error) {
-    console.error('Error fetching subject category:', error);
+    console.error('Error fetching academic level:', error);
     return NextResponse.json({
-      error: 'Failed to fetch subject category',
+      error: 'Failed to fetch academic level',
       details: error instanceof Error ? error.message : 'Unknown error',
     }, { status: 500 });
   }
 }
 
-// Update a subject category
+// Update an academic level
 export async function PATCH(
   req: NextRequest,
   { params }: { params: { id: string } }
@@ -58,7 +58,7 @@ export async function PATCH(
 
     // Parse and validate request body
     const body = await req.json();
-    const validationResult = updateCategorySchema.safeParse(body);
+    const validationResult = updateAcademicLevelSchema.safeParse(body);
     
     if (!validationResult.success) {
       return NextResponse.json({
@@ -69,15 +69,15 @@ export async function PATCH(
     
     const updates = validationResult.data;
     
-    // Check if the category exists
-    const existingCategory = await db
-      .select({ id: subjectCategories.id })
-      .from(subjectCategories)
-      .where(eq(subjectCategories.id, params.id))
+    // Check if the academic level exists
+    const existingLevel = await db
+      .select({ id: academicLevels.id })
+      .from(academicLevels)
+      .where(eq(academicLevels.id, params.id))
       .limit(1);
     
-    if (existingCategory.length === 0) {
-      return NextResponse.json({ error: 'Subject category not found' }, { status: 404 });
+    if (existingLevel.length === 0) {
+      return NextResponse.json({ error: 'Academic level not found' }, { status: 404 });
     }
     
     // Prepare update data
@@ -89,31 +89,31 @@ export async function PATCH(
       updateData.name = updates.name;
     }
     
-    if (updates.priceModifier !== undefined) {
-      updateData.priceModifier = updates.priceModifier.toString();
+    if (updates.basePrice !== undefined) {
+      updateData.basePrice = updates.basePrice.toString();
     }
     
-    // Update the category
-    const updatedCategory = await db
-      .update(subjectCategories)
+    // Update the academic level
+    const updatedLevel = await db
+      .update(academicLevels)
       .set(updateData)
-      .where(eq(subjectCategories.id, params.id))
+      .where(eq(academicLevels.id, params.id))
       .returning();
     
     return NextResponse.json({
-      message: 'Subject category updated successfully',
-      category: updatedCategory[0],
+      message: 'Academic level updated successfully',
+      academicLevel: updatedLevel[0],
     });
   } catch (error) {
-    console.error('Error updating subject category:', error);
+    console.error('Error updating academic level:', error);
     return NextResponse.json({
-      error: 'Failed to update subject category',
+      error: 'Failed to update academic level',
       details: error instanceof Error ? error.message : 'Unknown error',
     }, { status: 500 });
   }
 }
 
-// Delete a subject category
+// Delete an academic level
 export async function DELETE(
   req: NextRequest,
   { params }: { params: { id: string } }
@@ -125,29 +125,29 @@ export async function DELETE(
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
     
-    // Check if the category exists
-    const existingCategory = await db
-      .select({ id: subjectCategories.id })
-      .from(subjectCategories)
-      .where(eq(subjectCategories.id, params.id))
+    // Check if the academic level exists
+    const existingLevel = await db
+      .select({ id: academicLevels.id })
+      .from(academicLevels)
+      .where(eq(academicLevels.id, params.id))
       .limit(1);
     
-    if (existingCategory.length === 0) {
-      return NextResponse.json({ error: 'Subject category not found' }, { status: 404 });
+    if (existingLevel.length === 0) {
+      return NextResponse.json({ error: 'Academic level not found' }, { status: 404 });
     }
     
-    // Delete the category
+    // Delete the academic level
     await db
-      .delete(subjectCategories)
-      .where(eq(subjectCategories.id, params.id));
+      .delete(academicLevels)
+      .where(eq(academicLevels.id, params.id));
     
     return NextResponse.json({
-      message: 'Subject category deleted successfully',
+      message: 'Academic level deleted successfully',
     });
   } catch (error) {
-    console.error('Error deleting subject category:', error);
+    console.error('Error deleting academic level:', error);
     return NextResponse.json({
-      error: 'Failed to delete subject category',
+      error: 'Failed to delete academic level',
       details: error instanceof Error ? error.message : 'Unknown error',
     }, { status: 500 });
   }

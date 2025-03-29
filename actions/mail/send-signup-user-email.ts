@@ -13,7 +13,7 @@ export async function sendSignupUserEmail({
 	console.log(`Sending email to ${email} with token ${token}`);
 
 	await transport.sendMail({
-		from: `"Edu-assign-help Team" <${process.env.NODEMAILER_GOOGLE_SMTP_USER}>`,
+		from: `"Edu-assign-help Team" <${process.env.BREVO_SMTP_USER}>`,
 		to: email,
 		subject: 'Verify your email address',
 		html: `
@@ -37,5 +37,5 @@ export async function sendSignupUserEmail({
     `,
 	});
 
-	console.log(`Email send to ${email} with token ${token}`);
+	console.log(`Email sent to ${email} with token ${token}`);
 }
