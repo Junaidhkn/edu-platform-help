@@ -6,8 +6,6 @@ import { ArrowLeft, Download, StarIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import db from '@/src/db';
-import { orders } from '@/src/db/schema';
-import { eq } from 'drizzle-orm';
 import { formatCurrency } from '@/lib/utils';
 
 interface OrderDetailPageProps {
@@ -23,11 +21,17 @@ export default async function OrderDetailPage({ params }: OrderDetailPageProps) 
     redirect('/login');
   }
   
+  // Ensure user id exists
+  const userId = session.user.id;
+  if (!userId) {
+    redirect('/login');
+  }
+  
   // Fetch the order for this user
   const order = await db.query.orders.findFirst({
     where: (order, { eq, and }) => and(
       eq(order.id, params.id),
-    //   eq(order.userId, session.user.id)
+      eq(order.userId, userId)
     ),
     with: {
       freelancer: true
