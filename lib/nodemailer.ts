@@ -3,12 +3,12 @@ import 'server-only';
 import nodemailer from 'nodemailer';
 
 const transport = nodemailer.createTransport({
-	host: 'smtp-relay.brevo.com',
+	host: 'smtp.mandrillapp.com',
 	port: 587,
 	secure: false,
 	auth: {
-		user: process.env.BREVO_SMTP_USER,
-		pass: process.env.BREVO_SMTP_PASSWORD,
+		user: process.env.SMTP_Username,
+		pass: process.env.SMTP_Password,
 	},
 });
 
