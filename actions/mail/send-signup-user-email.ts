@@ -13,7 +13,7 @@ export async function sendSignupUserEmail({
 	console.log(`Sending email to ${email} with token ${token}`);
 
 	await transport.sendMail({
-		from: "<${process.env.SMTP_Username}>",//`"Edu-assign-help Team" <${process.env.SMTP_Username}>`,
+		from: `"Edu-assign-help Team" <${process.env.BREVO_SMTP_USER}>`,
 		to: email,
 		subject: 'Verify your email address',
 		html: `
