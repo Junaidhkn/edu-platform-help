@@ -19,11 +19,13 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { MoreHorizontal, StarIcon } from 'lucide-react';
+import { MoreHorizontal, StarIcon, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
 import Link from 'next/link';
+import { format } from 'date-fns';
 
-interface Freelancer {
+// Export the Freelancer type
+export interface Freelancer {
   id: string;
   firstName: string;
   lastName: string;
@@ -33,16 +35,16 @@ interface Freelancer {
   availabilityStatus: 'available' | 'busy';
   rating?: number;
   imageURI?: string | null;
+  createdAt: string;
 }
 
 interface FreelancerTableProps {
   freelancers: Freelancer[];
   onAssignOrder?: (freelancerId: string) => void;
+  isAssigningId?: string | null;
 }
 
-export default function FreelancerTable({ freelancers, onAssignOrder }: FreelancerTableProps) {
-  const [isAssigning, setIsAssigning] = useState<string | null>(null);
-
+export default function FreelancerTable({ freelancers, onAssignOrder, isAssigningId }: FreelancerTableProps) {
   // Function to get initials from name
   const getInitials = (firstName: string, lastName: string) => {
     return `${firstName.charAt(0)}${lastName.charAt(0)}`.toUpperCase();
@@ -62,7 +64,7 @@ export default function FreelancerTable({ freelancers, onAssignOrder }: Freelanc
             <TableHead>Skills</TableHead>
             <TableHead>Status</TableHead>
             <TableHead>Rating</TableHead>
-            <TableHead>Contact</TableHead>
+            <TableHead>Joined</TableHead>
             <TableHead className="text-right">Actions</TableHead>
           </TableRow>
         </TableHeader>
@@ -107,7 +109,7 @@ export default function FreelancerTable({ freelancers, onAssignOrder }: Freelanc
                     <span className="text-gray-400 text-sm">No ratings</span>
                   )}
                 </TableCell>
-                <TableCell>{freelancer.phone}</TableCell>
+                <TableCell>{format(new Date(freelancer.createdAt), 'MMM dd, yyyy')}</TableCell>
                 <TableCell className="text-right">
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
@@ -123,14 +125,14 @@ export default function FreelancerTable({ freelancers, onAssignOrder }: Freelanc
                       {onAssignOrder && (
                         <DropdownMenuItem
                           onClick={() => {
-                            setIsAssigning(freelancer.id);
                             onAssignOrder(freelancer.id);
-                            setIsAssigning(null);
                             toast.success(`Order assigned to ${freelancer.firstName} ${freelancer.lastName}`);
                           }}
-                          disabled={isAssigning === freelancer.id || freelancer.availabilityStatus === 'busy'}
+                          disabled={isAssigningId === freelancer.id || freelancer.availabilityStatus === 'busy'}
                         >
-                          {isAssigning === freelancer.id ? 'Assigning...' : 'Assign Order'}
+                          {isAssigningId === freelancer.id ? (
+                            <Loader2 className="h-4 w-4 animate-spin mr-1" />
+                          ) : 'Assign Order'}
                         </DropdownMenuItem>
                       )}
                       <DropdownMenuItem
