@@ -26,4 +26,15 @@ const nextConfig = {
    },
 };
 
-export default nextConfig;
+// export default nextConfig;
+
+
+
+import autoCert from "anchor-pki/auto-cert/integrations/next";
+
+const withAutoCert = autoCert( {
+   enabledEnv: "development",
+} );
+
+
+export default withAutoCert( nextConfig );
