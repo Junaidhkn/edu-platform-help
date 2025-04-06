@@ -39,6 +39,7 @@ export function FileUploadField({ onChange, value, className }: FileUploadFieldP
             onUploadError={(error: Error) => {
               setIsUploading(false)
               toast.error(`Upload failed: ${error.message}`)
+              console.log(error)
             }}
             onUploadBegin={() => setIsUploading(true)}
             className="ut-button:bg-primary ut-button:ut-readying:bg-primary/80 ut-button:ut-uploading:bg-primary/80"

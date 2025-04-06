@@ -56,3 +56,5 @@ export const orderRelations = relations(order, ({ one, many }) => ({
 }));
 
 export default order;
+
+export type OrderInsert = typeof order.$inferInsert;
