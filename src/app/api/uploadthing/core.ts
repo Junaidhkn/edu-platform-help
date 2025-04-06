@@ -10,7 +10,7 @@ export const ourFileRouter = {
 	imageUploader: f({
 		image: {
 			maxFileSize: '128MB',
-			maxFileCount: 20,
+			maxFileCount: 1,
 		},
 	})
 		// Set permissions and file types for this FileRoute
@@ -57,25 +57,22 @@ export const ourFileRouter = {
 	pdfUploader: f({
 		pdf: {
 			maxFileSize: '256MB',
-			maxFileCount: 4,
+			maxFileCount: 1,
 		},
 	})
-		.middleware(async ({ req }) => {
-			// This code runs on your server before upload
-			const user = await auth();
+	.middleware(async ({ req }) => {
+		// This code runs on your server before upload
+		const user = await auth();
 
-			// If you throw, the user will not be able to upload
-			if (!user) throw new UploadThingError('Unauthorized');
+		// If you throw, the user will not be able to upload
+		if (!user) throw new UploadThingError('Unauthorized');
 
-			// Whatever is returned here is accessible in onUploadComplete as `metadata`
-			return { userId: user.user?.id };
-		})
-		.onUploadComplete(async ({ metadata, file }) => {
-			// This code RUNS ON YOUR SERVER after upload
-			console.log('Upload complete for userId:', metadata.userId);
-			console.log('file url', file.url);
-			// !!! Whatever is returned here is sent to the clientside `onClientUploadComplete` callback
-			return { uploadedBy: metadata.userId };
+		// Whatever is returned here is accessible in onUploadComplete as `metadata`
+		return { userId: user.user?.id };
+	})
+		.onUploadComplete(({ metadata, file }) => {
+			console.log("Upload complete:", file.url);
+			return { url: file.url };
 		}),
 	blobUploader: f({
 		blob: {

@@ -1,13 +1,14 @@
 import { type Config } from "tailwindcss";
 import { withUt } from "uploadthing/tw";
 
-export default withUt({
+const config: Config = withUt({
 	darkMode: ["class"],
 	content: [
 		'./pages/**/*.{ts,tsx}',
 		'./components/**/*.{ts,tsx}',
 		'./app/**/*.{ts,tsx}',
 		'./src/**/*.{ts,tsx}',
+		'./node_modules/@uploadthing/react/dist/**/*.{js,ts,jsx,tsx}'
 	],
 	theme: {
 		container: {
@@ -83,4 +84,6 @@ export default withUt({
 		},
 	},
 	plugins: [require("tailwindcss-animate")],
-}) satisfies Config;
+})
+
+export default config;
