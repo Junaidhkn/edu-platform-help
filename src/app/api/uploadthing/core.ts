@@ -8,6 +8,7 @@ const f = createUploadthing({
 		return { message: err.message, cause: String(err.cause) };
 	},
 });
+
 // FileRouter for your app, can contain multiple FileRoutes
 export const ourFileRouter = {
 	// Define as many FileRoutes as you like, each with a unique routeSlug
@@ -19,21 +20,15 @@ export const ourFileRouter = {
 	})
 		// Set permissions and file types for this FileRoute
 		.middleware(async ({ req }) => {
-			// This code runs on your server before upload
-			const user = await auth();
-
-			// If you throw, the user will not be able to upload
-			if (!user) throw new UploadThingError('Unauthorized');
-
-			// Whatever is returned here is accessible in onUploadComplete as `metadata`
-			return { userId: user.user?.id };
+			const session = await auth();
+			if (!session) {
+				throw new UploadThingError('You need to be logged in to upload files');
+			}
+			return { userId: session?.user?.id };
 		})
 		.onUploadComplete(async ({ metadata, file }) => {
-			// This code RUNS ON YOUR SERVER after upload
-			console.log('Upload complete for userId:', metadata.userId);
-			console.log('file url', file.url);
-			// !!! Whatever is returned here is sent to the clientside `onClientUploadComplete` callback
-			return { uploadedBy: metadata.userId };
+			console.log('Upload complete:', file.ufsUrl);
+			return { url: file.ufsUrl };
 		}),
 	profilePictureUploader: f({
 		image: {
@@ -42,21 +37,15 @@ export const ourFileRouter = {
 		},
 	})
 		.middleware(async ({ req }) => {
-			// This code runs on your server before upload
-			const user = await auth();
-
-			// If you throw, the user will not be able to upload
-			if (!user) throw new UploadThingError('Unauthorized');
-
-			// Whatever is returned here is accessible in onUploadComplete as `metadata`
-			return { userId: user.user?.id };
+			const session = await auth();
+			if (!session) {
+				throw new UploadThingError('You need to be logged in to upload files');
+			}
+			return { userId: session?.user?.id };
 		})
 		.onUploadComplete(async ({ metadata, file }) => {
-			// This code RUNS ON YOUR SERVER after upload
-			console.log('Upload complete for userId:', metadata.userId);
-			console.log('file url', file.url);
-			// !!! Whatever is returned here is sent to the clientside `onClientUploadComplete` callback
-			return { uploadedBy: metadata.userId };
+			console.log('Upload complete:', file.ufsUrl);
+			return { url: file.ufsUrl };
 		}),
 	pdfUploader: f({
 		pdf: {
@@ -82,21 +71,15 @@ export const ourFileRouter = {
 		},
 	})
 		.middleware(async ({ req }) => {
-			// This code runs on your server before upload
-			const user = await auth();
-
-			// If you throw, the user will not be able to upload
-			if (!user) throw new UploadThingError('Unauthorized');
-
-			// Whatever is returned here is accessible in onUploadComplete as `metadata`
-			return { userId: user.user?.id };
+			const session = await auth();
+			if (!session) {
+				throw new UploadThingError('You need to be logged in to upload files');
+			}
+			return { userId: session?.user?.id };
 		})
 		.onUploadComplete(async ({ metadata, file }) => {
-			// This code RUNS ON YOUR SERVER after upload
-			console.log('Upload complete for userId:', metadata.userId);
-			console.log('file url', file.url);
-			// !!! Whatever is returned here is sent to the clientside `onClientUploadComplete` callback
-			return { uploadedBy: metadata.userId };
+			console.log('Upload complete:', file.ufsUrl);
+			return { url: file.ufsUrl };
 		}),
 	textUploader: f({
 		text: {
@@ -105,21 +88,15 @@ export const ourFileRouter = {
 		},
 	})
 		.middleware(async ({ req }) => {
-			// This code runs on your server before upload
-			const user = await auth();
-
-			// If you throw, the user will not be able to upload
-			if (!user) throw new UploadThingError('Unauthorized');
-
-			// Whatever is returned here is accessible in onUploadComplete as `metadata`
-			return { userId: user.user?.id };
+			const session = await auth();
+			if (!session) {
+				throw new UploadThingError('You need to be logged in to upload files');
+			}
+			return { userId: session?.user?.id };
 		})
 		.onUploadComplete(async ({ metadata, file }) => {
-			// This code RUNS ON YOUR SERVER after upload
-			console.log('Upload complete for userId:', metadata.userId);
-			console.log('file url', file.url);
-			// !!! Whatever is returned here is sent to the clientside `onClientUploadComplete` callback
-			return { uploadedBy: metadata.userId };
+			console.log('Upload complete:', file.ufsUrl);
+			return { url: file.ufsUrl };
 		}),
 } satisfies FileRouter;
 

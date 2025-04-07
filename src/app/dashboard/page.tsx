@@ -1,38 +1,28 @@
-import  OverViewPage  from '@/sections/overview/view/overview';
+"use client";
+
 import { CreateAdminButton } from '@/components/admin/CreateAdminButton';
-import db from '@/src/db';
-import { orders } from '@/src/db/schema';
-import { desc, eq } from 'drizzle-orm';
 import Link from 'next/link';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { EyeIcon } from 'lucide-react';
+import { Pagination } from '@/components/pagination';
+import { OrderFilters, OrderFilterType } from '@/components/order-filters';
+import { useCallback, useEffect, useState } from 'react';
 
-export const metadata = {
-	title: 'Dashboard : Admin Overview',
-	description: 'Admin dashboard overview',
-};
 
-export default async function DashboardPage() {
-	// Admin check happens at the layout level
-	
-	// Fetch 5 most recent orders
-	const recentOrders = await db.query.orders.findMany({
-		orderBy: [desc(orders.createdAt)],
-		limit: 10,
-		with: {
-			user: {
-				columns: {
-					name: true,
-					email: true,
-				},
-			},
-		},
-	});
+
+const ITEMS_PER_PAGE = 7; // Show 7 orders per page
+
+export default function DashboardPage() {
+	const [orders, setOrders] = useState<any[]>([]);
+	const [currentPage, setCurrentPage] = useState(1);
+	const [totalPages, setTotalPages] = useState(1);
+	const [activeFilter, setActiveFilter] = useState<OrderFilterType>('recent');
+	const [isLoading, setIsLoading] = useState(true);
 
 	// Function to determine badge color based on order status
 	const getStatusColor = (status: string) => {
-		switch (status) {
+		switch (status?.toLowerCase()) {
 			case 'pending':
 				return 'bg-yellow-100 text-yellow-800';
 			case 'accepted':
@@ -54,17 +44,44 @@ export default async function DashboardPage() {
 		}).format(amount);
 	};
 
+	const fetchOrders = useCallback(async () => {
+		setIsLoading(true);
+		try {
+			const response = await fetch(`/api/dashboard/orders?page=${currentPage}&filter=${activeFilter}`);
+			const data = await response.json();
+			setOrders(data.orders);
+			setTotalPages(Math.ceil(data.total / ITEMS_PER_PAGE));
+		} catch (error) {
+			console.error('Error fetching orders:', error);
+		} finally {
+			setIsLoading(false);
+		}
+	}, [currentPage, activeFilter]);
+
+	useEffect(() => {
+		fetchOrders();
+	}, [fetchOrders]);
+
+	const handlePageChange = (page: number) => {
+		setCurrentPage(page);
+	};
+
+	const handleFilterChange = (filter: OrderFilterType) => {
+		setActiveFilter(filter);
+		setCurrentPage(1); // Reset to first page when changing filters
+	};
+
 	return (
 		<>
-			{/* <OverViewPage /> */}
-			
 			<div className="container mx-auto mt-10">
 				<div className="flex justify-between items-center mb-6">
-					<h2 className="text-2xl font-bold">Recent Orders</h2>
+					<h2 className="text-2xl font-bold">Orders</h2>
 					<Link href="/dashboard/orders">
 						<Button variant="outline">View All Orders</Button>
 					</Link>
 				</div>
+				
+				<OrderFilters activeFilter={activeFilter} onFilterChange={handleFilterChange} />
 				
 				<div className="bg-white shadow-md rounded-lg overflow-hidden">
 					<div className="overflow-x-auto">
@@ -95,8 +112,14 @@ export default async function DashboardPage() {
 								</tr>
 							</thead>
 							<tbody className="bg-white divide-y divide-gray-200">
-								{recentOrders.length > 0 ? (
-									recentOrders.map((order) => (
+								{isLoading ? (
+									<tr>
+										<td colSpan={7} className="px-6 py-4 text-center">
+											Loading...
+										</td>
+									</tr>
+								) : orders.length > 0 ? (
+									orders.map((order) => (
 										<tr key={order.id}>
 											<td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
 												#{order.id.slice(-6)}
@@ -112,7 +135,7 @@ export default async function DashboardPage() {
 											</td>
 											<td className="px-6 py-4 whitespace-nowrap">
 												<Badge className={getStatusColor(order.orderStatus)}>
-													{order.orderStatus}
+													{order.orderStatus || 'pending'}
 												</Badge>
 											</td>
 											<td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
@@ -139,6 +162,14 @@ export default async function DashboardPage() {
 						</table>
 					</div>
 				</div>
+				
+				{!isLoading && totalPages > 1 && (
+					<Pagination 
+						currentPage={currentPage} 
+						totalPages={totalPages} 
+						onPageChange={handlePageChange} 
+					/>
+				)}
 			</div>
 			
 			<div className="fixed bottom-6 right-6">

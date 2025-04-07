@@ -19,8 +19,8 @@ const freelancer = pgTable('freelancers', {
 	id: text('id')
 		.primaryKey()
 		.$defaultFn(() => crypto.randomUUID()),
-	firstName: varchar('name', { length: 255 }).notNull(),
-	lastName: varchar('name', { length: 255 }).notNull(),
+	firstName: varchar('first_name', { length: 255 }).notNull(),
+	lastName: varchar('last_name', { length: 255 }).notNull(),
 	phone: varchar('contact_phone', { length: 255 }).notNull().unique(),
 	email: varchar('email', { length: 255 }).notNull().unique(),
 	skills: text('skills').notNull(),

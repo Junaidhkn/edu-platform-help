@@ -25,7 +25,15 @@ const nextAuth = NextAuth({
 
 					if (!user.password) throw new OAuthAccountAlreadyLinkedError();
 
-					const passwordsMatch = await argon2.verify(user.password, password);
+					let passwordsMatch = false;
+					
+					try {
+						// Use argon2 for both regular users and freelancers
+						passwordsMatch = await argon2.verify(user.password, password);
+					} catch (error) {
+						console.error('Password verification error:', error);
+						return null;
+					}
 
 					if (passwordsMatch) {
 						const { password: _, ...userWithoutPassword } = user;

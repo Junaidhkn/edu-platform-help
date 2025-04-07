@@ -14,8 +14,11 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { type SigninInput, SigninSchema } from "@/validators/signin-validator";
 import { signinUserAction } from "@/actions/signin-user-action";
+import { useState } from "react";
 
 export const SigninForm = () => {
+  const [isLoading, setIsLoading] = useState(false);
+  
   const form = useForm<SigninInput>({
     resolver: valibotResolver(SigninSchema),
     defaultValues: { email: "", password: "" },
@@ -24,20 +27,35 @@ export const SigninForm = () => {
   const { handleSubmit, control, formState, setError } = form;
 
   const submit = async (values: SigninInput) => {
-    const res = await signinUserAction(values);
+    setIsLoading(true);
+    try {
+      const res = await signinUserAction(values);
 
-    if (res.success) {
-      window.location.href = "/profile";
-    } else {
-      switch (res.statusCode) {
-        case 401:
-          setError("password", { message: res.error });
-          break;
-        case 500:
-        default:
-          const error = res.error || "Internal Server Error";
-          setError("password", { message: error });
+      if (res.success) {
+        // Check if the user is a freelancer
+        const userResponse = await fetch('/api/auth/session');
+        const userData = await userResponse.json();
+        
+        if ((userData?.user as any)?.isFreelancer) {
+          window.location.href = "/freelancer/orders";
+        } else {
+          window.location.href = "/profile";
+        }
+      } else {
+        switch (res.statusCode) {
+          case 401:
+            setError("password", { message: res.error });
+            break;
+          case 500:
+          default:
+            const error = res.error || "Internal Server Error";
+            setError("password", { message: error });
+        }
       }
+    } catch (error) {
+      setError("password", { message: "An unexpected error occurred" });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -82,10 +100,10 @@ export const SigninForm = () => {
 
         <Button
           type="submit"
-          disabled={formState.isSubmitting}
+          disabled={formState.isSubmitting || isLoading}
           className="w-full"
         >
-          Sign in
+          {isLoading ? "Signing in..." : "Sign in"}
         </Button>
       </form>
     </Form>

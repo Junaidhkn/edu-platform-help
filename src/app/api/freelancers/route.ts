@@ -3,7 +3,7 @@ import { auth } from '@/auth';
 import db from '@/src/db';
 import { freelancers } from '@/src/db/schema';
 import { freelancerFormSchema } from '@/lib/validators/freelancer-schema';
-import * as bcrypt from 'bcryptjs';
+import argon2 from 'argon2';
 
 export async function GET() {
   try {
@@ -53,8 +53,8 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Freelancer with this email already exists' }, { status: 400 });
     }
     
-    // Hash the password
-    const hashedPassword = await bcrypt.hash(password, 10);
+    // Hash the password using argon2
+    const hashedPassword = await argon2.hash(password);
     
     // Create the freelancer
     const newFreelancer = await db.insert(freelancers).values({

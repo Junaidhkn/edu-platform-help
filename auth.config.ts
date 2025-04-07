@@ -15,6 +15,8 @@ import { USER_ROLES } from '@/lib/constants';
 import type { AdapterUser } from '@auth/core/adapters';
 import { getTableColumns } from 'drizzle-orm';
 import { findAdminUserEmailAddresses } from './resources/admin-user-email-address-queries';
+import { eq } from 'drizzle-orm';
+import { freelancers } from '@/src/db/schema';
 
 export const authConfig = {
 	adapter: {
@@ -48,31 +50,31 @@ export const authConfig = {
 	pages: { signIn: '/auth/signin' },
 	callbacks: {
 		authorized({ auth, request }) {
-			const { nextUrl } = request;
-
+			const { pathname } = request.nextUrl;
 			const isLoggedIn = !!auth?.user;
-			const isAdmin = auth?.user?.role === USER_ROLES.ADMIN;
-			const isOnProfile = nextUrl.pathname.startsWith('/profile');
-			const isOnAuth = nextUrl.pathname.startsWith('/auth');
-			const isOnDashboard = nextUrl.pathname.startsWith('/dashboard');
 
-			// For dashboard access: require both login and admin role
-			if (isOnDashboard) {
-				if (!isLoggedIn) return false; // Will redirect to sign in
-				if (!isAdmin) return false; // Will redirect to home
+			// Public routes
+			if (
+				pathname === '/' ||
+				pathname.startsWith('/auth') ||
+				pathname.startsWith('/api/auth')
+			) {
 				return true;
 			}
 
-			// For profile access: only require login
-			if (isOnProfile) {
-				return isLoggedIn;
+			// Protected routes
+			if (!isLoggedIn) {
+				return false;
 			}
 
-			// Let auth pages be accessed by non-logged in users
-			if (isOnAuth) {
-				if (!isLoggedIn) return true;
-				// Auth callbacks will handle redirections after login
-				return true;
+			// Admin routes
+			if (pathname.startsWith('/dashboard') && auth?.user?.role !== USER_ROLES.ADMIN) {
+				return false;
+			}
+
+			// Freelancer routes
+			if (pathname.startsWith('/freelancer') && !(auth?.user as any)?.isFreelancer) {
+				return false;
 			}
 
 			return true;
@@ -84,12 +86,22 @@ export const authConfig = {
 
 			if (user?.id) token.id = user.id;
 			if (user?.role) token.role = user.role;
+			
+			// Add isFreelancer flag if it exists
+			if ((user as any)?.isFreelancer) {
+				(token as any).isFreelancer = true;
+			}
 
 			return token;
 		},
 		session({ session, token }) {
 			session.user.id = token.id;
 			session.user.role = token.role;
+			
+			// Add isFreelancer flag if it exists
+			if ((token as any)?.isFreelancer) {
+				(session.user as any).isFreelancer = true;
+			}
 
 			return session;
 		},
