@@ -35,7 +35,7 @@ import {
 	PopoverTrigger,
 } from '@/components/ui/popover';
 import { addDays, format } from 'date-fns';
-import { CalendarIcon } from 'lucide-react';
+import { CalendarIcon, Loader2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface OrderFormProps {
@@ -289,7 +289,14 @@ export function OrderForm({ onSubmit, isSubmitting = false }: OrderFormProps) {
 					type='submit'
 					className='w-full'
 					disabled={isSubmitting}>
-					{isSubmitting ? 'Processing...' : 'Continue to Payment'}
+					{isSubmitting ? (
+						<>
+							<Loader2 className='mr-2 h-4 w-4 animate-spin' />
+							Processing...
+						</>
+					) : (
+						'Continue to Payment'
+					)}
 				</Button>
 			</form>
 		</Form>

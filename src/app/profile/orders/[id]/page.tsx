@@ -73,10 +73,10 @@ export default async function OrderDetailPage({ params }: OrderDetailPageProps) 
   return (
     <div className="container mx-auto py-10">
       <div className="mb-6">
-        <Link href="/profile/orders">
+        <Link href="/profile">
           <Button variant="outline" size="sm">
             <ArrowLeft className="h-4 w-4 mr-1" />
-            Back to My Orders
+            Back to Profile
           </Button>
         </Link>
       </div>

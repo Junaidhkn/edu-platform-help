@@ -1,95 +1,78 @@
-import { redirect } from 'next/navigation';
-import { auth } from '@/auth';
-import db from '@/src/db';
-import transaction from '@/src/db/schema/transactions';
-import order from '@/src/db/schema/order';
-import { eq } from 'drizzle-orm';
+'use client';
+
+import { useEffect, useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import Link from 'next/link';
 import { CheckCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import Link from 'next/link';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 
-export default async function OrderSuccessPage({
-  searchParams,
-}: {
-  searchParams: { session_id: string };
-}) {
-  const session = await auth();
-  if (!session?.user) {
-    redirect('/auth/signin');
-  }
-
-  const sessionId = searchParams.session_id;
-  if (!sessionId) {
-    redirect('/profile/orders');
-  }
-
-  // Fetch transaction
-  const transactionResult = await db.select()
-    .from(transaction)
-    .where(eq(transaction.stripeSessionId, sessionId))
-    .limit(1);
-
-  if (!transactionResult.length) {
-    redirect('/profile/orders');
-  }
-
-  const txn = transactionResult[0];
-
-  // Fetch order details
-  const orderResult = await db.select()
-    .from(order)
-    .where(eq(order.id, txn.orderId))
-    .limit(1);
-
-  if (!orderResult.length) {
-    redirect('/profile/orders');
-  }
-
-  const orderData = orderResult[0];
-
+export default function CheckoutSuccessPage() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const sessionId = searchParams.get('session_id');
+  const [orderId, setOrderId] = useState<string | null>(null);
+  
+  useEffect(() => {
+    if (!sessionId) {
+      router.push('/profile');
+      return;
+    }
+    
+    // Optional: Verify payment with backend
+    const verifyPayment = async () => {
+      try {
+        const response = await fetch(`/api/verify-payment?session_id=${sessionId}`);
+        if (response.ok) {
+          const data = await response.json();
+          setOrderId(data.orderId);
+        }
+      } catch (error) {
+        console.error('Error verifying payment:', error);
+      }
+    };
+    
+    // Uncomment if you implement the verification endpoint
+    // verifyPayment();
+    
+    // For simplicity, redirect after 5 seconds
+    const redirectTimer = setTimeout(() => {
+      router.push('/profile');
+    }, 5000);
+    
+    return () => clearTimeout(redirectTimer);
+  }, [sessionId, router]);
+  
   return (
-    <div className="flex flex-col items-center justify-center py-12">
-      <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
-        <div className="flex justify-center mb-6">
-          <CheckCircle className="h-16 w-16 text-green-500" />
-        </div>
-        
-        <h1 className="text-2xl font-bold text-center mb-4">Payment Successful!</h1>
-        
-        <div className="space-y-4">
-          <p className="text-gray-600">
-            Thank you for your payment. Your order has been processed successfully.
-          </p>
-          
-          <div className="border-t border-gray-200 pt-4">
-            <h2 className="font-semibold text-lg mb-2">Order Summary</h2>
-            <div className="flex justify-between">
-              <span className="text-gray-600">Order ID:</span>
-              <span className="font-medium">{orderData.id}</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-gray-600">Amount:</span>
-              <span className="font-medium">
-                ${(txn.amount / 100).toFixed(2)}
-              </span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-gray-600">Status:</span>
-              <span className="font-medium text-green-500">
-                {orderData.orderStatus}
-              </span>
-            </div>
+    <div className="container mx-auto max-w-lg py-20">
+      <Card className="border-green-100">
+        <CardHeader className="text-center">
+          <div className="mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-green-50">
+            <CheckCircle className="h-10 w-10 text-green-500" />
           </div>
-        </div>
-        
-        <div className="mt-8">
-          <Link href="/profile/orders">
-            <Button className="w-full">
-              View Your Orders
-            </Button>
+          <CardTitle className="text-2xl">Payment Successful!</CardTitle>
+          <CardDescription>
+            Thank you for your order. We've received your payment and will start working on your assignment.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="text-center">
+          <p className="text-gray-500">
+            {orderId ? (
+              <>Your order ID is <span className="font-medium text-black">{orderId}</span></>
+            ) : (
+              <>Your payment has been processed successfully.</>
+            )}
+          </p>
+          <p className="mt-1 text-gray-500">
+            You will be redirected to your orders page in 5 seconds.
+          </p>
+        </CardContent>
+        <CardFooter className="flex justify-center">
+          <Link href="/profile">
+            <Button>View My Orders</Button>
           </Link>
-        </div>
-      </div>
+        </CardFooter>
+      </Card>
     </div>
   );
 } 

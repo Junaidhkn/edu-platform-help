@@ -8,35 +8,31 @@ import { eq } from 'drizzle-orm';
 import { neon } from '@neondatabase/serverless';
 import env from '@/src/env';
 
-export async function POST(req: NextRequest) {
+// Add GET handler for direct navigation with query params
+export async function GET(req: NextRequest) {
+  const orderId = req.nextUrl.searchParams.get('orderId');
+  
+  if (!orderId) {
+    return NextResponse.redirect(new URL('/profile/orders', req.url));
+  }
+  
+  // Create a proper POST response directly instead of calling POST handler
+  const response = await handleCheckout(orderId, true);
+  return response;
+}
+
+// Shared checkout logic between GET and POST
+async function handleCheckout(orderId: string, isRedirect: boolean = false) {
   try {
     const session = await auth();
     if (!session?.user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
-
-    // Get orderId from query parameters (form submission) or request body (JSON)
-    let requestOrderId: string | null = null;
-    
-    // Check if this is a form submission
-    const contentType = req.headers.get('content-type');
-    if (contentType?.includes('application/x-www-form-urlencoded')) {
-      // This is a form submission
-      requestOrderId = req.nextUrl.searchParams.get('orderId');
-    } else {
-      // This is a JSON submission
-      const body = await req.json();
-      requestOrderId = body.orderId;
-    }
-    
-    if (!requestOrderId) {
-      return NextResponse.json({ error: 'Order ID is required' }, { status: 400 });
-    }
     
     // Fetch the order
     const orderResult = await db.select()
       .from(order)
-      .where(eq(order.id, requestOrderId))
+      .where(eq(order.id, orderId))
       .limit(1);
       
     if (!orderResult.length) {
@@ -47,6 +43,9 @@ export async function POST(req: NextRequest) {
     
     // Calculate the amount in cents (Stripe uses the smallest currency unit)
     const amount = Math.round(parseFloat(orderData.total_price.toString()) * 100);
+    
+    // Ensure we have a valid base URL with proper protocol
+    const baseUrl = process.env.NEXTAUTH_URL || 'https://edu-help-assign.lcl.host:44365';
     
     // Create Checkout Session
     const checkoutSession = await stripe.checkout.sessions.create({
@@ -65,8 +64,8 @@ export async function POST(req: NextRequest) {
         },
       ],
       mode: 'payment',
-      success_url: `${req.headers.get('origin') || process.env.NEXTAUTH_URL}/profile/orders/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${req.headers.get('origin') || process.env.NEXTAUTH_URL}/profile/orders/cancel?order_id=${orderData.id}`,
+      success_url: `${baseUrl}/profile/orders/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${baseUrl}/profile/orders/cancel?order_id=${orderData.id}`,
       metadata: {
         orderId: orderData.id,
         userId: session.user.id
@@ -87,8 +86,8 @@ export async function POST(req: NextRequest) {
       VALUES (${orderData.id}, ${session.user.id}, ${amount}, 'pending', ${checkoutSession.id})
     `;
     
-    // For form submission, redirect directly to Stripe
-    if (contentType?.includes('application/x-www-form-urlencoded')) {
+    // Redirect to Stripe for GET requests or form submissions
+    if (isRedirect) {
       return NextResponse.redirect(checkoutSession.url || '/profile/orders');
     }
     
@@ -97,6 +96,55 @@ export async function POST(req: NextRequest) {
       sessionId: checkoutSession.id, 
       url: checkoutSession.url 
     });
+  } catch (error) {
+    console.error('Checkout error:', error);
+    return NextResponse.json(
+      { error: 'Internal server error' }, 
+      { status: 500 }
+    );
+  }
+}
+
+export async function POST(req: NextRequest) {
+  try {
+    const session = await auth();
+    if (!session?.user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    // Get orderId from query parameters (form submission) or request body (JSON)
+    let requestOrderId: string | null = null;
+    
+    // Check if this is a form submission
+    const contentType = req.headers.get('content-type');
+    if (contentType?.includes('application/x-www-form-urlencoded')) {
+      // This is a form submission
+      requestOrderId = req.nextUrl.searchParams.get('orderId');
+      
+      // If not in URL params, try to get from form body
+      if (!requestOrderId) {
+        const formData = await req.formData();
+        requestOrderId = formData.get('orderId') as string;
+      }
+      
+      // Try to parse the URL-encoded body if still not found
+      if (!requestOrderId) {
+        const text = await req.text();
+        const params = new URLSearchParams(text);
+        requestOrderId = params.get('orderId');
+      }
+    } else {
+      // This is a JSON submission
+      const body = await req.json();
+      requestOrderId = body.orderId;
+    }
+    
+    if (!requestOrderId) {
+      return NextResponse.json({ error: 'Order ID is required' }, { status: 400 });
+    }
+    
+    // Use the shared checkout logic
+    return handleCheckout(requestOrderId, contentType?.includes('application/x-www-form-urlencoded'));
   } catch (error) {
     console.error('Checkout error:', error);
     return NextResponse.json(

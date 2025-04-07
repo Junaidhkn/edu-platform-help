@@ -1,88 +1,57 @@
-import { redirect } from 'next/navigation';
-import { auth } from '@/auth';
-import db from '@/src/db';
-import order from '@/src/db/schema/order';
-import { eq } from 'drizzle-orm';
+'use client';
+
+import { useEffect } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import Link from 'next/link';
 import { XCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import Link from 'next/link';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 
-export default async function OrderCancelPage({
-  searchParams,
-}: {
-  searchParams: { order_id: string };
-}) {
-  const session = await auth();
-  if (!session?.user) {
-    redirect('/auth/signin');
-  }
-
-  const orderId = searchParams.order_id;
-  if (!orderId) {
-    redirect('/profile/orders');
-  }
-
-  // Fetch order details
-  const orderResult = await db.select()
-    .from(order)
-    .where(eq(order.id, orderId))
-    .limit(1);
-
-  if (!orderResult.length) {
-    redirect('/profile/orders');
-  }
-
-  const orderData = orderResult[0];
-
+export default function CheckoutCancelPage() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const orderId = searchParams.get('order_id');
+  
+  useEffect(() => {
+    // Redirect after 5 seconds
+    const redirectTimer = setTimeout(() => {
+      router.push(orderId ? `/profile/orders/${orderId}` : '/profile/orders');
+    }, 5000);
+    
+    return () => clearTimeout(redirectTimer);
+  }, [orderId, router]);
+  
   return (
-    <div className="flex flex-col items-center justify-center py-12">
-      <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
-        <div className="flex justify-center mb-6">
-          <XCircle className="h-16 w-16 text-red-500" />
-        </div>
-        
-        <h1 className="text-2xl font-bold text-center mb-4">Payment Cancelled</h1>
-        
-        <div className="space-y-4">
-          <p className="text-gray-600">
-            Your payment process was cancelled. No charges have been made.
-          </p>
-          
-          <div className="border-t border-gray-200 pt-4">
-            <h2 className="font-semibold text-lg mb-2">Order Details</h2>
-            <div className="flex justify-between">
-              <span className="text-gray-600">Order ID:</span>
-              <span className="font-medium">{orderData.id}</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-gray-600">Amount:</span>
-              <span className="font-medium">
-                ${parseFloat(orderData.total_price.toString()).toFixed(2)}
-              </span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-gray-600">Status:</span>
-              <span className="font-medium text-yellow-500">
-                {orderData.orderStatus}
-              </span>
-            </div>
+    <div className="container mx-auto max-w-lg py-20">
+      <Card className="border-red-100">
+        <CardHeader className="text-center">
+          <div className="mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-red-50">
+            <XCircle className="h-10 w-10 text-red-500" />
           </div>
-        </div>
-        
-        <div className="mt-8 space-y-4">
-          <Link href={`/profile/place-order/checkout?order_id=${orderId}`}>
-            <Button className="w-full">
-              Try Payment Again
-            </Button>
-          </Link>
-          
+          <CardTitle className="text-2xl">Payment Cancelled</CardTitle>
+          <CardDescription>
+            Your payment was cancelled. Don't worry, your order is still saved.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="text-center">
+          <p className="text-gray-500">
+            You can try again by returning to your order or continue browsing.
+          </p>
+          <p className="mt-1 text-gray-500">
+            You will be redirected to {orderId ? 'your order' : 'orders page'} in 5 seconds.
+          </p>
+        </CardContent>
+        <CardFooter className="flex justify-center gap-4">
+          {orderId ? (
+            <Link href={`/profile/orders/${orderId}`}>
+              <Button variant="default">Return to Order</Button>
+            </Link>
+          ) : null}
           <Link href="/profile/orders">
-            <Button variant="outline" className="w-full">
-              View Your Orders
-            </Button>
+            <Button variant={orderId ? "outline" : "default"}>View All Orders</Button>
           </Link>
-        </div>
-      </div>
+        </CardFooter>
+      </Card>
     </div>
   );
 } 

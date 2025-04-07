@@ -39,9 +39,10 @@ const SignedIn = async ({ user }: { user: User }) => {
 					<div>
 						<h3 className='text-xl font-semibold'>Order Summary:</h3>
 						{orders && orders.length > 0 ? (
-							<ul className='mt-2 space-y-2'>
+							<div className='mt-2 space-y-2'>
 								{orders.map((order) => (
-									<li
+									<Link
+									href={`profile/orders/${order.id}`}
 										key={order.id}
 										className='p-4 border rounded-lg'>
 										<div className='flex justify-between'>
@@ -49,9 +50,9 @@ const SignedIn = async ({ user }: { user: User }) => {
 											<span>Order ID: {order.deadline}</span>
 											<span>Status: {order.orderStatus}</span>
 										</div>
-									</li>
+									</Link>
 								))}
-							</ul>
+							</div>
 						) : (
 							<div>
 								<p className='mt-2'>You are yet to place any order!</p>
