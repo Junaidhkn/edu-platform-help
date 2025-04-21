@@ -9,14 +9,17 @@ import Link from 'next/link';
 // Define the submission type that matches our database schema
 interface Submission {
   id: string;
-  freelancerId: string;
-  orderId: string;
-  fileUrl: string;
-  comments: string | null;
-  status: 'pending' | 'approved' | 'rejected';
+  createdAt: string | Date;
+  fileUrls: string | string[];
+  comment?: string | null;
+  status: string;
   adminFeedback?: string | null;
-  createdAt: Date;
-  updatedAt: Date;
+  orderId?: string;
+  freelancerId?: string;
+  reviewedBy?: string | null;
+  isDelivered?: boolean | null;
+  deliveredAt?: string | null;
+  updatedAt?: string | Date;
 }
 
 interface SubmissionHistoryProps {
@@ -67,7 +70,7 @@ export default function SubmissionHistory({ submissions }: SubmissionHistoryProp
                 asChild
               >
                 <a 
-                  href={submission.fileUrl} 
+                  href={submission.fileUrls as string} 
                   target="_blank"
                   rel="noopener noreferrer" 
                   className="flex items-center"
@@ -82,7 +85,7 @@ export default function SubmissionHistory({ submissions }: SubmissionHistoryProp
                 asChild
               >
                 <a 
-                  href={submission.fileUrl} 
+                  href={submission.fileUrls as string} 
                   target="_blank"
                   rel="noopener noreferrer" 
                   className="flex items-center"
@@ -95,10 +98,10 @@ export default function SubmissionHistory({ submissions }: SubmissionHistoryProp
           </div>
           
           <div className="p-4">
-            {submission.comments && (
+            {submission.comment && (
               <div className="mb-4">
                 <h4 className="text-sm font-semibold mb-1">Your Comments</h4>
-                <p className="text-sm whitespace-pre-line">{submission.comments}</p>
+                <p className="text-sm whitespace-pre-line">{submission.comment}</p>
               </div>
             )}
             
