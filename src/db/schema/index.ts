@@ -5,6 +5,7 @@ export { default as orders } from './order';
 export { default as transaction } from './transactions';
 export { default as review } from './reviews';
 export { default as pricing } from './pricing';
+export { default as submissions } from './submission';
 
 // Then export the relations
 export { roleEnum, adminUserEmailAddresses, accounts, authenticators, sessions, verificationTokens, userRelations } from './user';
@@ -17,3 +18,8 @@ export { transactionRelations, paymentStatusEnum } from './transactions';
 export { 
   academicLevels, subjectCategories, assignmentTypes, deadlineFactors 
 } from './pricing';
+
+
+
+
+

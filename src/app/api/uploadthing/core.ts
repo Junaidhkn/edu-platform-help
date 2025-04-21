@@ -27,8 +27,8 @@ export const ourFileRouter = {
 			return { userId: session?.user?.id };
 		})
 		.onUploadComplete(async ({ metadata, file }) => {
-			console.log('Upload complete:', file.ufsUrl);
-			return { url: file.ufsUrl };
+			console.log('Upload complete:', file.url);
+			return { url: file.url };
 		}),
 	profilePictureUploader: f({
 		image: {
@@ -44,8 +44,8 @@ export const ourFileRouter = {
 			return { userId: session?.user?.id };
 		})
 		.onUploadComplete(async ({ metadata, file }) => {
-			console.log('Upload complete:', file.ufsUrl);
-			return { url: file.ufsUrl };
+			console.log('Upload complete:', file.url);
+			return { url: file.url };
 		}),
 	pdfUploader: f({
 		pdf: {
@@ -61,8 +61,8 @@ export const ourFileRouter = {
 			return { userId: session?.user?.id };
 		})
 		.onUploadComplete(({ metadata, file }) => {
-			console.log('Upload complete:', file.ufsUrl);
-			return { url: file.ufsUrl };
+			console.log('Upload complete:', file.url);
+			return { url: file.url };
 		}),
 	blobUploader: f({
 		blob: {
@@ -78,8 +78,8 @@ export const ourFileRouter = {
 			return { userId: session?.user?.id };
 		})
 		.onUploadComplete(async ({ metadata, file }) => {
-			console.log('Upload complete:', file.ufsUrl);
-			return { url: file.ufsUrl };
+			console.log('Upload complete:', file.url);
+			return { url: file.url };
 		}),
 	textUploader: f({
 		text: {
@@ -95,8 +95,41 @@ export const ourFileRouter = {
 			return { userId: session?.user?.id };
 		})
 		.onUploadComplete(async ({ metadata, file }) => {
-			console.log('Upload complete:', file.ufsUrl);
-			return { url: file.ufsUrl };
+			console.log('Upload complete:', file.url);
+			return { url: file.url };
+		}),
+	
+	// Uploader for freelancer submissions
+	submissionUploader: f({
+		// Accept multiple file types for flexibility
+		image: { maxFileSize: "128MB", maxFileCount: 5 },
+		pdf: { maxFileSize: "256MB", maxFileCount: 5 },
+		text: { maxFileSize: "64MB", maxFileCount: 5 },
+		audio: { maxFileSize: "128MB", maxFileCount: 5 },
+		video: { maxFileSize: "1024MB", maxFileCount: 2 },
+		blob: { maxFileSize: "1024MB", maxFileCount: 3 },
+	})
+		.middleware(async ({ req }) => {
+			const session = await auth();
+			if (!session || !session.user) {
+				throw new UploadThingError('You need to be logged in to upload files');
+			}
+			
+			// Authentication is handled by the submission API endpoint
+			// We allow any logged in user to upload here, and the API endpoint
+			// will verify they're a freelancer assigned to the order
+			
+			return { 
+				userId: session.user.id
+			};
+		})
+		.onUploadComplete(async ({ metadata, file }) => {
+			console.log('Submission upload complete:', file.url);
+			
+			return { 
+				url: file.url, 
+				name: file.name
+			};
 		}),
 } satisfies FileRouter;
 
