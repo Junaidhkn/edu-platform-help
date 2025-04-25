@@ -31,6 +31,7 @@ export default function SubmissionUploader({ orderId, onSuccess }: SubmissionUpl
   const router = useRouter();
   const [fileNames, setFileNames] = useState<string[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -63,8 +64,10 @@ export default function SubmissionUploader({ orderId, onSuccess }: SubmissionUpl
         }),
       });
 
+      const data = await response.json();
+
       if (!response.ok) {
-        throw new Error('Failed to submit work');
+        throw new Error(data.error || 'Failed to submit work');
       }
 
       toast.success('Your work has been submitted for review');
@@ -73,16 +76,13 @@ export default function SubmissionUploader({ orderId, onSuccess }: SubmissionUpl
         onSuccess();
       }
       
-      // Refresh the page to show the new submission
-      router.refresh();
-      
-      // Reset the form
       form.reset();
       setFileNames([]);
+      router.push(`/freelancer/orders/${orderId}`);
       
     } catch (error) {
-      toast.error('Failed to submit work. Please try again.');
       console.error('Submission error:', error);
+      toast.error(error instanceof Error ? error.message : 'Failed to submit work. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
@@ -100,34 +100,52 @@ export default function SubmissionUploader({ orderId, onSuccess }: SubmissionUpl
         <CardContent className="space-y-6">
           <div>
             <h3 className="text-sm font-medium mb-2">Upload Files</h3>
-            <UploadDropzone
-              endpoint='blobUploader'
-              onClientUploadComplete={(res) => {
-                if (res) {
+            <div className="mt-2 mb-4 text-sm text-muted-foreground">
+              Supported formats: PDF, DOC, DOCX, images, and more
+            </div>
+            
+            {fileUrls.length === 0 ? (
+              <UploadDropzone
+                endpoint="submissionUploader"
+                onUploadBegin={() => {
+                  setIsUploading(true);
+                }}
+                onClientUploadComplete={(res) => {
+                  setIsUploading(false);
+                  if (!res || res.length === 0) return;
+                  
                   const urls = res.map((file) => file.url);
                   const names = res.map((file) => file.name);
                   
-                  form.setValue('fileUrls', urls, {
-                    shouldValidate: true,
-                  });
-                  
+                  form.setValue('fileUrls', urls, { shouldValidate: true });
                   setFileNames(names);
-                  
                   toast.success(`Uploaded ${res.length} file(s) successfully`);
-                }
-              }}
-              onUploadError={(error) => {
-                toast.error(`Upload failed: ${error.message}`);
-              }}
-              className={cn(
-                "border-dashed",
-                fileUrls.length > 0 && "border-green-500 bg-green-50/50 dark:bg-green-900/20"
-              )}
-            />
-            
-            {fileNames.length > 0 && (
+                }}
+                onUploadError={(error) => {
+                  setIsUploading(false);
+                  toast.error(`Upload failed: ${error.message}`);
+                }}
+                className={cn(
+                  "border-2 border-dashed rounded-lg",
+                  isUploading && "bg-muted"
+                )}
+              />
+            ) : (
               <div className="mt-2">
-                <p className="text-sm font-medium">Uploaded files:</p>
+                <div className="flex items-center justify-between">
+                  <p className="text-sm font-medium">Uploaded files:</p>
+                  <Button 
+                    type="button" 
+                    variant="ghost" 
+                    size="sm"
+                    onClick={() => {
+                      form.setValue('fileUrls', []);
+                      setFileNames([]);
+                    }}
+                  >
+                    Clear
+                  </Button>
+                </div>
                 <ul className="text-sm text-muted-foreground mt-1 space-y-1">
                   {fileNames.map((name, index) => (
                     <li key={index} className="flex items-center">
@@ -151,6 +169,7 @@ export default function SubmissionUploader({ orderId, onSuccess }: SubmissionUpl
               placeholder="Add any comments or notes for the admin reviewer"
               {...form.register('comment')}
               rows={4}
+              disabled={isUploading}
             />
             {form.formState.errors.comment && (
               <p className="text-sm text-destructive mt-2">
@@ -163,19 +182,24 @@ export default function SubmissionUploader({ orderId, onSuccess }: SubmissionUpl
           <Button
             type="button"
             variant="outline"
-            onClick={() => router.back()}
-            disabled={isSubmitting}
+            onClick={() => router.push(`/freelancer/orders/${orderId}`)}
+            disabled={isSubmitting || isUploading}
           >
             Cancel
           </Button>
           <Button 
             type="submit"
-            disabled={isSubmitting || fileUrls.length === 0}
+            disabled={isSubmitting || isUploading || fileUrls.length === 0}
           >
             {isSubmitting ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                 Submitting...
+              </>
+            ) : isUploading ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Uploading...
               </>
             ) : (
               'Submit Work'

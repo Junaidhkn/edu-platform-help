@@ -2,7 +2,7 @@ import { auth } from '@/auth';
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import { format } from 'date-fns';
-import { ArrowLeft, Download, StarIcon } from 'lucide-react';
+import { ArrowLeft, CloudCog, Download, StarIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import db from '@/src/db';
@@ -69,7 +69,7 @@ export default async function OrderDetailPage({ params }: OrderDetailPageProps) 
         return 'bg-gray-100 text-gray-800';
     }
   };
-  
+  console.log('files links shared',order.completedFileUrls)
   return (
     <div className="container mx-auto py-10">
       <div className="mb-6">
@@ -137,7 +137,7 @@ export default async function OrderDetailPage({ params }: OrderDetailPageProps) 
                 <h2 className="text-lg font-semibold mb-2">Description</h2>
                 <p className="whitespace-pre-line">{order.description}</p>
               </div>
-              
+             
               {order.uploadedfileslink && (
                 <div className="border-t pt-6">
                   <h2 className="text-lg font-semibold mb-2">Your Files</h2>
@@ -165,18 +165,30 @@ export default async function OrderDetailPage({ params }: OrderDetailPageProps) 
                   <h2 className="text-lg font-semibold mb-2">Completed Work</h2>
                   <div className="p-4 bg-gray-50 rounded-md">
                     <ul className="list-disc list-inside space-y-1">
-                      {order.completedFileUrls.split(',').map((file, index) => (
-                        <li key={index}>
-                          <a
-                            href={file.trim()}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-blue-600 hover:underline"
-                          >
-                            Download File {index + 1}
-                          </a>
-                        </li>
-                      ))}
+                      {(() => {
+                        try {
+                          // Handle both comma-separated strings and direct URLs
+                          const fileUrls = order.completedFileUrls.includes(',') 
+                            ? order.completedFileUrls.split(',').map(url => url.trim())
+                            : [order.completedFileUrls];
+                            
+                          return fileUrls.map((file, index) => (
+                            <li key={index}>
+                              <a
+                                href={file}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-blue-600 hover:underline"
+                              >
+                                Download File {index + 1}
+                              </a>
+                            </li>
+                          ));
+                        } catch (error) {
+                          console.error('Error parsing file URLs:', error);
+                          return <li className="text-red-500">Error loading files</li>;
+                        }
+                      })()}
                     </ul>
                   </div>
                 </div>

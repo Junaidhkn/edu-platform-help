@@ -3,15 +3,9 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription,CardHeader, CardTitle } from '@/components/ui/card';
 
-import { generateReactHelpers } from "@uploadthing/react";
 import { Suspense } from 'react';
 import { notFound, redirect } from 'next/navigation';
 import { and, eq } from 'drizzle-orm';
-
-// Define your uploadthing API type
-import type { OurFileRouter } from "@/src/app/api/uploadthing/core";
-
-const { useUploadThing } = generateReactHelpers<OurFileRouter>();
 
 import { auth } from '@/auth';
 import db from '@/src/db';
@@ -24,11 +18,6 @@ import SubmissionHistory from '@/components/freelancer/submission-history';
 import { Skeleton } from '@/components/ui/skeleton';
 import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
-
-export const metadata = {
-  title: 'Submit Work',
-  description: 'Submit your completed work for this order',
-};
 
 async function getOrderDetails(orderId: string, freelancerId: string) {
   // Get the order details

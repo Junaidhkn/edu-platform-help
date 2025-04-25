@@ -65,7 +65,7 @@ export async function POST(request: NextRequest) {
       );
     }
     
-    // Create the submission
+    // Create the submission - ensure fileUrls is consistently stored as JSON string
     const newSubmission = await db.insert(submissions).values({
       orderId,
       freelancerId,

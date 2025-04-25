@@ -62,11 +62,23 @@ export async function PATCH(
       where: eq(freelancers.id, existingSubmission.freelancerId),
     });
     
-    // 6. If approved, update order status to completed
+    // 6. If approved, update order status to completed and transfer file URLs
     if (status === 'approved' && orderData) {
+      // Parse fileUrls from submission
+      let fileUrls;
+      try {
+        fileUrls = JSON.parse(existingSubmission.fileUrls);
+      } catch (error) {
+        fileUrls = existingSubmission.fileUrls;
+      }
+      
+      // Transform to appropriate format and transfer to order completedFileUrls
+      const completedFileUrls = Array.isArray(fileUrls) ? fileUrls.join(',') : fileUrls;
+      
       await db.update(orders)
         .set({
           orderStatus: 'completed',
+          completedFileUrls: completedFileUrls,
           updatedAt: new Date().toISOString(),
         })
         .where(eq(orders.id, existingSubmission.orderId));
@@ -87,6 +99,13 @@ export async function PATCH(
           });
           
           if (userData?.email) {
+            // Include file links in the email for direct access
+            const fileLinksHtml = Array.isArray(fileUrls) 
+              ? fileUrls.map((url, index) => 
+                  `<p><a href="${url}" target="_blank">Download File ${index + 1}</a></p>`
+                ).join('')
+              : '';
+              
             await transport.sendMail({
               to: userData.email,
               subject: `Your Order #${orderData.id.slice(-6)} is Complete!`,
@@ -95,6 +114,7 @@ export async function PATCH(
                 <h2>Good news! Your order is complete</h2>
                 <p>Your order #${orderData.id.slice(-6)} has been completed and is ready for download.</p>
                 <p>You can access your order details and download the files <a href="${process.env.NEXTAUTH_URL}/profile/orders/${orderData.id}">here</a>.</p>
+                ${fileLinksHtml ? `<h3>Download Files:</h3>${fileLinksHtml}` : ''}
                 <p>Thank you for using our service!</p>
               `,
             });

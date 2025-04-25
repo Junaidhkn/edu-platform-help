@@ -19,7 +19,7 @@ export const submissions = pgTable('submissions', {
 	freelancerId: text('freelancer_id')
 		.notNull()
 		.references(() => freelancer.id),
-	fileUrls: text('file_urls').notNull(), // JSON stringified array of URLs
+	fileUrls: text('file_urls').notNull(), // JSON stringified array of URLs: JSON.stringify(["url1", "url2"])
 	comment: text('comment'),
 	status: text('status').notNull().default('pending'), // 'pending', 'approved', 'rejected'
 	adminFeedback: text('admin_feedback'),

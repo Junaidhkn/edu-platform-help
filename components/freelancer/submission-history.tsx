@@ -47,6 +47,17 @@ export default function SubmissionHistory({ submissions }: SubmissionHistoryProp
     }
   }
 
+  // Parse fileUrls from JSON string if needed
+  const parseFileUrls = (fileUrls: string | string[]): string[] => {
+    if (Array.isArray(fileUrls)) return fileUrls;
+    try {
+      return JSON.parse(fileUrls);
+    } catch (e) {
+      // If it's a single URL string or comma-separated string
+      return fileUrls.split(',').map(url => url.trim());
+    }
+  };
+
   return (
     <div className="space-y-4">
       {submissions.map((submission) => (
@@ -64,36 +75,30 @@ export default function SubmissionHistory({ submissions }: SubmissionHistoryProp
               </p>
             </div>
             <div className="flex gap-2">
-              <Button 
-                variant="outline"
-                size="sm"
-                asChild
-              >
-                <a 
-                  href={submission.fileUrls as string} 
-                  target="_blank"
-                  rel="noopener noreferrer" 
-                  className="flex items-center"
-                >
-                  <Download className="h-4 w-4 mr-1" />
-                  Download
-                </a>
-              </Button>
-              <Button 
-                variant="outline"
-                size="sm"
-                asChild
-              >
-                <a 
-                  href={submission.fileUrls as string} 
-                  target="_blank"
-                  rel="noopener noreferrer" 
-                  className="flex items-center"
-                >
-                  <ExternalLink className="h-4 w-4 mr-1" />
-                  Preview
-                </a>
-              </Button>
+              {/* Handle multiple file URLs properly */}
+              {parseFileUrls(submission.fileUrls).length > 0 && (
+                <div className="flex flex-col gap-2">
+                  {parseFileUrls(submission.fileUrls).map((url, index) => (
+                    <div key={index} className="flex gap-2">
+                      <Button 
+                        variant="outline"
+                        size="sm"
+                        asChild
+                      >
+                        <a 
+                          href={url} 
+                          target="_blank"
+                          rel="noopener noreferrer" 
+                          className="flex items-center"
+                        >
+                          <Download className="h-4 w-4 mr-1" />
+                          File {index + 1}
+                        </a>
+                      </Button>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
           

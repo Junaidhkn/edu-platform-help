@@ -25,7 +25,7 @@ export default async function ProfilePage() {
 
 const SignedIn = async ({ user }: { user: User }) => {
 	const orders = await findOrdersbyUserId(user.id as string);
-	console.log('orders', orders);
+	console.log('orders', orders[0]);
 	return (
 		<>
 			<div className='flex items-center justify-between'>

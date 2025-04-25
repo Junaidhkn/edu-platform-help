@@ -158,28 +158,42 @@ export default function SubmissionsPage() {
 
 										{submission.comment && (
 											<div>
-												<h3 className="text-sm font-medium text-muted-foreground mb-1">Freelancer Comment</h3>
+												<h3 className="text-sm font-medium text-muted-foreground mb-1">Freelancer Comment:</h3>
 												<p className="text-sm whitespace-pre-wrap">{submission.comment}</p>
 											</div>
 										)}
-										
-		<div>
-											<h3 className="text-sm font-medium text-muted-foreground mb-1">Submitted Files</h3>
-											<div className="flex flex-wrap gap-2">
-												{JSON.parse(submission.fileUrls).map((url: string, index: number) => (
-													<a 
-														key={index}
-														href={url}
-														target="_blank"
-														rel="noopener noreferrer"
-														className="inline-flex items-center px-3 py-1 rounded-md bg-primary/10 text-primary hover:bg-primary/20 transition-colors"
-													>
-														<Download className="h-4 w-4 mr-1" />
-														File {index + 1}
-													</a>
-												))}
+										{submission.fileUrls && (
+											<div className="mt-4">
+												<h4 className="font-semibold mb-2">Submitted Files</h4>
+												<div className="space-y-2">
+													{(() => {
+														try {
+															// Parse fileUrls properly
+															const files = typeof submission.fileUrls === 'string' 
+																? JSON.parse(submission.fileUrls) 
+																: submission.fileUrls;
+															
+															return Array.isArray(files) ? files.map((url, index) => (
+																<a 
+																	key={index}
+																	href={url}
+																	target="_blank"
+																	rel="noopener noreferrer"
+																	className="block text-blue-600 hover:underline break-all"
+																>
+																	{url.split('/').pop() || `File ${index + 1}`}
+																</a>
+															)) : (
+																<p className="text-red-500">Invalid file format</p>
+															);
+														} catch (error) {
+															console.error('Error parsing fileUrls:', error);
+															return <p className="text-red-500">Error loading files</p>;
+														}
+													})()}
+												</div>
 											</div>
-										</div>
+										)}
 										
 										{submission.status !== 'pending' && submission.adminFeedback && (
 											<div className="mt-4 pt-4 border-t">

@@ -35,6 +35,8 @@ export default async function OrderDetailPage({ params }: OrderDetailPageProps) 
       freelancer: true,
     },
   });
+
+  console.log('dashboard page file link check',order)
   
   if (!order) {
     redirect('/dashboard/orders');

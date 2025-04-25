@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState } from 'react'
-import { UploadButton } from '@/lib/uploadThing'
+import { UploadDropzone } from '@/lib/uploadThing'
 import { toast } from 'sonner'
 import { FileIcon, Loader2, X } from 'lucide-react'
 import { cn } from '@/lib/utils'
@@ -33,7 +33,7 @@ export function FileUploadField({ onChange, value, className }: FileUploadFieldP
             <p className="mt-2 text-sm text-muted-foreground">Uploading...</p>
           </div>
         ) : (
-          <UploadButton
+          <UploadDropzone
             endpoint="pdfUploader"
             onClientUploadComplete={onUploadComplete}
             onUploadError={(error: Error) => {
