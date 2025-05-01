@@ -140,26 +140,33 @@ export default async function OrderDetailPage({ params }: OrderDetailPageProps) 
               </div>
               
               {order.uploadedfileslink && (
-                <div className="border-t pt-6">
-                  <h2 className="text-lg font-semibold mb-2">Attached Files</h2>
-                  <div className="p-4 bg-gray-50 rounded-md">
-                    <ul className="list-disc list-inside space-y-1">
-                      {order.uploadedfileslink.split(',').map((file, index) => (
-                        <li key={index}>
-                          <a
-                            href={file.trim()}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-blue-600 hover:underline"
-                          >
-                            File {index + 1}
-                          </a>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-              )}
+         <div className="border-t pt-6">
+            <h2 className="text-lg font-semibold mb-2">Attached Files</h2>
+             <div className="p-4 bg-gray-50 rounded-md">
+           <ul className="list-disc list-inside space-y-1">
+        {(Array.isArray(order.uploadedfileslink)
+          ? order.uploadedfileslink
+          : JSON.parse(order.uploadedfileslink) 
+        ).map((file: string, index: number) => {
+          const fileUrl = file.trim();
+          return (
+            <li key={index}>
+              <a
+                href={fileUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-600 hover:underline"
+              >
+                File link {index + 1}
+              </a>
+            </li>
+          );
+        })}
+      </ul>
+    </div>
+  </div>
+)}
+
               
               <div className="border-t pt-6">
                 <h2 className="text-lg font-semibold mb-2">Order Timeline</h2>

@@ -7,6 +7,11 @@ import { findUserByEmail } from '@/resources/queries';
 import { OAuthAccountAlreadyLinkedError } from '@/lib/custom-errors';
 import { authConfig } from '@/auth.config';
 
+// // Ensure we're using HTTPS in development
+if (process.env.NODE_ENV === 'development' && !process.env.AUTH_URL) {
+	process.env.AUTH_URL = "http://localhost:3000";
+}
+
 const { providers: authConfigProviders, ...authConfigRest } = authConfig;
 
 const nextAuth = NextAuth({

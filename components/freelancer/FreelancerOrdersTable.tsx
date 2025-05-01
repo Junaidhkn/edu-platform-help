@@ -96,14 +96,6 @@ export default function FreelancerOrdersTable({ orders }: FreelancerOrdersTableP
                       View
                     </Button>
                   </Link>
-                  {order.orderStatus === 'accepted' && (
-                    <Link href={`/freelancer/orders/${order.id}/submit`}>
-                      <Button variant="default" size="sm">
-                        <Upload className="h-4 w-4 mr-1" />
-                        Submit Work
-                      </Button>
-                    </Link>
-                  )}
                 </div>
               </TableCell>
             </TableRow>

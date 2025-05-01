@@ -7,5 +7,7 @@ export const { GET, POST } = createRouteHandler({
 	config: {
 		// Add debugging for upload issues
 		logLevel: "Debug",
+		// Force HTTPS for all requests
+		// callbackUrl: "https://edu-help-assign.lcl.host:44365/api/uploadthing",
 	},
 });

@@ -154,9 +154,123 @@ export default async function FreelancerOrderPage({ params }: OrderDetailPagePro
               )}
               
               <div>
-                <h3 className="font-medium">Payment</h3>
-                <p className="font-semibold text-green-600">{formatCurrency(Number(orderData.price))}</p>
+                <h3 className="font-medium">Associated files</h3>
+                {orderData.uploadedfileslink ? (
+                  <div className="mt-2">
+                    <ul className="list-disc list-inside space-y-1">
+                      {(() => {
+                        try {
+                          // Parse JSON string format ["url1", "url2"]
+                          const fileUrls = JSON.parse(orderData.uploadedfileslink);
+                          return Array.isArray(fileUrls) ? fileUrls.map((file, index) => (
+                            <li className='list-none' key={index}>
+                              <a
+                                href={file}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-blue-600 hover:underline"
+                              >
+                                Download File {index + 1}
+                              </a>
+                            </li>
+                          )) : (
+                            <li>
+                              <a
+                                href={orderData.uploadedfileslink}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-blue-600 hover:underline"
+                              >
+                                Download File
+                              </a>
+                            </li>
+                          );
+                        } catch (error) {
+                          // Fallback for non-JSON format
+                          return (
+                            <li>
+                              <a
+                                href={orderData.uploadedfileslink}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-blue-600 hover:underline"
+                              >
+                                Download File
+                              </a>
+                            </li>
+                          );
+                        }
+                      })()}
+                    </ul>
+                  </div>
+                ) : (
+                  <p className="text-gray-500">No files available</p>
+                )}
               </div>
+
+              {/* Completed Files (if different from uploaded files) */}
+              {orderData.completedFileUrls && (
+                <div>
+                  <h3 className="font-medium mt-4">Completed files</h3>
+                  <div className="mt-2">
+                    <ul className="list-disc list-inside space-y-1">
+                      {(() => {
+                        try {
+                          // Handle both comma-separated strings and try JSON parsing
+                          if (orderData.completedFileUrls.startsWith('[')) {
+                            // Try parsing as JSON
+                            const fileUrls = JSON.parse(orderData.completedFileUrls);
+                            return Array.isArray(fileUrls) ? fileUrls.map((file, index) => (
+                              <li key={index}>
+                                <a
+                                  href={file}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="text-blue-600 hover:underline"
+                                >
+                                  Download Completed File {index + 1}
+                                </a>
+                              </li>
+                            )) : null;
+                          } else {
+                            // Handle as comma-separated string
+                            const fileUrls = orderData.completedFileUrls.includes(',') 
+                              ? orderData.completedFileUrls.split(',').map(url => url.trim())
+                              : [orderData.completedFileUrls];
+                              
+                            return fileUrls.map((file, index) => (
+                              <li key={index}>
+                                <a
+                                  href={file}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="text-blue-600 hover:underline"
+                                >
+                                  Download Completed File {index + 1}
+                                </a>
+                              </li>
+                            ));
+                          }
+                        } catch (error) {
+                          // Fallback for any parsing errors
+                          return (
+                            <li>
+                              <a
+                                href={orderData.completedFileUrls}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-blue-600 hover:underline"
+                              >
+                                Download Completed File
+                              </a>
+                            </li>
+                          );
+                        }
+                      })()}
+                    </ul>
+                  </div>
+                </div>
+              )}
             </div>
           </CardContent>
         </Card>
