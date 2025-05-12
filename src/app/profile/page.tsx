@@ -11,7 +11,7 @@ export default async function ProfilePage({
 }) {
 	const session = await auth();
 	return (
-		<main className='mt-4'>
+		<main className='mt-4 pb-24'>
 			<div className='container'>
 				<div className='flex items-center justify-between'>
 					<h1 className='text-3xl font-bold tracking-tight'>
@@ -81,11 +81,16 @@ const SignedIn = async ({
 						order.orderStatus?.toLowerCase() === status.toLowerCase(),
 			  );
 
+	// Sort orders by creation date (newest first)
+	const sortedOrders = [...filteredOrders].sort((a, b) => {
+		return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+	});
+
 	// Pagination
 	const ITEMS_PER_PAGE = 6;
-	const totalPages = Math.ceil(filteredOrders.length / ITEMS_PER_PAGE);
+	const totalPages = Math.ceil(sortedOrders.length / ITEMS_PER_PAGE);
 	const currentPage = page < 1 ? 1 : page > totalPages ? totalPages || 1 : page;
-	const paginatedOrders = filteredOrders.slice(
+	const paginatedOrders = sortedOrders.slice(
 		(currentPage - 1) * ITEMS_PER_PAGE,
 		currentPage * ITEMS_PER_PAGE,
 	);
