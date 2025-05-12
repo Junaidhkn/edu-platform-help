@@ -1,17 +1,16 @@
-"use client";
+'use client';
 
-import { signoutUserAction } from "@/actions/signout-user-action";
-import { Button } from "@/components/ui/button";
+import { signOut } from 'next-auth/react';
+import { Button } from '@/components/ui/button';
 
 export const SignoutButton = () => {
-  const clickHandler = async () => {
-    await signoutUserAction();
-    window.location.href = "/";
-  };
-
-  return (
-    <Button variant="destructive" size="sm" onClick={clickHandler}>
-      Sign Out
-    </Button>
-  );
+	return (
+		<Button
+			variant='ghost'
+			size='sm'
+			className='text-gray-700 hover:text-red-600'
+			onClick={() => signOut()}>
+			Sign Out
+		</Button>
+	);
 };
