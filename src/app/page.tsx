@@ -1,111 +1,116 @@
+'use client';
 import Link from 'next/link';
 import {
 	FaGraduationCap,
 	FaLaptopCode,
-	FaCheckCircle,
 	FaStar,
 	FaChartLine,
 } from 'react-icons/fa';
 import { BsArrowRight } from 'react-icons/bs';
 import Image from 'next/image';
 import HomeImage from '@/public/images/assignment-hero.svg';
+import TestimonialSlider from '@/components/TestimonialSlider';
 
 export default function Home() {
 	return (
-		<main className='flex flex-col items-center min-h-screen'>
+		<main className='flex flex-col items-center min-h-screen bg-slate-50'>
 			{/* Hero Section */}
-			<section className='w-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white'>
-				<div className='max-w-7xl mx-auto px-4 sm:px-6 py-20 md:py-28 flex flex-col md:flex-row items-center'>
-					<div className='md:w-1/2 mb-10 md:mb-0 space-y-6'>
-						<h1 className='text-4xl md:text-5xl font-bold leading-tight'>
-							Excellence in Academic Solutions
+			<section className='w-full bg-gradient-to-br from-slate-900 via-purple-900 to-violet-800 text-white'>
+				<div className='max-w-7xl mx-auto px-4 sm:px-6 py-24 md:py-32 flex flex-col md:flex-row items-center justify-between'>
+					<div className='md:w-1/2 mb-12 md:mb-0 space-y-8 text-center md:text-left'>
+						<h1 className='text-5xl md:text-6xl font-extrabold tracking-tight leading-tight'>
+							Unlock Your Academic Potential
 						</h1>
-						<p className='text-lg md:text-xl opacity-90'>
-							Connect with top-tier freelancers for all your assignment needs.
-							Quality work, on time, every time.
+						<p className='text-xl md:text-2xl opacity-80 max-w-xl mx-auto md:mx-0'>
+							Premium academic solutions and expert freelance support, tailored
+							for your success.
 						</p>
-						<div className='pt-4 flex flex-col sm:flex-row gap-4'>
+						<div className='pt-6 flex flex-col sm:flex-row gap-4 justify-center md:justify-start'>
 							<Link
 								href='/auth/signup'
-								className='bg-white text-purple-700 hover:bg-opacity-90 font-semibold rounded-lg px-6 py-3 text-center'>
-								Get Started
+								className='bg-white text-purple-700 hover:bg-purple-100 font-bold rounded-lg px-8 py-4 text-lg shadow-lg transform hover:scale-105 transition-transform duration-300'>
+								Get Started Today
+							</Link>
+							<Link
+								href='#how-it-works'
+								className='bg-transparent border-2 border-white text-white hover:bg-white hover:text-purple-700 font-bold rounded-lg px-8 py-4 text-lg shadow-lg transform hover:scale-105 transition-transform duration-300'>
+								Learn How It Works
 							</Link>
 						</div>
 					</div>
-					<div className='md:w-1/2 flex justify-center'>
+					<div className='md:w-1/2 flex justify-center items-center'>
 						<Image
 							src={HomeImage}
-							alt='Top Nerd Assignment Help'
-							className='max-w-md w-full'
-							width={300}
-							height={300}
+							alt='Academic Success Hero Image'
+							className='max-w-lg w-full rounded-lg shadow-2xl'
+							width={500}
+							height={500}
+							priority
 						/>
 					</div>
 				</div>
 			</section>
 
 			{/* Services Section */}
-			<section className='w-full py-20 bg-gray-50'>
+			<section className='w-full py-20 bg-white'>
 				<div className='max-w-7xl mx-auto px-4 sm:px-6'>
-					<div className='text-center mb-16'>
-						<h2 className='text-3xl md:text-4xl font-bold text-gray-900'>
-							Our Services
+					<div className='text-center mb-20'>
+						<h2 className='text-4xl md:text-5xl font-bold text-slate-900'>
+							Our Premier Services
 						</h2>
-						<p className='mt-4 text-xl text-gray-600'>
-							Expert solutions for all your academic needs
+						<p className='mt-6 text-xl text-gray-700 max-w-2xl mx-auto'>
+							From complex assignments to coding projects, we provide expert
+							solutions.
 						</p>
 					</div>
 
-					<div className='grid grid-cols-1 md:grid-cols-3 gap-8'>
-						<div className='bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow'>
-							<div className='w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mb-4'>
-								<FaGraduationCap className='text-purple-600 text-xl' />
+					<div className='grid grid-cols-1 md:grid-cols-3 gap-10'>
+						{[
+							{
+								icon: FaGraduationCap,
+								title: 'Assignment Help',
+								description:
+									'Expert assistance with essays, research papers, case studies, and more, ensuring top grades.',
+								color: 'purple',
+							},
+							{
+								icon: FaLaptopCode,
+								title: 'Programming Projects',
+								description:
+									'Custom coding solutions in various languages from seasoned developers and programmers.',
+								color: 'indigo',
+							},
+							{
+								icon: FaChartLine,
+								title: 'Data Analysis',
+								description:
+									'In-depth statistical analysis, data visualization, and comprehensive research support.',
+								color: 'pink',
+							},
+						].map((service) => (
+							<div
+								key={service.title}
+								className='bg-slate-50 p-8 rounded-xl shadow-lg hover:shadow-2xl transition-shadow duration-300 transform hover:-translate-y-2 flex flex-col items-center text-center'>
+								<div
+									className={`w-16 h-16 bg-${service.color}-100 rounded-full flex items-center justify-center mb-6 ring-4 ring-${service.color}-200`}>
+									<service.icon
+										className={`text-${service.color}-600 text-3xl`}
+									/>
+								</div>
+								<h3 className='text-2xl font-semibold mb-4 text-slate-900'>
+									{service.title}
+								</h3>
+								<p className='text-gray-600 mb-6 flex-grow'>
+									{service.description}
+								</p>
+								<Link
+									href='/services'
+									className={`inline-flex items-center text-${service.color}-600 font-semibold hover:text-${service.color}-800 transition-colors duration-300 group`}>
+									Explore Service{' '}
+									<BsArrowRight className='ml-2 transform group-hover:translate-x-1 transition-transform duration-300' />
+								</Link>
 							</div>
-							<h3 className='text-xl font-semibold mb-3'>Assignment Help</h3>
-							<p className='text-gray-600 mb-4'>
-								Expert assistance with essays, research papers, case studies,
-								and more.
-							</p>
-							<Link
-								href='/services'
-								className='inline-flex items-center text-purple-600 font-medium'>
-								Learn more <BsArrowRight className='ml-2' />
-							</Link>
-						</div>
-
-						<div className='bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow'>
-							<div className='w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center mb-4'>
-								<FaLaptopCode className='text-indigo-600 text-xl' />
-							</div>
-							<h3 className='text-xl font-semibold mb-3'>
-								Programming Projects
-							</h3>
-							<p className='text-gray-600 mb-4'>
-								Coding solutions in various languages from experienced
-								developers.
-							</p>
-							<Link
-								href='/services'
-								className='inline-flex items-center text-indigo-600 font-medium'>
-								Learn more <BsArrowRight className='ml-2' />
-							</Link>
-						</div>
-
-						<div className='bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow'>
-							<div className='w-12 h-12 bg-pink-100 rounded-full flex items-center justify-center mb-4'>
-								<FaChartLine className='text-pink-600 text-xl' />
-							</div>
-							<h3 className='text-xl font-semibold mb-3'>Data Analysis</h3>
-							<p className='text-gray-600 mb-4'>
-								Statistical analysis, data visualization, and research
-								methodology support.
-							</p>
-							<Link
-								href='/services'
-								className='inline-flex items-center text-pink-600 font-medium'>
-								Learn more <BsArrowRight className='ml-2' />
-							</Link>
-						</div>
+						))}
 					</div>
 				</div>
 			</section>
@@ -113,179 +118,104 @@ export default function Home() {
 			{/* How It Works */}
 			<section
 				id='how-it-works'
-				className='w-full py-20'>
+				className='w-full py-20 bg-slate-100'>
 				<div className='max-w-7xl mx-auto px-4 sm:px-6'>
-					<div className='text-center mb-16'>
-						<h2 className='text-3xl md:text-4xl font-bold text-gray-900'>
-							How Top Nerd Works
+					<div className='text-center mb-20'>
+						<h2 className='text-4xl md:text-5xl font-bold text-slate-900'>
+							Simple Steps to Success
 						</h2>
-						<p className='mt-4 text-xl text-gray-600'>
-							Simple steps to get your work done
+						<p className='mt-6 text-xl text-gray-700 max-w-2xl mx-auto'>
+							Getting started with Top Nerd is quick, easy, and transparent.
 						</p>
 					</div>
 
-					<div className='grid grid-cols-1 md:grid-cols-4 gap-8'>
-						<div className='text-center'>
-							<div className='w-16 h-16 bg-purple-600 text-white rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-bold'>
-								1
+					<div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10'>
+						{[
+							{
+								step: 1,
+								title: 'Sign Up & Connect',
+								description:
+									'Create your account in minutes and connect with our supportive platform.',
+							},
+							{
+								step: 2,
+								title: 'Detail Your Needs',
+								description:
+									'Clearly outline your project requirements and chat with our team for any clarifications.',
+							},
+							{
+								step: 3,
+								title: 'Secure Your Order',
+								description:
+									'Confirm your details, make a secure payment, and let our experts get to work.',
+							},
+							{
+								step: 4,
+								title: 'Receive Excellence',
+								description:
+									'Get your high-quality, plagiarism-free work delivered on time, every time.',
+							},
+						].map((item) => (
+							<div
+								key={item.step}
+								className='bg-white p-8 rounded-xl shadow-lg hover:shadow-2xl transition-shadow duration-300 transform hover:-translate-y-2 text-center flex flex-col items-center'>
+								<div className='w-20 h-20 bg-purple-600 text-white rounded-full flex items-center justify-center mx-auto mb-6 text-3xl font-bold ring-4 ring-purple-200'>
+									{item.step}
+								</div>
+								<h3 className='text-2xl font-semibold mb-3 text-slate-900'>
+									{item.title}
+								</h3>
+								<p className='text-gray-600'>{item.description}</p>
 							</div>
-							<h3 className='text-xl font-semibold mb-3'>Sign Up</h3>
-							<p className='text-gray-600'>
-								Create your account to access our platform and services.
-							</p>
-						</div>
-
-						<div className='text-center'>
-							<div className='w-16 h-16 bg-purple-600 text-white rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-bold'>
-								2
-							</div>
-							<h3 className='text-xl font-semibold mb-3'>Chat with Support</h3>
-							<p className='text-gray-600'>
-								Discuss your project requirements with our customer service
-								team.
-							</p>
-						</div>
-
-						<div className='text-center'>
-							<div className='w-16 h-16 bg-purple-600 text-white rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-bold'>
-								3
-							</div>
-							<h3 className='text-xl font-semibold mb-3'>Place Your Order</h3>
-							<p className='text-gray-600'>
-								Once satisfied with the requirements, proceed to place your
-								order.
-							</p>
-						</div>
-
-						<div className='text-center'>
-							<div className='w-16 h-16 bg-purple-600 text-white rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-bold'>
-								4
-							</div>
-							<h3 className='text-xl font-semibold mb-3'>
-								Receive Quality Work
-							</h3>
-							<p className='text-gray-600'>
-								Get your completed assignment delivered on time with guaranteed
-								satisfaction.
-							</p>
-						</div>
+						))}
 					</div>
 
-					<div className='mt-12 text-center'>
+					<div className='mt-16 text-center'>
 						<Link
 							href='/auth/signup'
-							className='inline-flex items-center bg-purple-600 text-white font-semibold rounded-lg px-6 py-3 hover:bg-purple-700'>
-							Get Started Now
+							className='inline-flex items-center bg-purple-600 text-white font-bold rounded-lg px-10 py-4 text-lg hover:bg-purple-700 shadow-lg transform hover:scale-105 transition-transform duration-300'>
+							Start Your Journey Now <BsArrowRight className='ml-3 text-xl' />
 						</Link>
 					</div>
 				</div>
 			</section>
 
 			{/* Testimonials */}
-			<section className='w-full py-20 bg-gray-50'>
+			<section className='w-full py-20 bg-white'>
 				<div className='max-w-7xl mx-auto px-4 sm:px-6'>
-					<div className='text-center mb-16'>
-						<h2 className='text-3xl md:text-4xl font-bold text-gray-900'>
-							What Students Say
+					<div className='text-center mb-20'>
+						<h2 className='text-4xl md:text-5xl font-bold text-slate-900'>
+							Voices of Our Valued Students
 						</h2>
-						<p className='mt-4 text-xl text-gray-600'>
-							Trusted by thousands of students worldwide
+						<p className='mt-6 text-xl text-gray-700 max-w-2xl mx-auto'>
+							Discover why students worldwide trust Top Nerd for academic
+							excellence.
 						</p>
 					</div>
-
-					<div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8'>
-						<div className='bg-white p-6 rounded-xl shadow-md'>
-							<div className='flex text-yellow-400 mb-3'>
-								<FaStar />
-								<FaStar />
-								<FaStar />
-								<FaStar />
-								<FaStar />
-							</div>
-							<p className='text-gray-600 mb-4'>
-								&quot;The programming assignment I received was excellent. Clean
-								code, well-documented, and delivered before the deadline. Highly
-								recommended!&quot;
-							</p>
-							<div className='flex items-center'>
-								<div className='w-10 h-10 bg-purple-200 rounded-full flex items-center justify-center mr-3'>
-									<span className='text-purple-700 font-semibold'>JM</span>
-								</div>
-								<div>
-									<p className='font-semibold'>James Miller</p>
-									<p className='text-sm text-gray-500'>
-										Computer Science Student
-									</p>
-								</div>
-							</div>
-						</div>
-
-						<div className='bg-white p-6 rounded-xl shadow-md'>
-							<div className='flex text-yellow-400 mb-3'>
-								<FaStar />
-								<FaStar />
-								<FaStar />
-								<FaStar />
-								<FaStar />
-							</div>
-							<p className='text-gray-600 mb-4'>
-								&quot;Top Nerd saved me when I was overwhelmed with multiple
-								assignments. The work quality was outstanding and helped me
-								improve my own understanding.&quot;
-							</p>
-							<div className='flex items-center'>
-								<div className='w-10 h-10 bg-indigo-200 rounded-full flex items-center justify-center mr-3'>
-									<span className='text-indigo-700 font-semibold'>SJ</span>
-								</div>
-								<div>
-									<p className='font-semibold'>Sarah Johnson</p>
-									<p className='text-sm text-gray-500'>Business Major</p>
-								</div>
-							</div>
-						</div>
-
-						<div className='bg-white p-6 rounded-xl shadow-md'>
-							<div className='flex text-yellow-400 mb-3'>
-								<FaStar />
-								<FaStar />
-								<FaStar />
-								<FaStar />
-								<FaStar />
-							</div>
-							<p className='text-gray-600 mb-4'>
-								&quot;I was skeptical at first, but the data analysis help I
-								received was phenomenal. The freelancer explained everything in
-								detail and delivered great work.&quot;
-							</p>
-							<div className='flex items-center'>
-								<div className='w-10 h-10 bg-pink-200 rounded-full flex items-center justify-center mr-3'>
-									<span className='text-pink-700 font-semibold'>DT</span>
-								</div>
-								<div>
-									<p className='font-semibold'>David Thompson</p>
-									<p className='text-sm text-gray-500'>Statistics Major</p>
-								</div>
-							</div>
-						</div>
-					</div>
+					<TestimonialSlider />
 				</div>
 			</section>
 
 			{/* CTA Section */}
-			<section className='w-full py-16 bg-purple-700 text-white'>
+			<section className='w-full py-24 bg-gradient-to-r from-purple-600 to-indigo-700 text-white'>
 				<div className='max-w-7xl mx-auto px-4 sm:px-6 text-center'>
-					<h2 className='text-3xl md:text-4xl font-bold mb-6'>
-						Ready to Excel in Your Studies?
+					<h2 className='text-4xl md:text-5xl font-extrabold mb-6 tracking-tight'>
+						Ready to Elevate Your Grades?
 					</h2>
-					<p className='text-xl mb-8 max-w-3xl mx-auto'>
-						Join thousands of students who trust Top Nerd for high-quality
-						academic assistance and programming solutions.
+					<p className='text-xl md:text-2xl mb-10 max-w-3xl mx-auto opacity-90'>
+						Join a community of successful students. Let Top Nerd handle the
+						complexities while you focus on learning.
 					</p>
-					<div className='flex flex-col sm:flex-row justify-center gap-4'>
+					<div className='flex flex-col sm:flex-row justify-center gap-6'>
 						<Link
 							href='/auth/signup'
-							className='bg-white text-purple-700 hover:bg-opacity-90 font-semibold rounded-lg px-6 py-3'>
-							Submit an Assignment
+							className='bg-white text-purple-700 hover:bg-purple-100 font-bold rounded-lg px-10 py-4 text-lg shadow-xl transform hover:scale-105 transition-transform duration-300'>
+							Submit Your Assignment
+						</Link>
+						<Link
+							href='/services'
+							className='bg-transparent border-2 border-white text-white hover:bg-white hover:text-purple-700 font-bold rounded-lg px-10 py-4 text-lg shadow-xl transform hover:scale-105 transition-transform duration-300'>
+							Explore Our Services
 						</Link>
 					</div>
 				</div>
