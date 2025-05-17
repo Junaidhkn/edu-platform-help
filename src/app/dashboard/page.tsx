@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { CreateAdminButton } from '@/components/admin/CreateAdminButton';
 import Link from 'next/link';
@@ -8,8 +8,6 @@ import { EyeIcon } from 'lucide-react';
 import { Pagination } from '@/components/pagination';
 import { OrderFilters, OrderFilterType } from '@/components/order-filters';
 import { useCallback, useEffect, useState } from 'react';
-
-
 
 const ITEMS_PER_PAGE = 7; // Show 7 orders per page
 
@@ -47,7 +45,9 @@ export default function DashboardPage() {
 	const fetchOrders = useCallback(async () => {
 		setIsLoading(true);
 		try {
-			const response = await fetch(`/api/dashboard/orders?page=${currentPage}&filter=${activeFilter}`);
+			const response = await fetch(
+				`/api/dashboard/orders?page=${currentPage}&filter=${activeFilter}`,
+			);
 			const data = await response.json();
 			setOrders(data.orders);
 			setTotalPages(Math.ceil(data.total / ITEMS_PER_PAGE));
@@ -73,78 +73,99 @@ export default function DashboardPage() {
 
 	return (
 		<>
-			<div className="container mx-auto mt-10">
-				<div className="flex justify-between items-center mb-6">
-					<h2 className="text-2xl font-bold">Orders</h2>
-					<Link href="/dashboard/orders">
-						<Button variant="outline">View All Orders</Button>
+			<div className='container mx-auto mt-10 mb-14'>
+				<div className='flex justify-between items-center mb-6'>
+					<h2 className='text-2xl font-bold'>Orders</h2>
+					<Link href='/dashboard/orders'>
+						<Button variant='outline'>View All Orders</Button>
 					</Link>
 				</div>
-				
-				<OrderFilters activeFilter={activeFilter} onFilterChange={handleFilterChange} />
-				
-				<div className="bg-white shadow-md rounded-lg overflow-hidden">
-					<div className="overflow-x-auto">
-						<table className="min-w-full divide-y divide-gray-200">
-							<thead className="bg-gray-50">
+
+				<OrderFilters
+					activeFilter={activeFilter}
+					onFilterChange={handleFilterChange}
+				/>
+
+				<div className='bg-white shadow-md rounded-lg overflow-hidden'>
+					<div className='overflow-x-auto'>
+						<table className='min-w-full divide-y divide-gray-200'>
+							<thead className='bg-gray-50'>
 								<tr>
-									<th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+									<th
+										scope='col'
+										className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
 										Order ID
 									</th>
-									<th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+									<th
+										scope='col'
+										className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
 										Customer
 									</th>
-									<th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+									<th
+										scope='col'
+										className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
 										Subject
 									</th>
-									<th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+									<th
+										scope='col'
+										className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
 										Price
 									</th>
-									<th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+									<th
+										scope='col'
+										className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
 										Status
 									</th>
-									<th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+									<th
+										scope='col'
+										className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
 										Date
 									</th>
-									<th scope="col" className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+									<th
+										scope='col'
+										className='px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider'>
 										Actions
 									</th>
 								</tr>
 							</thead>
-							<tbody className="bg-white divide-y divide-gray-200">
+							<tbody className='bg-white divide-y divide-gray-200'>
 								{isLoading ? (
 									<tr>
-										<td colSpan={7} className="px-6 py-4 text-center">
+										<td
+											colSpan={7}
+											className='px-6 py-4 text-center'>
 											Loading...
 										</td>
 									</tr>
 								) : orders.length > 0 ? (
 									orders.map((order) => (
 										<tr key={order.id}>
-											<td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+											<td className='px-6 py-4 whitespace-nowrap text-sm font-medium'>
 												#{order.id.slice(-6)}
 											</td>
-											<td className="px-6 py-4 whitespace-nowrap text-sm">
+											<td className='px-6 py-4 whitespace-nowrap text-sm'>
 												{order.user?.name || 'Unknown'}
 											</td>
-											<td className="px-6 py-4 whitespace-nowrap text-sm">
+											<td className='px-6 py-4 whitespace-nowrap text-sm'>
 												{order.subjectCategory || 'N/A'}
 											</td>
-											<td className="px-6 py-4 whitespace-nowrap text-sm">
+											<td className='px-6 py-4 whitespace-nowrap text-sm'>
 												{formatCurrency(Number(order.price))}
 											</td>
-											<td className="px-6 py-4 whitespace-nowrap">
+											<td className='px-6 py-4 whitespace-nowrap'>
 												<Badge className={getStatusColor(order.orderStatus)}>
 													{order.orderStatus || 'pending'}
 												</Badge>
 											</td>
-											<td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+											<td className='px-6 py-4 whitespace-nowrap text-sm text-gray-500'>
 												{new Date(order.createdAt).toLocaleDateString()}
 											</td>
-											<td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+											<td className='px-6 py-4 whitespace-nowrap text-right text-sm font-medium'>
 												<Link href={`/dashboard/orders/${order.id}`}>
-													<Button size="sm" variant="ghost">
-														<EyeIcon className="h-4 w-4 mr-1" />
+													<Button
+														size='sm'
+														variant='ghost'>
+														<EyeIcon className='h-4 w-4 mr-1' />
 														View
 													</Button>
 												</Link>
@@ -153,7 +174,9 @@ export default function DashboardPage() {
 									))
 								) : (
 									<tr>
-										<td colSpan={7} className="px-6 py-4 text-center text-sm text-gray-500">
+										<td
+											colSpan={7}
+											className='px-6 py-4 text-center text-sm text-gray-500'>
 											No orders found
 										</td>
 									</tr>
@@ -162,17 +185,17 @@ export default function DashboardPage() {
 						</table>
 					</div>
 				</div>
-				
+
 				{!isLoading && totalPages > 1 && (
-					<Pagination 
-						currentPage={currentPage} 
-						totalPages={totalPages} 
-						onPageChange={handlePageChange} 
+					<Pagination
+						currentPage={currentPage}
+						totalPages={totalPages}
+						onPageChange={handlePageChange}
 					/>
 				)}
 			</div>
-			
-			<div className="fixed bottom-6 right-6">
+
+			<div className='fixed bottom-6 right-6'>
 				<CreateAdminButton />
 			</div>
 		</>

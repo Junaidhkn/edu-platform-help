@@ -82,16 +82,16 @@ const SignedOut = () => {
 			<li>
 				<Button
 					variant='ghost'
-					size='sm'
-					className='text-gray-700'
+					size='default'
+					className='bg-transparent border-2 border-white hover:bg-slate-700 hover:bg-opacity-10 rounded-lg px-2 py-2 text-center font-medium'
 					asChild>
 					<Link href='/auth/signin'>Sign In</Link>
 				</Button>
 			</li>
 			<li>
 				<Button
-					size='sm'
-					className='bg-transparent border-2 border-white hover:bg-slate-700 hover:bg-opacity-10 rounded-lg px-2 py-2 text-center'
+					size='default'
+					className='bg-transparent border-2 border-white hover:bg-slate-700 hover:bg-opacity-10 rounded-lg px-2 py-2 text-center font-medium'
 					asChild>
 					<Link href='/auth/signup'>Sign Up</Link>
 				</Button>

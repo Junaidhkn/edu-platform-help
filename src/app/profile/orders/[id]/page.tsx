@@ -66,6 +66,8 @@ export default async function OrderDetailPage({
 		},
 	});
 
+	console.log('Order in detail page', order);
+
 	if (!order) {
 		redirect('/profile/orders');
 	}
