@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { CheckCircle, AlertCircle } from 'lucide-react';
@@ -13,8 +13,32 @@ import {
 	CardHeader,
 	CardTitle,
 } from '@/src/components/ui/card';
+import { Skeleton } from '@/src/components/ui/skeleton';
 
-export default function CheckoutSuccessPage() {
+function SuccessSkeleton() {
+	return (
+		<div className='container mx-auto max-w-lg py-20'>
+			<Card className='border-green-100'>
+				<CardHeader className='text-center'>
+					<div className='mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-green-50'>
+						<Skeleton className='h-10 w-10 rounded-full' />
+					</div>
+					<Skeleton className='h-8 w-48 mx-auto mb-2' />
+					<Skeleton className='h-4 w-72 mx-auto' />
+				</CardHeader>
+				<CardContent className='text-center'>
+					<Skeleton className='h-4 w-64 mx-auto mb-2' />
+					<Skeleton className='h-4 w-56 mx-auto' />
+				</CardContent>
+				<CardFooter className='flex justify-center'>
+					<Skeleton className='h-10 w-32' />
+				</CardFooter>
+			</Card>
+		</div>
+	);
+}
+
+function SuccessContent() {
 	const router = useRouter();
 	const searchParams = useSearchParams();
 	const sessionId = searchParams.get('session_id');
@@ -120,5 +144,13 @@ export default function CheckoutSuccessPage() {
 				</CardFooter>
 			</Card>
 		</div>
+	);
+}
+
+export default function CheckoutSuccessPage() {
+	return (
+		<Suspense fallback={<SuccessSkeleton />}>
+			<SuccessContent />
+		</Suspense>
 	);
 }

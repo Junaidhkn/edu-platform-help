@@ -5,6 +5,8 @@ import transaction from '@/src/db/schema/transactions';
 import order from '@/src/db/schema/order';
 import { eq } from 'drizzle-orm';
 
+export const dynamic = 'force-dynamic';
+
 export async function GET(req: NextRequest) {
 	try {
 		const sessionId = req.nextUrl.searchParams.get('session_id');

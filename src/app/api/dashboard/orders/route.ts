@@ -6,6 +6,7 @@ import { SQL, asc, count, desc, eq, sql } from 'drizzle-orm';
 import { USER_ROLES } from '@/src/lib/constants';
 
 const ITEMS_PER_PAGE = 7;
+export const dynamic = 'force-dynamic';
 
 export async function GET(request: NextRequest) {
 	try {

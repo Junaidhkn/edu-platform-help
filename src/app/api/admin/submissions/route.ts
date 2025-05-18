@@ -7,6 +7,7 @@ import { desc, eq } from 'drizzle-orm';
 import { USER_ROLES } from '@/src/lib/constants';
 import { sql } from 'drizzle-orm';
 
+export const dynamic = 'force-dynamic';
 const ITEMS_PER_PAGE = 5;
 
 export async function GET(request: NextRequest) {
@@ -18,13 +19,11 @@ export async function GET(request: NextRequest) {
 			return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 		}
 
-		// 2. Parse query parameters
 		const url = new URL(request.url);
 		const status = url.searchParams.get('status') || 'pending';
 		const page = parseInt(url.searchParams.get('page') || '1');
 		const offset = (page - 1) * ITEMS_PER_PAGE;
 
-		// 3. Count total submissions matching the status
 		const countResult = await db
 			.select({ count: sql`count(*)` })
 			.from(submissions)
@@ -33,7 +32,6 @@ export async function GET(request: NextRequest) {
 		const totalCount = Number(countResult[0]?.count || 0);
 		const totalPages = Math.ceil(totalCount / ITEMS_PER_PAGE);
 
-		// 4. Fetch submissions with pagination
 		const submissionList = await db
 			.select()
 			.from(submissions)
@@ -42,7 +40,6 @@ export async function GET(request: NextRequest) {
 			.limit(ITEMS_PER_PAGE)
 			.offset(offset);
 
-		// 5. Fetch related freelancers data
 		const freelancerIds = submissionList.map((sub) => sub.freelancerId);
 
 		let freelancerData: any[] = [];
@@ -66,7 +63,6 @@ export async function GET(request: NextRequest) {
 			}
 		}
 
-		// 6. Map related data to submissions
 		const submissionsWithRelations = submissionList.map((sub) => {
 			// Parse file URLs from JSON string
 			const fileUrls = sub.fileUrls ? JSON.parse(sub.fileUrls) : [];

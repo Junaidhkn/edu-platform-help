@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import { ensureAdmin } from '@/src/lib/admin/ensure-admin';
 
+export const dynamic = 'force-dynamic';
+
 export async function GET() {
 	try {
 		// Check admin status without redirecting
