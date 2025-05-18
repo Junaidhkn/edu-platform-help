@@ -20,12 +20,9 @@ async function buffer(readable: ReadableStream) {
 	return Buffer.concat(chunks);
 }
 
-// Disable Next.js body parsing
-export const config = {
-	api: {
-		bodyParser: false,
-	},
-};
+// Route segment config
+export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
 
 export async function POST(req: Request) {
 	try {
