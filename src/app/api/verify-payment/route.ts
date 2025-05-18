@@ -63,7 +63,7 @@ export async function GET(req: NextRequest) {
 					await db
 						.update(order)
 						.set({
-							orderStatus: 'processing',
+							orderStatus: 'pending',
 							isPaid: true,
 							paymentMethod: 'stripe',
 							paymentDate: new Date().toISOString(),

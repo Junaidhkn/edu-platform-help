@@ -183,6 +183,10 @@ const SignedIn = async ({
 													Order #{truncatedId}
 												</span>
 												<span
+													className={`px-2.5 py-0.5 rounded-full text-xs font-medium text-red-600 bg-green-100`}>
+													{order.isPaid ? 'Paid' : 'yet to pay'}
+												</span>
+												<span
 													className={`px-2.5 py-0.5 rounded-full text-xs font-medium ${statusColorClass}`}>
 													{order.orderStatus || 'Unknown'}
 												</span>
@@ -248,6 +252,7 @@ const SignedIn = async ({
 												<span className='font-bold text-gray-900'>
 													{priceDisplay}
 												</span>
+
 												<span className='text-blue-600 text-sm font-medium group-hover:underline'>
 													View Details →
 												</span>
