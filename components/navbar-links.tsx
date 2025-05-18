@@ -6,31 +6,59 @@ import { SignoutButton } from '@/components/signout-button';
 import { useSession } from 'next-auth/react';
 import { Loader2Icon } from 'lucide-react';
 import { USER_ROLES } from '@/lib/constants';
+import { useEffect, useState } from 'react';
+import { checkFreelancerStatus } from '@/lib/freelancer';
 
 export const NavbarLinks = () => {
 	const session = useSession();
+	const user = session.data?.user;
+	const isAdmin = user?.role === USER_ROLES.ADMIN;
+	const [isFreelancer, setIsFreelancer] = useState(false);
+
+	useEffect(() => {
+		const checkStatus = async () => {
+			if (user?.email) {
+				try {
+					const isFreelancerUser = await checkFreelancerStatus(user.email);
+					console.log(isFreelancerUser, 'if freelancer');
+					setIsFreelancer(isFreelancerUser);
+				} catch (error) {
+					console.error('Error checking freelancer status:', error);
+				}
+			}
+		};
+
+		checkStatus();
+	}, [user?.email]);
 
 	return (
 		<>
-			<li className='hidden md:block'>
-				<Link
-					href='/services'
-					className='text-gray-700 hover:text-purple-700 font-medium'>
-					Services
-				</Link>
-			</li>
-			<li className='hidden md:block'>
-				<Link
-					href='/#how-it-works'
-					className='text-gray-700 hover:text-purple-700 font-medium'>
-					How It Works
-				</Link>
-			</li>
+			{!isFreelancer && (
+				<>
+					<li className='hidden md:block'>
+						<Link
+							href='/services'
+							className='text-gray-700 hover:text-purple-700 font-medium'>
+							Services
+						</Link>
+					</li>
+					<li className='hidden md:block'>
+						<Link
+							href='/#how-it-works'
+							className='text-gray-700 hover:text-purple-700 font-medium'>
+							How It Works
+						</Link>
+					</li>
+				</>
+			)}
 
 			{session.status === 'loading' ? (
 				<Loading />
 			) : session.status === 'authenticated' ? (
-				<SignedIn user={session.data.user} />
+				<SignedIn
+					user={user}
+					isFreelancer={isFreelancer}
+				/>
 			) : (
 				<SignedOut />
 			)}
@@ -50,7 +78,13 @@ const Loading = () => {
 	);
 };
 
-const SignedIn = ({ user }: { user: any }) => {
+const SignedIn = ({
+	user,
+	isFreelancer,
+}: {
+	user: any;
+	isFreelancer: boolean;
+}) => {
 	const isAdmin = user?.role === USER_ROLES.ADMIN;
 
 	return (
@@ -66,14 +100,25 @@ const SignedIn = ({ user }: { user: any }) => {
 					</Button>
 				</li>
 			)}
-			<li>
-				<Button
-					size='sm'
-					className='bg-purple-600 hover:bg-purple-700'
-					asChild>
-					<Link href='/profile'>Profile</Link>
-				</Button>
-			</li>
+			{isFreelancer ? (
+				<li>
+					<Button
+						size='sm'
+						className='bg-purple-600 hover:bg-purple-700'
+						asChild>
+						<Link href='/freelancer'>Dashboard</Link>
+					</Button>
+				</li>
+			) : (
+				<li>
+					<Button
+						size='sm'
+						className='bg-purple-600 hover:bg-purple-700'
+						asChild>
+						<Link href='/profile'>Profile</Link>
+					</Button>
+				</li>
+			)}
 			<li>
 				<SignoutButton />
 			</li>

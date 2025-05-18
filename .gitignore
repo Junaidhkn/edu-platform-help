@@ -40,3 +40,7 @@ anchor.toml
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+./docker-compose.yml
+docker-compose.yml
+/docker-compose.yml
