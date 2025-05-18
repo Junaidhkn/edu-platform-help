@@ -1,6 +1,6 @@
 import { verifyCredentialsEmailAction } from '@/src/actions/verify-credentials-email-action';
 import { Button } from '@/src/components/ui/button';
-import { findVerificationTokenByToken } from '@/resources/verification-token-queries';
+import { findVerificationTokenByToken } from '@/src/resources/verification-token-queries';
 import Link from 'next/link';
 
 type PageProps = { searchParams: { token: string } };

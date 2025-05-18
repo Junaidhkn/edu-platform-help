@@ -14,7 +14,7 @@ import { oauthVerifyEmailAction } from '@/src/actions/oauth-verify-email-action'
 import { USER_ROLES } from '@/src/lib/constants';
 import type { AdapterUser } from '@auth/core/adapters';
 import { getTableColumns } from 'drizzle-orm';
-import { findAdminUserEmailAddresses } from './resources/admin-user-email-address-queries';
+import { findAdminUserEmailAddresses } from './src/resources/admin-user-email-address-queries';
 import { eq } from 'drizzle-orm';
 import { freelancers } from '@/src/db/schema';
 
