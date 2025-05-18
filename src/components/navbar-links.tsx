@@ -33,24 +33,22 @@ export const NavbarLinks = () => {
 
 	return (
 		<>
-			{!isFreelancer && (
-				<>
-					<li className='hidden md:block'>
-						<Link
-							href='/services'
-							className='text-gray-700 hover:text-purple-700 font-medium'>
-							Services
-						</Link>
-					</li>
-					<li className='hidden md:block'>
-						<Link
-							href='/#how-it-works'
-							className='text-gray-700 hover:text-purple-700 font-medium'>
-							How It Works
-						</Link>
-					</li>
-				</>
-			)}
+			<>
+				<li className=' md:block'>
+					<Link
+						href='/services'
+						className='text-gray-700 hover:text-purple-700 font-medium'>
+						Services
+					</Link>
+				</li>
+				<li className=' md:block'>
+					<Link
+						href='/#how-it-works'
+						className='text-gray-700 hover:text-purple-700 font-medium'>
+						How It Works
+					</Link>
+				</li>
+			</>
 
 			{session.status === 'loading' ? (
 				<Loading />

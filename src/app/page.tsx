@@ -15,55 +15,57 @@ export default function Home() {
 		<main className='flex flex-col items-center min-h-screen bg-slate-50'>
 			{/* Hero Section */}
 			<section className='w-full bg-gradient-to-br from-slate-900 via-purple-900 to-violet-800 text-white'>
-				<div className='max-w-7xl mx-auto px-4 sm:px-6 py-24 md:py-32 flex flex-col md:flex-row items-center justify-between'>
-					<div className='md:w-1/2 mb-12 md:mb-0 space-y-8 text-center md:text-left'>
-						<h1 className='text-5xl md:text-6xl font-extrabold tracking-tight leading-tight'>
-							Unlock Your Academic Potential
-						</h1>
-						<p className='text-xl md:text-2xl opacity-80 max-w-xl mx-auto md:mx-0'>
-							Premium academic solutions and expert freelance support, tailored
-							for your success.
-						</p>
-						<div className='pt-6 flex flex-col sm:flex-row gap-4 justify-center md:justify-start'>
-							<Link
-								href='/auth/signup'
-								className='bg-white text-purple-700 hover:bg-purple-100 font-bold rounded-lg px-8 py-4 text-lg shadow-lg transform hover:scale-105 transition-transform duration-300'>
-								Get Started Today
-							</Link>
-							<Link
-								href='#how-it-works'
-								className='bg-transparent border-2 border-white text-white hover:bg-white hover:text-purple-700 font-bold rounded-lg px-8 py-4 text-lg shadow-lg transform hover:scale-105 transition-transform duration-300'>
-								Learn How It Works
-							</Link>
+				<div className='max-w-7xl mx-auto px-4 sm:px-6 py-12 md:py-16 lg:py-20'>
+					<div className='flex lg:flex-row items-center justify-between gap-8 lg:gap-12'>
+						<div className='w-full lg:w-1/2 space-y-6  lg:text-left'>
+							<h1 className='text-3xl text-center sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight'>
+								Unlock Your Academic Potential
+							</h1>
+							<p className='text-base sm:text-lg md:text-xl opacity-90 max-w-xl mx-auto lg:mx-0'>
+								Premium academic solutions and expert freelance support,
+								tailored for your success.
+							</p>
+							<div className='flex  sm:flex-row gap-4 justify-center lg:justify-start'>
+								<Link
+									href='/auth/signup'
+									className='bg-white text-center text-purple-700 hover:bg-purple-50 font-bold rounded-lg px-6 py-3 text-sm sm:text-base shadow-lg transform hover:scale-105 transition-all duration-300'>
+									Get Started Today
+								</Link>
+								<Link
+									href='#how-it-works'
+									className='bg-transparent text-center border-2 border-white text-white hover:bg-white/10 font-bold rounded-lg px-6 py-3 text-sm sm:text-base shadow-lg transform hover:scale-105 transition-all duration-300'>
+									Learn How It Works
+								</Link>
+							</div>
 						</div>
-					</div>
-					<div className='md:w-1/2 flex justify-center items-center'>
-						<Image
-							src={HomeImage}
-							alt='Academic Success Hero Image'
-							className='max-w-lg w-full rounded-lg shadow-2xl'
-							width={500}
-							height={500}
-							priority
-						/>
+						<div className='w-full lg:w-1/2 flex justify-center items-center mt-8 lg:mt-0'>
+							<Image
+								src={HomeImage}
+								alt='Academic Success Hero Image'
+								className='w-full max-w-sm sm:max-w-md lg:max-w-lg rounded-lg shadow-2xl'
+								width={500}
+								height={500}
+								priority
+							/>
+						</div>
 					</div>
 				</div>
 			</section>
 
 			{/* Services Section */}
-			<section className='w-full py-20 bg-white'>
+			<section className='w-full py-12 md:py-16 lg:py-20 bg-white'>
 				<div className='max-w-7xl mx-auto px-4 sm:px-6'>
-					<div className='text-center mb-20'>
-						<h2 className='text-4xl md:text-5xl font-bold text-slate-900'>
+					<div className='text-center mb-12 md:mb-16'>
+						<h2 className='text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900'>
 							Our Premier Services
 						</h2>
-						<p className='mt-6 text-xl text-gray-700 max-w-2xl mx-auto'>
+						<p className='mt-4 text-base sm:text-lg text-gray-700 max-w-2xl mx-auto'>
 							From complex assignments to coding projects, we provide expert
 							solutions.
 						</p>
 					</div>
 
-					<div className='grid grid-cols-1 md:grid-cols-3 gap-10'>
+					<div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8'>
 						{[
 							{
 								icon: FaGraduationCap,
@@ -89,17 +91,17 @@ export default function Home() {
 						].map((service) => (
 							<div
 								key={service.title}
-								className='bg-slate-50 p-8 rounded-xl shadow-lg hover:shadow-2xl transition-shadow duration-300 transform hover:-translate-y-2 flex flex-col items-center text-center'>
+								className='bg-slate-50 p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 flex flex-col items-center text-center'>
 								<div
-									className={`w-16 h-16 bg-${service.color}-100 rounded-full flex items-center justify-center mb-6 ring-4 ring-${service.color}-200`}>
+									className={`w-14 h-14 bg-${service.color}-100 rounded-full flex items-center justify-center mb-4 ring-4 ring-${service.color}-200`}>
 									<service.icon
-										className={`text-${service.color}-600 text-3xl`}
+										className={`text-${service.color}-600 text-2xl`}
 									/>
 								</div>
-								<h3 className='text-2xl font-semibold mb-4 text-slate-900'>
+								<h3 className='text-xl font-semibold mb-3 text-slate-900'>
 									{service.title}
 								</h3>
-								<p className='text-gray-600 mb-6 flex-grow'>
+								<p className='text-gray-600 mb-4 flex-grow'>
 									{service.description}
 								</p>
 								<Link
@@ -117,18 +119,18 @@ export default function Home() {
 			{/* How It Works */}
 			<section
 				id='how-it-works'
-				className='w-full py-20 bg-slate-100'>
+				className='w-full py-12 md:py-16 lg:py-20 bg-slate-100'>
 				<div className='max-w-7xl mx-auto px-4 sm:px-6'>
-					<div className='text-center mb-20'>
-						<h2 className='text-4xl md:text-5xl font-bold text-slate-900'>
+					<div className='text-center mb-12 md:mb-16'>
+						<h2 className='text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900'>
 							Simple Steps to Success
 						</h2>
-						<p className='mt-6 text-xl text-gray-700 max-w-2xl mx-auto'>
+						<p className='mt-4 text-base sm:text-lg text-gray-700 max-w-2xl mx-auto'>
 							Getting started with Top Nerd is quick, easy, and transparent.
 						</p>
 					</div>
 
-					<div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10'>
+					<div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8'>
 						{[
 							{
 								step: 1,
@@ -157,11 +159,11 @@ export default function Home() {
 						].map((item) => (
 							<div
 								key={item.step}
-								className='bg-white p-8 rounded-xl shadow-lg hover:shadow-2xl transition-shadow duration-300 transform hover:-translate-y-2 text-center flex flex-col items-center'>
-								<div className='w-20 h-20 bg-purple-600 text-white rounded-full flex items-center justify-center mx-auto mb-6 text-3xl font-bold ring-4 ring-purple-200'>
+								className='bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 text-center flex flex-col items-center'>
+								<div className='w-16 h-16 bg-purple-600 text-white rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold ring-4 ring-purple-200'>
 									{item.step}
 								</div>
-								<h3 className='text-2xl font-semibold mb-3 text-slate-900'>
+								<h3 className='text-xl font-semibold mb-2 text-slate-900'>
 									{item.title}
 								</h3>
 								<p className='text-gray-600'>{item.description}</p>
@@ -169,24 +171,24 @@ export default function Home() {
 						))}
 					</div>
 
-					<div className='mt-16 text-center'>
+					<div className='mt-12 text-center'>
 						<Link
 							href='/auth/signup'
-							className='inline-flex items-center bg-purple-600 text-white font-bold rounded-lg px-10 py-4 text-lg hover:bg-purple-700 shadow-lg transform hover:scale-105 transition-transform duration-300'>
-							Start Your Journey Now <BsArrowRight className='ml-3 text-xl' />
+							className='inline-flex items-center bg-purple-600 text-white font-bold rounded-lg px-6 py-2.5 text-sm sm:text-base hover:bg-purple-700 shadow-lg transform hover:scale-105 transition-all duration-300'>
+							Start Your Journey Now <BsArrowRight className='ml-2 text-lg' />
 						</Link>
 					</div>
 				</div>
 			</section>
 
 			{/* Testimonials */}
-			<section className='w-full py-20 bg-white'>
+			<section className='w-full py-12 md:py-16 lg:py-20 bg-white'>
 				<div className='max-w-7xl mx-auto px-4 sm:px-6'>
-					<div className='text-center mb-20'>
-						<h2 className='text-4xl md:text-5xl font-bold text-slate-900'>
+					<div className='text-center mb-12 md:mb-16'>
+						<h2 className='text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900'>
 							Voices of Our Valued Students
 						</h2>
-						<p className='mt-6 text-xl text-gray-700 max-w-2xl mx-auto'>
+						<p className='mt-4 text-base sm:text-lg text-gray-700 max-w-2xl mx-auto'>
 							Discover why students worldwide trust Top Nerd for academic
 							excellence.
 						</p>
@@ -196,24 +198,24 @@ export default function Home() {
 			</section>
 
 			{/* CTA Section */}
-			<section className='w-full py-24 bg-gradient-to-r from-purple-600 to-indigo-700 text-white'>
+			<section className='w-full py-12 md:py-16 lg:py-20 bg-gradient-to-r from-purple-600 to-indigo-700 text-white'>
 				<div className='max-w-7xl mx-auto px-4 sm:px-6 text-center'>
-					<h2 className='text-4xl md:text-5xl font-extrabold mb-6 tracking-tight'>
+					<h2 className='text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold mb-4 tracking-tight'>
 						Ready to Elevate Your Grades?
 					</h2>
-					<p className='text-xl md:text-2xl mb-10 max-w-3xl mx-auto opacity-90'>
+					<p className='text-base sm:text-lg md:text-xl mb-8 max-w-3xl mx-auto opacity-90'>
 						Join a community of successful students. Let Top Nerd handle the
 						complexities while you focus on learning.
 					</p>
-					<div className='flex flex-col sm:flex-row justify-center gap-6'>
+					<div className='flex  sm:flex-row justify-center gap-4'>
 						<Link
 							href='/auth/signup'
-							className='bg-white text-purple-700 hover:bg-purple-100 font-bold rounded-lg px-10 py-4 text-lg shadow-xl transform hover:scale-105 transition-transform duration-300'>
+							className='bg-white text-purple-700 hover:bg-purple-50 font-bold rounded-lg px-6 py-2.5 text-sm sm:text-base shadow-xl transform hover:scale-105 transition-all duration-300'>
 							Submit Your Assignment
 						</Link>
 						<Link
 							href='/services'
-							className='bg-transparent border-2 border-white text-white hover:bg-white hover:text-purple-700 font-bold rounded-lg px-10 py-4 text-lg shadow-xl transform hover:scale-105 transition-transform duration-300'>
+							className='bg-transparent border-2 border-white text-white hover:bg-white/10 font-bold rounded-lg px-6 py-2.5 text-sm sm:text-base shadow-xl transform hover:scale-105 transition-all duration-300'>
 							Explore Our Services
 						</Link>
 					</div>
