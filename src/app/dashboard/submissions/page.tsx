@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import { Download, Eye, CheckCircle, XCircle, Loader2 } from 'lucide-react';
 import { Button } from '@/src/components/ui/button';
@@ -51,11 +51,7 @@ export default function SubmissionsPage() {
 	const [isProcessing, setIsProcessing] = useState(false);
 	const { toast } = useToast();
 
-	useEffect(() => {
-		fetchSubmissions();
-	}, [selectedTab, currentPage]);
-
-	const fetchSubmissions = async () => {
+	const fetchSubmissions = useCallback(async () => {
 		setIsLoading(true);
 		try {
 			const response = await fetch(
@@ -76,7 +72,11 @@ export default function SubmissionsPage() {
 		} finally {
 			setIsLoading(false);
 		}
-	};
+	}, [selectedTab, currentPage, toast]);
+
+	useEffect(() => {
+		fetchSubmissions();
+	}, [selectedTab, currentPage, fetchSubmissions]);
 
 	const handleUpdateSubmission = async (
 		submissionId: string,

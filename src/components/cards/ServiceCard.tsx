@@ -1,4 +1,5 @@
 import { cn } from '@/src/lib/utils';
+import Image from 'next/image';
 import Link from 'next/link';
 
 interface IProps {
@@ -44,7 +45,7 @@ function ServiceCard({
 					</div>
 				</div>
 				<div>
-					<img
+					<Image
 						src={image}
 						alt='card icon'
 					/>
@@ -54,12 +55,12 @@ function ServiceCard({
 				<div className='flex gap-2 items-center'>
 					<div>
 						{darkArrow ? (
-							<img
+							<Image
 								src='/images/arrow_dark.png'
 								alt='dark arrow icon'
 							/>
 						) : (
-							<img
+							<Image
 								src='/images/arrow_light.png'
 								alt='light arrow icon'
 							/>

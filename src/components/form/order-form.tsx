@@ -75,6 +75,7 @@ export function OrderForm({ onSubmit, isSubmitting = false }: OrderFormProps) {
 		watchedValues.academicLevel,
 		watchedValues.deadline,
 		form,
+		watchedValues,
 	]);
 
 	const handleFormSubmit = form.handleSubmit((data) => {

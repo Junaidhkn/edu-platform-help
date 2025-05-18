@@ -37,7 +37,8 @@ export default function CheckoutCancelPage() {
 					</div>
 					<CardTitle className='text-2xl'>Payment Cancelled</CardTitle>
 					<CardDescription>
-						Your payment was cancelled. Don't worry, your order is still saved.
+						Your payment was cancelled. Don&apos;t worry, your order is still
+						saved.
 					</CardDescription>
 				</CardHeader>
 				<CardContent className='text-center'>

@@ -56,7 +56,7 @@ export default async function FreelancerOrdersPage() {
 						{assignedOrders.length === 0 ? (
 							<div className='text-center py-8'>
 								<p className='text-gray-500'>
-									You don't have any assigned orders yet.
+									You don&apos;t have any assigned orders yet.
 								</p>
 							</div>
 						) : (

@@ -56,6 +56,7 @@ export function DataTableFilterBox({
 	const handleSelect = (value: string) => {
 		const newSet = new Set(selectedValuesSet);
 		if (newSet.has(value)) {
+			// eslint-disable-next-line drizzle/enforce-delete-with-where
 			newSet.delete(value);
 		} else {
 			newSet.add(value);

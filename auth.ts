@@ -3,7 +3,7 @@ import Credentials from 'next-auth/providers/credentials';
 import * as v from 'valibot';
 import argon2 from 'argon2';
 import { SigninSchema } from '@/validators/signin-validator';
-import { findUserByEmail } from '@/src/resources/queries';
+import { findUserByEmail } from '@/src/app/resources/queries';
 import { OAuthAccountAlreadyLinkedError } from '@/src/lib/custom-errors';
 import { authConfig } from '@/auth.config';
 

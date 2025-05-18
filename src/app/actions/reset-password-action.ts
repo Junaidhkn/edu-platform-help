@@ -1,7 +1,7 @@
 'use server';
 
-import { findUserByEmail } from '@/src/resources/queries';
-import { findVerificationTokenByToken } from '@/src/resources/verification-token-queries';
+import { findUserByEmail } from '@/src/app/resources/queries';
+import { findVerificationTokenByToken } from '@/src/app/resources/verification-token-queries';
 import { ResetPasswordSchema } from '@/validators/reset-password-validator';
 import * as v from 'valibot';
 import argon2 from 'argon2';

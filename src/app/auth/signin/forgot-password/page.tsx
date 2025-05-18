@@ -1,5 +1,5 @@
 import { Button } from '@/src/components/ui/button';
-import { findVerificationTokenByToken } from '@/src/resources/verification-token-queries';
+import { findVerificationTokenByToken } from '@/src/app/resources/verification-token-queries';
 import Link from 'next/link';
 import { ResetPasswordForm } from './_components/reset-password-form';
 

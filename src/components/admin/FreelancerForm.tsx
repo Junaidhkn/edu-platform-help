@@ -21,6 +21,7 @@ import { Textarea } from '@/src/components/ui/textarea';
 import { toast } from 'sonner';
 import { UploadButton } from '@/src/lib/uploadThing';
 import { Loader2 } from 'lucide-react';
+import Image from 'next/image';
 
 export default function FreelancerForm() {
 	const [isSubmitting, setIsSubmitting] = useState(false);
@@ -226,10 +227,12 @@ export default function FreelancerForm() {
 						<div className='mt-4'>
 							<p className='text-sm text-gray-500 mb-2'>Uploaded image:</p>
 							<div className='relative h-40 w-40 rounded-md overflow-hidden'>
-								<img
+								<Image
 									src={imageUrl}
 									alt='Profile'
 									className='object-cover h-full w-full'
+									height={300}
+									width={300}
 								/>
 							</div>
 						</div>

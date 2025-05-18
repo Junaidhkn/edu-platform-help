@@ -6,7 +6,7 @@ import { SignupSchema } from '@/validators/signup-validator';
 
 import { eq } from 'drizzle-orm';
 import { USER_ROLES } from '@/src/lib/constants';
-import { findAdminUserEmailAddresses } from '@/src/resources/admin-user-email-address-queries';
+import { findAdminUserEmailAddresses } from '@/src/app/resources/admin-user-email-address-queries';
 import { createVerificationTokenAction } from '@/src/app/actions/create-verification-token-action';
 import { sendSignupUserEmail } from '@/src/app/actions/mail/send-signup-user-email';
 import db from '@/src/db';

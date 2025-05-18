@@ -1,5 +1,3 @@
-'use client';
-
 import { Button } from '@/src/components/ui/button';
 import {
 	Card,
@@ -146,9 +144,7 @@ export default async function SubmitWorkPage({
 					<Suspense fallback={<Skeleton className='h-[400px] w-full' />}>
 						<SubmissionUploader
 							orderId={params.id}
-							onSuccess={() => {
-								// This will be handled client-side
-							}}
+							onSuccess={() => {}}
 						/>
 					</Suspense>
 				</div>
