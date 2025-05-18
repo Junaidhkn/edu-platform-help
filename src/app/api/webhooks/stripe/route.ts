@@ -21,8 +21,9 @@ async function buffer(readable: ReadableStream) {
 }
 
 // Route segment config
-export const runtime = 'nodejs';
+export const runtime = 'edge';
 export const dynamic = 'force-dynamic';
+export const preferredRegion = 'auto';
 
 export async function POST(req: Request) {
 	try {
