@@ -1,10 +1,10 @@
-import { Button } from '@/components/ui/button';
+import { Button } from '@/src/components/ui/button';
 import { SignupForm } from './_components/signup-form';
 import Link from 'next/link';
 import {
 	OAuthSigninButtons,
 	OAuthSigninButtonsSkeleton,
-} from '@/components/oauth-signin-buttons';
+} from '@/src/components/oauth-signin-buttons';
 import { Suspense } from 'react';
 
 export default function SignupPage() {

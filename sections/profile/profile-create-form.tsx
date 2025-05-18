@@ -4,8 +4,8 @@ import {
 	AccordionContent,
 	AccordionItem,
 	AccordionTrigger,
-} from '@/components/ui/accordion';
-import { Button } from '@/components/ui/button';
+} from '@/src/components/ui/accordion';
+import { Button } from '@/src/components/ui/button';
 import {
 	Form,
 	FormControl,
@@ -13,19 +13,19 @@ import {
 	FormItem,
 	FormLabel,
 	FormMessage,
-} from '@/components/ui/form';
-import { Heading } from '@/components/ui/heading';
-import { Input } from '@/components/ui/input';
+} from '@/src/components/ui/form';
+import { Heading } from '@/src/components/ui/heading';
+import { Input } from '@/src/components/ui/input';
 import {
 	Select,
 	SelectContent,
 	SelectItem,
 	SelectTrigger,
 	SelectValue,
-} from '@/components/ui/select';
-import { Separator } from '@/components/ui/separator';
-import { profileSchema, type ProfileFormValues } from '@/lib/form-schema';
-import { cn } from '@/lib/utils';
+} from '@/src/components/ui/select';
+import { Separator } from '@/src/components/ui/separator';
+import { profileSchema, type ProfileFormValues } from '@/src/lib/form-schema';
+import { cn } from '@/src/lib/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { AlertTriangleIcon, Trash, Trash2Icon } from 'lucide-react';
 import { useParams, useRouter } from 'next/navigation';

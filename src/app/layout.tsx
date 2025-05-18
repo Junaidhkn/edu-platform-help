@@ -1,13 +1,13 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
-import { Navbar } from '@/components/navbar';
-import { Providers } from '@/components/providers';
+import { Navbar } from '@/src/components/navbar';
+import { Providers } from '@/src/components/providers';
 import { NextSSRPlugin } from '@uploadthing/react/next-ssr-plugin';
 import { extractRouterConfig } from 'uploadthing/server';
 import { ourFileRouter } from '@/src/app/api/uploadthing/core';
 import '@uploadthing/react/styles.css';
-import Footer from '@/components/Footer';
+import Footer from '@/src/components/Footer';
 
 const inter = Inter({ subsets: ['latin'] });
 

@@ -1,18 +1,21 @@
-import { Breadcrumbs } from '@/components/breadcrumbs';
+import { Breadcrumbs } from '@/src/components/breadcrumbs';
 import ProfileCreateForm from '../profile-create-form';
-import PageContainer from '@/components/layout/page-container';
+import PageContainer from '@/src/components/layout/page-container';
 
 const breadcrumbItems = [
-  { title: 'Dashboard', link: '/dashboard' },
-  { title: 'Profile', link: '/dashboard/profile' }
+	{ title: 'Dashboard', link: '/dashboard' },
+	{ title: 'Profile', link: '/dashboard/profile' },
 ];
 export default function ProfileViewPage() {
-  return (
-    <PageContainer scrollable={true}>
-      <div className="space-y-4">
-        <Breadcrumbs items={breadcrumbItems} />
-        <ProfileCreateForm categories={[]} initialData={null} />
-      </div>
-    </PageContainer>
-  );
+	return (
+		<PageContainer scrollable={true}>
+			<div className='space-y-4'>
+				<Breadcrumbs items={breadcrumbItems} />
+				<ProfileCreateForm
+					categories={[]}
+					initialData={null}
+				/>
+			</div>
+		</PageContainer>
+	);
 }

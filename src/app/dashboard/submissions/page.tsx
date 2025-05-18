@@ -1,17 +1,41 @@
-"use client";
+'use client';
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Download, Eye, CheckCircle, XCircle, Loader2 } from 'lucide-react';
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { useToast } from "@/components/ui/use-toast";
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Textarea } from "@/components/ui/textarea";
-import { Pagination } from "@/components/ui/pagination";
+import { Button } from '@/src/components/ui/button';
+import {
+	Card,
+	CardContent,
+	CardDescription,
+	CardFooter,
+	CardHeader,
+	CardTitle,
+} from '@/src/components/ui/card';
+import { Badge } from '@/src/components/ui/badge';
+import {
+	Tabs,
+	TabsContent,
+	TabsList,
+	TabsTrigger,
+} from '@/src/components/ui/tabs';
+import {
+	Avatar,
+	AvatarFallback,
+	AvatarImage,
+} from '@/src/components/ui/avatar';
+import { useToast } from '@/src/components/ui/use-toast';
+import {
+	Dialog,
+	DialogContent,
+	DialogDescription,
+	DialogFooter,
+	DialogHeader,
+	DialogTitle,
+	DialogTrigger,
+} from '@/src/components/ui/dialog';
+import { Textarea } from '@/src/components/ui/textarea';
+import { Pagination } from '@/src/components/ui/pagination';
 import { format } from 'date-fns';
 
 export default function SubmissionsPage() {
@@ -21,7 +45,9 @@ export default function SubmissionsPage() {
 	const [currentPage, setCurrentPage] = useState(1);
 	const [totalPages, setTotalPages] = useState(1);
 	const [feedback, setFeedback] = useState('');
-	const [selectedSubmission, setSelectedSubmission] = useState<string | null>(null);
+	const [selectedSubmission, setSelectedSubmission] = useState<string | null>(
+		null,
+	);
 	const [isProcessing, setIsProcessing] = useState(false);
 	const { toast } = useToast();
 
@@ -32,63 +58,69 @@ export default function SubmissionsPage() {
 	const fetchSubmissions = async () => {
 		setIsLoading(true);
 		try {
-			const response = await fetch(`/api/admin/submissions?status=${selectedTab}&page=${currentPage}`);
+			const response = await fetch(
+				`/api/admin/submissions?status=${selectedTab}&page=${currentPage}`,
+			);
 			if (!response.ok) throw new Error('Failed to fetch submissions');
-			
+
 			const data = await response.json();
 			setSubmissions(data.submissions);
 			setTotalPages(data.totalPages);
 		} catch (error) {
 			console.error('Error fetching submissions:', error);
 			toast({
-				title: "Error",
-				description: "Failed to load submissions",
-				variant: "destructive"
+				title: 'Error',
+				description: 'Failed to load submissions',
+				variant: 'destructive',
 			});
 		} finally {
 			setIsLoading(false);
 		}
 	};
 
-	const handleUpdateSubmission = async (submissionId: string, status: 'approved' | 'rejected') => {
+	const handleUpdateSubmission = async (
+		submissionId: string,
+		status: 'approved' | 'rejected',
+	) => {
 		if (status === 'rejected' && !feedback.trim()) {
 			toast({
-				title: "Error",
-				description: "Please provide feedback when rejecting a submission",
-				variant: "destructive"
+				title: 'Error',
+				description: 'Please provide feedback when rejecting a submission',
+				variant: 'destructive',
 			});
 			return;
 		}
-		
+
 		setIsProcessing(true);
 		try {
 			const response = await fetch(`/api/admin/submissions/${submissionId}`, {
 				method: 'PATCH',
 				headers: {
-					'Content-Type': 'application/json'
+					'Content-Type': 'application/json',
 				},
-				body: JSON.stringify({ 
+				body: JSON.stringify({
 					status,
-					adminFeedback: feedback.trim() || null 
-				})
+					adminFeedback: feedback.trim() || null,
+				}),
 			});
-			
+
 			if (!response.ok) throw new Error(`Failed to ${status} submission`);
-			
+
 			toast({
-				title: "Success",
-				description: status === 'approved' 
-					? "Submission approved and delivered to user" 
-					: "Submission rejected and sent back to freelancer"
+				title: 'Success',
+				description:
+					status === 'approved'
+						? 'Submission approved and delivered to user'
+						: 'Submission rejected and sent back to freelancer',
 			});
-			
+
 			// Refresh submissions
 			fetchSubmissions();
 		} catch (error) {
 			toast({
-				title: "Error",
+				title: 'Error',
 				description: `Failed to ${status} submission`,
-				variant: "destructive"
+				variant: 'destructive',
 			});
 		} finally {
 			setIsProcessing(false);
@@ -96,47 +128,61 @@ export default function SubmissionsPage() {
 			setFeedback('');
 		}
 	};
-	
+
 	return (
-		<div className="container mx-auto py-10">
-			<h1 className="text-2xl font-bold mb-6">Freelancer Submissions</h1>
-			
-			<Tabs defaultValue="pending" value={selectedTab} onValueChange={setSelectedTab}>
-				<TabsList className="mb-6">
-					<TabsTrigger value="pending">Pending Review</TabsTrigger>
-					<TabsTrigger value="approved">Approved</TabsTrigger>
-					<TabsTrigger value="rejected">Rejected</TabsTrigger>
+		<div className='container mx-auto py-10'>
+			<h1 className='text-2xl font-bold mb-6'>Freelancer Submissions</h1>
+
+			<Tabs
+				defaultValue='pending'
+				value={selectedTab}
+				onValueChange={setSelectedTab}>
+				<TabsList className='mb-6'>
+					<TabsTrigger value='pending'>Pending Review</TabsTrigger>
+					<TabsTrigger value='approved'>Approved</TabsTrigger>
+					<TabsTrigger value='rejected'>Rejected</TabsTrigger>
 				</TabsList>
-				
-				<TabsContent value={selectedTab} className="space-y-6">
+
+				<TabsContent
+					value={selectedTab}
+					className='space-y-6'>
 					{isLoading ? (
-						<div className="flex justify-center items-center h-64">
-							<Loader2 className="w-8 h-8 animate-spin" />
+						<div className='flex justify-center items-center h-64'>
+							<Loader2 className='w-8 h-8 animate-spin' />
 						</div>
 					) : submissions.length > 0 ? (
 						<>
 							{submissions.map((submission) => (
-								<Card key={submission.id} className="overflow-hidden">
-									<CardHeader className="bg-muted/50">
-										<div className="flex justify-between items-start">
+								<Card
+									key={submission.id}
+									className='overflow-hidden'>
+									<CardHeader className='bg-muted/50'>
+										<div className='flex justify-between items-start'>
 											<div>
-												<CardTitle>Order #{submission.orderId?.slice(-6) || 'Unknown'}</CardTitle>
+												<CardTitle>
+													Order #{submission.orderId?.slice(-6) || 'Unknown'}
+												</CardTitle>
 												<CardDescription>
-													Submitted on {format(new Date(submission.createdAt), 'PPP')}
+													Submitted on{' '}
+													{format(new Date(submission.createdAt), 'PPP')}
 												</CardDescription>
 											</div>
-											<Badge className={
-												submission.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
-												submission.status === 'approved' ? 'bg-green-100 text-green-800' :
-												'bg-red-100 text-red-800'
-											}>
-												{submission.status.charAt(0).toUpperCase() + submission.status.slice(1)}
+											<Badge
+												className={
+													submission.status === 'pending'
+														? 'bg-yellow-100 text-yellow-800'
+														: submission.status === 'approved'
+														? 'bg-green-100 text-green-800'
+														: 'bg-red-100 text-red-800'
+												}>
+												{submission.status.charAt(0).toUpperCase() +
+													submission.status.slice(1)}
 											</Badge>
 										</div>
 									</CardHeader>
-									
-									<CardContent className="py-4 space-y-4">
-										<div className="flex items-center gap-3">
+
+									<CardContent className='py-4 space-y-4'>
+										<div className='flex items-center gap-3'>
 											<Avatar>
 												<AvatarFallback>
 													{submission.freelancer?.firstName?.[0] || 'F'}
@@ -147,10 +193,11 @@ export default function SubmissionsPage() {
 												)}
 											</Avatar>
 											<div>
-												<p className="font-medium">
-													{submission.freelancer?.firstName} {submission.freelancer?.lastName}
+												<p className='font-medium'>
+													{submission.freelancer?.firstName}{' '}
+													{submission.freelancer?.lastName}
 												</p>
-												<p className="text-sm text-muted-foreground">
+												<p className='text-sm text-muted-foreground'>
 													{submission.freelancer?.email}
 												</p>
 											</div>
@@ -158,69 +205,88 @@ export default function SubmissionsPage() {
 
 										{submission.comment && (
 											<div>
-												<h3 className="text-sm font-medium text-muted-foreground mb-1">Freelancer Comment:</h3>
-												<p className="text-sm whitespace-pre-wrap">{submission.comment}</p>
+												<h3 className='text-sm font-medium text-muted-foreground mb-1'>
+													Freelancer Comment:
+												</h3>
+												<p className='text-sm whitespace-pre-wrap'>
+													{submission.comment}
+												</p>
 											</div>
 										)}
 										{submission.fileUrls && (
-											<div className="mt-4">
-												<h4 className="font-semibold mb-2">Submitted Files</h4>
-												<div className="space-y-2">
+											<div className='mt-4'>
+												<h4 className='font-semibold mb-2'>Submitted Files</h4>
+												<div className='space-y-2'>
 													{(() => {
 														try {
 															// Parse fileUrls properly
-															const files = typeof submission.fileUrls === 'string' 
-																? JSON.parse(submission.fileUrls) 
-																: submission.fileUrls;
-															
-															return Array.isArray(files) ? files.map((url, index) => (
-																<a 
-																	key={index}
-																	href={url}
-																	target="_blank"
-																	rel="noopener noreferrer"
-																	className="block text-blue-600 hover:underline break-all"
-																>
-																	{url.split('/').pop() || `File ${index + 1}`}
-																</a>
-															)) : (
-																<p className="text-red-500">Invalid file format</p>
+															const files =
+																typeof submission.fileUrls === 'string'
+																	? JSON.parse(submission.fileUrls)
+																	: submission.fileUrls;
+
+															return Array.isArray(files) ? (
+																files.map((url, index) => (
+																	<a
+																		key={index}
+																		href={url}
+																		target='_blank'
+																		rel='noopener noreferrer'
+																		className='block text-blue-600 hover:underline break-all'>
+																		{url.split('/').pop() ||
+																			`File ${index + 1}`}
+																	</a>
+																))
+															) : (
+																<p className='text-red-500'>
+																	Invalid file format
+																</p>
 															);
 														} catch (error) {
 															console.error('Error parsing fileUrls:', error);
-															return <p className="text-red-500">Error loading files</p>;
+															return (
+																<p className='text-red-500'>
+																	Error loading files
+																</p>
+															);
 														}
 													})()}
 												</div>
 											</div>
 										)}
-										
-										{submission.status !== 'pending' && submission.adminFeedback && (
-											<div className="mt-4 pt-4 border-t">
-												<h3 className="text-sm font-medium text-muted-foreground mb-1">Admin Feedback</h3>
-												<p className="text-sm">{submission.adminFeedback}</p>
-											</div>
-										)}
+
+										{submission.status !== 'pending' &&
+											submission.adminFeedback && (
+												<div className='mt-4 pt-4 border-t'>
+													<h3 className='text-sm font-medium text-muted-foreground mb-1'>
+														Admin Feedback
+													</h3>
+													<p className='text-sm'>{submission.adminFeedback}</p>
+												</div>
+											)}
 									</CardContent>
-									
+
 									{submission.status === 'pending' && (
-										<CardFooter className="border-t bg-muted/20 flex justify-between">
+										<CardFooter className='border-t bg-muted/20 flex justify-between'>
 											<Link href={`/dashboard/orders/${submission.orderId}`}>
-												<Button variant="outline" size="sm">
-													<Eye className="h-4 w-4 mr-1" />
+												<Button
+													variant='outline'
+													size='sm'>
+													<Eye className='h-4 w-4 mr-1' />
 													View Order
 												</Button>
 											</Link>
-											
-											<div className="flex gap-2">
+
+											<div className='flex gap-2'>
 												<Dialog>
 													<DialogTrigger asChild>
 														<Button
-															variant="destructive"
-															size="sm"
-															onClick={() => setSelectedSubmission(submission.id)}
-														>
-															<XCircle className="h-4 w-4 mr-1" />
+															variant='destructive'
+															size='sm'
+															onClick={() =>
+																setSelectedSubmission(submission.id)
+															}>
+															<XCircle className='h-4 w-4 mr-1' />
 															Reject
 														</Button>
 													</DialogTrigger>
@@ -228,47 +294,58 @@ export default function SubmissionsPage() {
 														<DialogHeader>
 															<DialogTitle>Reject Submission</DialogTitle>
 															<DialogDescription>
-																Please provide feedback for the freelancer explaining why the submission is being rejected.
+																Please provide feedback for the freelancer
+																explaining why the submission is being rejected.
 															</DialogDescription>
 														</DialogHeader>
 														<Textarea
-															className="min-h-[120px]"
-															placeholder="Enter feedback for the freelancer..."
+															className='min-h-[120px]'
+															placeholder='Enter feedback for the freelancer...'
 															value={feedback}
 															onChange={(e) => setFeedback(e.target.value)}
 														/>
 														<DialogFooter>
 															<Button
-																variant="outline"
+																variant='outline'
 																onClick={() => {
 																	setSelectedSubmission(null);
 																	setFeedback('');
 																}}
-																disabled={isProcessing}
-															>
+																disabled={isProcessing}>
 																Cancel
 															</Button>
 															<Button
-																variant="destructive"
-																onClick={() => selectedSubmission && handleUpdateSubmission(selectedSubmission, 'rejected')}
-																disabled={isProcessing || !feedback.trim()}
-															>
-																{isProcessing ? 
-																	<><Loader2 className="h-4 w-4 mr-1 animate-spin" /> Processing...</> : 
-																	'Reject Submission'}
+																variant='destructive'
+																onClick={() =>
+																	selectedSubmission &&
+																	handleUpdateSubmission(
+																		selectedSubmission,
+																		'rejected',
+																	)
+																}
+																disabled={isProcessing || !feedback.trim()}>
+																{isProcessing ? (
+																	<>
+																		<Loader2 className='h-4 w-4 mr-1 animate-spin' />{' '}
+																		Processing...
+																	</>
+																) : (
+																	'Reject Submission'
+																)}
 															</Button>
 														</DialogFooter>
 													</DialogContent>
 												</Dialog>
-												
+
 												<Dialog>
 													<DialogTrigger asChild>
 														<Button
-															variant="default"
-															size="sm"
-															onClick={() => setSelectedSubmission(submission.id)}
-														>
-															<CheckCircle className="h-4 w-4 mr-1" />
+															variant='default'
+															size='sm'
+															onClick={() =>
+																setSelectedSubmission(submission.id)
+															}>
+															<CheckCircle className='h-4 w-4 mr-1' />
 															Approve
 														</Button>
 													</DialogTrigger>
@@ -276,34 +353,44 @@ export default function SubmissionsPage() {
 														<DialogHeader>
 															<DialogTitle>Approve Submission</DialogTitle>
 															<DialogDescription>
-																This will deliver the completed work to the customer. You can add optional feedback below.
+																This will deliver the completed work to the
+																customer. You can add optional feedback below.
 															</DialogDescription>
 														</DialogHeader>
 														<Textarea
-															className="min-h-[120px]"
-															placeholder="Enter optional feedback..."
+															className='min-h-[120px]'
+															placeholder='Enter optional feedback...'
 															value={feedback}
 															onChange={(e) => setFeedback(e.target.value)}
 														/>
 														<DialogFooter>
 															<Button
-																variant="outline"
+																variant='outline'
 																onClick={() => {
 																	setSelectedSubmission(null);
 																	setFeedback('');
 																}}
-																disabled={isProcessing}
-															>
+																disabled={isProcessing}>
 																Cancel
 															</Button>
 															<Button
-																variant="default"
-																onClick={() => selectedSubmission && handleUpdateSubmission(selectedSubmission, 'approved')}
-																disabled={isProcessing}
-															>
-																{isProcessing ? 
-																	<><Loader2 className="h-4 w-4 mr-1 animate-spin" /> Processing...</> : 
-																	'Approve & Deliver'}
+																variant='default'
+																onClick={() =>
+																	selectedSubmission &&
+																	handleUpdateSubmission(
+																		selectedSubmission,
+																		'approved',
+																	)
+																}
+																disabled={isProcessing}>
+																{isProcessing ? (
+																	<>
+																		<Loader2 className='h-4 w-4 mr-1 animate-spin' />{' '}
+																		Processing...
+																	</>
+																) : (
+																	'Approve & Deliver'
+																)}
 															</Button>
 														</DialogFooter>
 													</DialogContent>
@@ -313,21 +400,25 @@ export default function SubmissionsPage() {
 									)}
 								</Card>
 							))}
-							
+
 							{totalPages > 1 && (
-								<Pagination 
-									currentPage={currentPage} 
-									totalPages={totalPages} 
-									onPageChange={setCurrentPage} 
+								<Pagination
+									currentPage={currentPage}
+									totalPages={totalPages}
+									onPageChange={setCurrentPage}
 								/>
 							)}
 						</>
 					) : (
 						<Card>
-							<CardContent className="flex flex-col items-center justify-center h-64">
-								<p className="text-muted-foreground mb-2">No {selectedTab} submissions found</p>
+							<CardContent className='flex flex-col items-center justify-center h-64'>
+								<p className='text-muted-foreground mb-2'>
+									No {selectedTab} submissions found
+								</p>
 								{selectedTab === 'pending' && (
-									<p className="text-sm text-muted-foreground">Submissions from freelancers will appear here for review</p>
+									<p className='text-sm text-muted-foreground'>
+										Submissions from freelancers will appear here for review
+									</p>
 								)}
 							</CardContent>
 						</Card>

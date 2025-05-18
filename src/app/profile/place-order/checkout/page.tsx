@@ -3,7 +3,7 @@ import { auth } from '@/auth';
 import db from '@/src/db';
 import order from '@/src/db/schema/order';
 import { eq } from 'drizzle-orm';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/src/components/ui/button';
 import {
 	Card,
 	CardContent,
@@ -11,7 +11,7 @@ import {
 	CardFooter,
 	CardHeader,
 	CardTitle,
-} from '@/components/ui/card';
+} from '@/src/components/ui/card';
 
 export default async function OrderCheckoutPage({
 	searchParams,

@@ -4,7 +4,7 @@ import db from '@/src/db';
 import { orders } from '@/src/db/schema';
 import { eq } from 'drizzle-orm';
 import { z } from 'zod';
-import transport from '@/lib/nodemailer';
+import transport from '@/src/lib/nodemailer';
 
 // Validation schema for the request body
 const statusUpdateSchema = z.object({

@@ -3,7 +3,7 @@ import { redirect } from 'next/navigation';
 import db from '@/src/db';
 import transaction from '@/src/db/schema/transactions';
 import { desc } from 'drizzle-orm';
-import TransactionsTable from '@/components/admin/TransactionsTable';
+import TransactionsTable from '@/src/components/admin/TransactionsTable';
 
 export const metadata = {
 	title: 'Transactions | Admin Dashboard',

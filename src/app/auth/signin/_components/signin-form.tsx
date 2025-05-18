@@ -9,11 +9,11 @@ import {
 	FormItem,
 	FormLabel,
 	FormMessage,
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
+} from '@/src/components/ui/form';
+import { Input } from '@/src/components/ui/input';
+import { Button } from '@/src/components/ui/button';
 import { type SigninInput, SigninSchema } from '@/validators/signin-validator';
-import { signinUserAction } from '@/actions/signin-user-action';
+import { signinUserAction } from '@/src/actions/signin-user-action';
 import { useState } from 'react';
 
 export const SigninForm = () => {

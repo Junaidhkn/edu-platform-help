@@ -1,7 +1,7 @@
 import { AreaGraph } from '../area-graph';
 import { BarGraph } from '../bar-graph';
 import { PieGraph } from '../pie-graph';
-import PageContainer from '@/components/layout/page-container';
+import PageContainer from '@/src/components/layout/page-container';
 import { RecentSales } from '../recent-sales';
 import {
 	Card,
@@ -9,8 +9,13 @@ import {
 	CardDescription,
 	CardHeader,
 	CardTitle,
-} from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+} from '@/src/components/ui/card';
+import {
+	Tabs,
+	TabsContent,
+	TabsList,
+	TabsTrigger,
+} from '@/src/components/ui/tabs';
 
 export default function OverViewPage() {
 	return (
@@ -54,7 +59,7 @@ export default function OverViewPage() {
 										+20.1% from last month
 									</p>
 								</CardContent>
-							</Card>	
+							</Card>
 							<Card>
 								<CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
 									<CardTitle className='text-sm font-medium'>Sales</CardTitle>

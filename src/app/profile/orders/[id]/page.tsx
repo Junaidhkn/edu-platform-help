@@ -10,10 +10,10 @@ import {
 	FileText,
 	DownloadIcon,
 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
+import { Button } from '@/src/components/ui/button';
+import { Badge } from '@/src/components/ui/badge';
 import db from '@/src/db';
-import { formatCurrency } from '@/lib/utils';
+import { formatCurrency } from '@/src/lib/utils';
 
 interface OrderDetailPageProps {
 	params: {

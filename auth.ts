@@ -4,12 +4,12 @@ import * as v from 'valibot';
 import argon2 from 'argon2';
 import { SigninSchema } from '@/validators/signin-validator';
 import { findUserByEmail } from '@/resources/queries';
-import { OAuthAccountAlreadyLinkedError } from '@/lib/custom-errors';
+import { OAuthAccountAlreadyLinkedError } from '@/src/lib/custom-errors';
 import { authConfig } from '@/auth.config';
 
 // // Ensure we're using HTTPS in development
 if (process.env.NODE_ENV === 'development' && !process.env.AUTH_URL) {
-	process.env.AUTH_URL = "http://localhost:3000";
+	process.env.AUTH_URL = 'http://localhost:3000';
 }
 
 const { providers: authConfigProviders, ...authConfigRest } = authConfig;
@@ -31,7 +31,7 @@ const nextAuth = NextAuth({
 					if (!user.password) throw new OAuthAccountAlreadyLinkedError();
 
 					let passwordsMatch = false;
-					
+
 					try {
 						// Use argon2 for both regular users and freelancers
 						passwordsMatch = await argon2.verify(user.password, password);

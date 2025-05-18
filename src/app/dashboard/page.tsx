@@ -1,12 +1,12 @@
 'use client';
 
-import { CreateAdminButton } from '@/components/admin/CreateAdminButton';
+import { CreateAdminButton } from '@/src/components/admin/CreateAdminButton';
 import Link from 'next/link';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
+import { Badge } from '@/src/components/ui/badge';
+import { Button } from '@/src/components/ui/button';
 import { EyeIcon } from 'lucide-react';
-import { Pagination } from '@/components/pagination';
-import { OrderFilters, OrderFilterType } from '@/components/order-filters';
+import { Pagination } from '@/src/components/pagination';
+import { OrderFilters, OrderFilterType } from '@/src/components/order-filters';
 import { useCallback, useEffect, useState } from 'react';
 
 const ITEMS_PER_PAGE = 7; // Show 7 orders per page

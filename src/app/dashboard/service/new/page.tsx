@@ -1,7 +1,7 @@
 import { auth } from '@/auth';
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
-import NewSubjectForm from '@/components/admin/NewSubjectForm';
+import NewSubjectForm from '@/src/components/admin/NewSubjectForm';
 
 export const metadata = {
 	title: 'Add New Subject | Admin Dashboard',

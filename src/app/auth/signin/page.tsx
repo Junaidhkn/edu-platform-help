@@ -1,10 +1,10 @@
-import { Button } from '@/components/ui/button';
+import { Button } from '@/src/components/ui/button';
 import { SigninForm } from './_components/signin-form';
 import Link from 'next/link';
 import {
 	OAuthSigninButtons,
 	OAuthSigninButtonsSkeleton,
-} from '@/components/oauth-signin-buttons';
+} from '@/src/components/oauth-signin-buttons';
 import { Suspense } from 'react';
 import { ForgotPasswordForm } from './_components/forgot-password-form';
 

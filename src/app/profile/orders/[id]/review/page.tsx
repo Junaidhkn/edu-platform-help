@@ -1,19 +1,19 @@
 import Link from 'next/link';
 import { redirect, notFound } from 'next/navigation';
 import { ChevronLeft } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/src/components/ui/button';
 import {
 	Card,
 	CardContent,
 	CardDescription,
 	CardHeader,
 	CardTitle,
-} from '@/components/ui/card';
+} from '@/src/components/ui/card';
 import { auth } from '@/auth';
 import db from '@/src/db';
 import { orders, review } from '@/src/db/schema';
 import { eq } from 'drizzle-orm';
-import ReviewFormWrapper from '@/components/ReviewFormWrapper';
+import ReviewFormWrapper from '@/src/components/ReviewFormWrapper';
 
 interface OrderReviewPageProps {
 	params: {

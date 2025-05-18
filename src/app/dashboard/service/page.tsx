@@ -2,10 +2,10 @@ import { auth } from '@/auth';
 import { redirect } from 'next/navigation';
 import { PlusCircle } from 'lucide-react';
 import Link from 'next/link';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/src/components/ui/button';
 import db from '@/src/db';
-import PricingCard from '@/components/admin/PricingCard';
-import SubjectCategoriesTable from '@/components/admin/SubjectCategoriesTable';
+import PricingCard from '@/src/components/admin/PricingCard';
+import SubjectCategoriesTable from '@/src/components/admin/SubjectCategoriesTable';
 
 export const metadata = {
 	title: 'Service Management | Admin Dashboard',

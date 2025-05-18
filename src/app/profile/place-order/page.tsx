@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { OrderForm } from '@/components/form/order-form';
+import { OrderForm } from '@/src/components/form/order-form';
 import { OrderFormValues } from '@/validators/order-form-schema';
 import { toast } from 'sonner';
 
@@ -41,7 +41,7 @@ export default function PlaceOrderPage() {
 
 			// Check which property contains the order ID
 			const orderId = data.orderId || (data.order && data.order.id);
-			
+
 			if (!orderId) {
 				throw new Error('No order ID returned from server');
 			}
@@ -50,7 +50,9 @@ export default function PlaceOrderPage() {
 			window.location.href = `/api/checkout?orderId=${orderId}`;
 		} catch (error) {
 			console.error('Error creating order:', error);
-			toast.error(error instanceof Error ? error.message : 'Failed to create order');
+			toast.error(
+				error instanceof Error ? error.message : 'Failed to create order',
+			);
 		} finally {
 			setIsSubmitting(false);
 		}
@@ -66,7 +68,10 @@ export default function PlaceOrderPage() {
 			</div>
 
 			<div className='rounded-lg border bg-card p-6 shadow-sm'>
-				<OrderForm onSubmit={handleSubmit} isSubmitting={isSubmitting} />
+				<OrderForm
+					onSubmit={handleSubmit}
+					isSubmitting={isSubmitting}
+				/>
 			</div>
 		</div>
 	);

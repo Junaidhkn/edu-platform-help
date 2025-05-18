@@ -1,7 +1,7 @@
 // src/app/api/webhooks/stripe/route.ts
 import { NextResponse } from 'next/server';
 import { headers } from 'next/headers';
-import stripe from '@/lib/stripe-server';
+import stripe from '@/src/lib/stripe-server';
 import db from '@/src/db';
 import transaction from '@/src/db/schema/transactions';
 import order from '@/src/db/schema/order';

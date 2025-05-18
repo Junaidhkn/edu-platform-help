@@ -8,7 +8,7 @@ import {
 import { BsArrowRight } from 'react-icons/bs';
 import Image from 'next/image';
 import HomeImage from '@/public/images/assignment-hero.svg';
-import TestimonialSlider from '@/components/TestimonialSlider';
+import TestimonialSlider from '@/src/components/TestimonialSlider';
 
 export default function Home() {
 	return (

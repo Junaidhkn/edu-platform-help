@@ -1,7 +1,7 @@
-import Header from '@/components/layout/header';
-import Sidebar from '@/components/layout/sidebar';
+import Header from '@/src/components/layout/header';
+import Sidebar from '@/src/components/layout/sidebar';
 import type { Metadata } from 'next';
-import { ensureAdmin } from '@/lib/admin/ensure-admin';
+import { ensureAdmin } from '@/src/lib/admin/ensure-admin';
 import { NextSSRPlugin } from '@uploadthing/react/next-ssr-plugin';
 import { extractRouterConfig } from 'uploadthing/server';
 import { ourFileRouter } from '@/src/app/api/uploadthing/core';

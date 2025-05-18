@@ -2,17 +2,22 @@ import { auth } from '@/auth';
 import { redirect } from 'next/navigation';
 import { PlusCircle } from 'lucide-react';
 import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Button } from '@/src/components/ui/button';
+import {
+	Tabs,
+	TabsContent,
+	TabsList,
+	TabsTrigger,
+} from '@/src/components/ui/tabs';
 import db from '@/src/db/index';
 import {
 	academicLevels,
 	subjectCategories,
 	assignmentTypes,
 } from '@/src/db/schema';
-import { AcademicLevelsTable } from '@/components/admin/AcademicLevelsTable';
-import { CategoriesTable } from '@/components/admin/CategoriesTable';
-import AssignmentTypesTable from '@/components/admin/AssignmentTypesTable';
+import { AcademicLevelsTable } from '@/src/components/admin/AcademicLevelsTable';
+import { CategoriesTable } from '@/src/components/admin/CategoriesTable';
+import AssignmentTypesTable from '@/src/components/admin/AssignmentTypesTable';
 import { desc, asc } from 'drizzle-orm';
 
 export const metadata = {

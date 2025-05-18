@@ -1,6 +1,6 @@
 import { auth } from '@/auth';
 import { redirect } from 'next/navigation';
-import FreelancerForm from '@/components/admin/FreelancerForm';
+import FreelancerForm from '@/src/components/admin/FreelancerForm';
 
 const metadata = {
 	title: 'Register Freelancer | Admin Dashboard',
@@ -8,13 +8,13 @@ const metadata = {
 };
 
 const checkSession = async () => {
-  const session = await auth();
-  if (!session?.user || session.user.role !== 'admin') {
-    redirect('/');
-  }
+	const session = await auth();
+	if (!session?.user || session.user.role !== 'admin') {
+		redirect('/');
+	}
 };
 export default function RegisterFreelancerPage() {
-checkSession();
+	checkSession();
 
 	return (
 		<div className='container mx-auto py-10'>

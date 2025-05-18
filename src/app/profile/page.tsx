@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { auth } from '@/auth';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/src/components/ui/button';
 import { type User } from 'next-auth';
 import { findOrdersbyUserId } from '../../../resources/queries';
 

@@ -10,8 +10,8 @@ import {
 	verificationTokens,
 	user,
 } from '@/src/db/schema/user';
-import { oauthVerifyEmailAction } from '@/actions/oauth-verify-email-action';
-import { USER_ROLES } from '@/lib/constants';
+import { oauthVerifyEmailAction } from '@/src/actions/oauth-verify-email-action';
+import { USER_ROLES } from '@/src/lib/constants';
 import type { AdapterUser } from '@auth/core/adapters';
 import { getTableColumns } from 'drizzle-orm';
 import { findAdminUserEmailAddresses } from './resources/admin-user-email-address-queries';
@@ -68,12 +68,18 @@ export const authConfig = {
 			}
 
 			// Admin routes
-			if (pathname.startsWith('/dashboard') && auth?.user?.role !== USER_ROLES.ADMIN) {
+			if (
+				pathname.startsWith('/dashboard') &&
+				auth?.user?.role !== USER_ROLES.ADMIN
+			) {
 				return false;
 			}
 
 			// Freelancer routes
-			if (pathname.startsWith('/freelancer') && !(auth?.user as any)?.isFreelancer) {
+			if (
+				pathname.startsWith('/freelancer') &&
+				!(auth?.user as any)?.isFreelancer
+			) {
 				return false;
 			}
 
@@ -86,7 +92,7 @@ export const authConfig = {
 
 			if (user?.id) token.id = user.id;
 			if (user?.role) token.role = user.role;
-			
+
 			// Add isFreelancer flag if it exists
 			if ((user as any)?.isFreelancer) {
 				(token as any).isFreelancer = true;
@@ -97,7 +103,7 @@ export const authConfig = {
 		session({ session, token }) {
 			session.user.id = token.id;
 			session.user.role = token.role;
-			
+
 			// Add isFreelancer flag if it exists
 			if ((token as any)?.isFreelancer) {
 				(session.user as any).isFreelancer = true;

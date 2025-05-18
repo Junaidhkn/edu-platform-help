@@ -1,9 +1,9 @@
 'use client';
 
-import { DataTable } from '@/components/ui/table/data-table';
-import { DataTableFilterBox } from '@/components/ui/table/data-table-filter-box';
-import { DataTableResetFilter } from '@/components/ui/table/data-table-reset-filter';
-import { DataTableSearch } from '@/components/ui/table/data-table-search';
+import { DataTable } from '@/src/components/ui/table/data-table';
+import { DataTableFilterBox } from '@/src/components/ui/table/data-table-filter-box';
+import { DataTableResetFilter } from '@/src/components/ui/table/data-table-reset-filter';
+import { DataTableSearch } from '@/src/components/ui/table/data-table-search';
 import { service } from '@/constants/data';
 import {
 	CATEGORY_OPTIONS,

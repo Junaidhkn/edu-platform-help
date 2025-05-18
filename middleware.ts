@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { USER_ROLES } from '@/lib/constants';
+import { USER_ROLES } from '@/src/lib/constants';
 import { auth } from './auth';
 
 export default auth((req) => {

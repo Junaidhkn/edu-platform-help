@@ -11,10 +11,10 @@ import {
 	FormItem,
 	FormLabel,
 	FormMessage,
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { signupUserAction } from '@/actions/signup-user-action';
+} from '@/src/components/ui/form';
+import { Input } from '@/src/components/ui/input';
+import { Button } from '@/src/components/ui/button';
+import { signupUserAction } from '@/src/actions/signup-user-action';
 import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
