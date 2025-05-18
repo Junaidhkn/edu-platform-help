@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { SignoutButton } from '@/components/signout-button';
 import { useSession } from 'next-auth/react';
 import { Loader2Icon } from 'lucide-react';
+import { USER_ROLES } from '@/lib/constants';
 
 export const NavbarLinks = () => {
 	const session = useSession();
@@ -29,7 +30,7 @@ export const NavbarLinks = () => {
 			{session.status === 'loading' ? (
 				<Loading />
 			) : session.status === 'authenticated' ? (
-				<SignedIn />
+				<SignedIn user={session.data.user} />
 			) : (
 				<SignedOut />
 			)}
@@ -49,18 +50,22 @@ const Loading = () => {
 	);
 };
 
-const SignedIn = () => {
+const SignedIn = ({ user }: { user: any }) => {
+	const isAdmin = user?.role === USER_ROLES.ADMIN;
+
 	return (
 		<>
-			<li>
-				<Button
-					size='sm'
-					variant='ghost'
-					className='text-gray-700'
-					asChild>
-					<Link href='/dashboard'>Dashboard</Link>
-				</Button>
-			</li>
+			{isAdmin && (
+				<li>
+					<Button
+						size='sm'
+						variant='ghost'
+						className='text-gray-700'
+						asChild>
+						<Link href='/dashboard'>Dashboard</Link>
+					</Button>
+				</li>
+			)}
 			<li>
 				<Button
 					size='sm'

@@ -9,7 +9,7 @@ export const SignoutButton = () => {
 			variant='ghost'
 			size='sm'
 			className='text-gray-700 hover:text-red-600'
-			onClick={() => signOut()}>
+			onClick={() => signOut({ callbackUrl: '/auth/signin' })}>
 			Sign Out
 		</Button>
 	);
