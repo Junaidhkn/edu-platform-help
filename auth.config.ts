@@ -10,7 +10,7 @@ import {
 	verificationTokens,
 	user,
 } from '@/src/db/schema/user';
-import { oauthVerifyEmailAction } from '@/src/actions/oauth-verify-email-action';
+import { oauthVerifyEmailAction } from '@/src/app/actions/oauth-verify-email-action';
 import { USER_ROLES } from '@/src/lib/constants';
 import type { AdapterUser } from '@auth/core/adapters';
 import { getTableColumns } from 'drizzle-orm';

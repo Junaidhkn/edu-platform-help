@@ -14,7 +14,7 @@ import {
 } from '@/src/components/ui/form';
 import { Input } from '@/src/components/ui/input';
 import { Button } from '@/src/components/ui/button';
-import { signupUserAction } from '@/src/actions/signup-user-action';
+import { signupUserAction } from '@/src/app/actions/signup-user-action';
 import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';

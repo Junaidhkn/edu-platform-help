@@ -7,7 +7,7 @@ import {
 	SiGoogleHex,
 } from '@icons-pack/react-simple-icons';
 import { Button } from '@/src/components/ui/button';
-import { oauthSigninAction } from '@/src/actions/oauth-signin-action';
+import { oauthSigninAction } from '@/src/app/actions/oauth-signin-action';
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 

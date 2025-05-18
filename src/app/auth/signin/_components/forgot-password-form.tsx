@@ -1,6 +1,6 @@
 'use client';
 
-import { forgotPasswordAction } from '@/src/actions/forgot-password-action';
+import { forgotPasswordAction } from '@/src/app/actions/forgot-password-action';
 import { Button } from '@/src/components/ui/button';
 import {
 	Dialog,

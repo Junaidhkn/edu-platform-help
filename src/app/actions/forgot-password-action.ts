@@ -3,8 +3,8 @@
 import { findUserByEmail } from '@/src/resources/queries';
 import { ForgotPasswordSchema } from '@/validators/forgot-password-validator';
 import * as v from 'valibot';
-import { createVerificationTokenAction } from '@/src/actions/create-verification-token-action';
-import { sendForgotPasswordEmail } from '@/src/actions/mail/send-forgot-password-email';
+import { createVerificationTokenAction } from '@/src/app/actions/create-verification-token-action';
+import { sendForgotPasswordEmail } from '@/src/app/actions/mail/send-forgot-password-email';
 
 type Res =
 	| { success: true }
