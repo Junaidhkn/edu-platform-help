@@ -13,12 +13,12 @@ export async function sendSignupUserEmail({
 	console.log(`Sending email to ${email} with token ${token}`);
 
 	await transport.sendMail({
-		from: `"Edu-assign-help Team" <${process.env.BREVO_SMTP_USER}>`,
+		from: `"Top Nerd Team" <${process.env.BREVO_SMTP_USER}>`,
 		to: email,
 		subject: 'Verify your email address',
 		html: `
     <div style="font-family: Arial, sans-serif; color: #333; line-height: 1.6; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #eaeaea; border-radius: 10px;">
-      <h2 style="text-align: center; color: #3b82f6;">Edu-assign-help</h2>
+      <h2 style="text-align: center; color: #3b82f6;">Top Nerd</h2>
 
       <p>Hi there,</p>
 
@@ -30,9 +30,9 @@ export async function sendSignupUserEmail({
       
       <br />
 
-      <p>You received this email because you signed up for Edu-assign-help.</p>
+      <p>You received this email because you signed up for Top Nerd.</p>
 
-      <p style="text-align: center; font-size: 12px; color: #aaa;">&copy; 2025 Edu-assign-help. All rights reserved.</p>
+      <p style="text-align: center; font-size: 12px; color: #aaa;">&copy; 2025 Top Nerd. All rights reserved.</p>
     </div>
     `,
 	});
