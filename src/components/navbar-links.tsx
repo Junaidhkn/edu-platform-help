@@ -9,7 +9,7 @@ import { USER_ROLES } from '@/src/lib/constants';
 import { useEffect, useState } from 'react';
 import { checkFreelancerStatus } from '@/src/lib/freelancer';
 
-export const NavbarLinks = () => {
+export const NavbarLinks = ({ onClick }: { onClick?: () => void }) => {
 	const session = useSession();
 	const user = session.data?.user;
 	const isAdmin = user?.role === USER_ROLES.ADMIN;
@@ -33,22 +33,22 @@ export const NavbarLinks = () => {
 
 	return (
 		<>
-			<>
-				<li className=' md:block'>
-					<Link
-						href='/services'
-						className='text-gray-700 hover:text-purple-700 font-medium'>
-						Services
-					</Link>
-				</li>
-				<li className=' md:block'>
-					<Link
-						href='/#how-it-works'
-						className='text-gray-700 hover:text-purple-700 font-medium'>
-						How It Works
-					</Link>
-				</li>
-			</>
+			<li className='block'>
+				<Link
+					href='/services'
+					className='text-gray-700 hover:text-purple-700 font-medium block py-2 md:py-0'
+					onClick={onClick}>
+					Services
+				</Link>
+			</li>
+			<li className='block'>
+				<Link
+					href='/#how-it-works'
+					className='text-gray-700 hover:text-purple-700 font-medium block py-2 md:py-0'
+					onClick={onClick}>
+					How It Works
+				</Link>
+			</li>
 
 			{session.status === 'loading' ? (
 				<Loading />
@@ -56,9 +56,10 @@ export const NavbarLinks = () => {
 				<SignedIn
 					user={user}
 					isFreelancer={isFreelancer}
+					onClick={onClick}
 				/>
 			) : (
-				<SignedOut />
+				<SignedOut onClick={onClick} />
 			)}
 		</>
 	);
@@ -66,10 +67,11 @@ export const NavbarLinks = () => {
 
 const Loading = () => {
 	return (
-		<li>
+		<li className='block'>
 			<Button
 				size='sm'
-				variant='ghost'>
+				variant='ghost'
+				className='w-full md:w-auto'>
 				<Loader2Icon className='min-w-[8ch] animate-spin' />
 			</Button>
 		</li>
@@ -79,69 +81,91 @@ const Loading = () => {
 const SignedIn = ({
 	user,
 	isFreelancer,
+	onClick,
 }: {
 	user: any;
 	isFreelancer: boolean;
+	onClick?: () => void;
 }) => {
 	const isAdmin = user?.role === USER_ROLES.ADMIN;
 
 	return (
 		<>
 			{isAdmin && (
-				<li>
+				<li className='block'>
 					<Button
 						size='sm'
 						variant='ghost'
-						className='text-gray-700'
+						className='text-gray-700 w-full md:w-auto'
 						asChild>
-						<Link href='/dashboard'>Dashboard</Link>
+						<Link
+							href='/dashboard'
+							onClick={onClick}>
+							Dashboard
+						</Link>
 					</Button>
 				</li>
 			)}
 			{isFreelancer ? (
-				<li>
+				<li className='block'>
 					<Button
 						size='sm'
-						className='bg-purple-600 hover:bg-purple-700'
+						className='bg-purple-600 hover:bg-purple-700 w-full md:w-auto'
 						asChild>
-						<Link href='/freelancer'>Dashboard</Link>
+						<Link
+							href='/freelancer'
+							onClick={onClick}>
+							Dashboard
+						</Link>
 					</Button>
 				</li>
 			) : (
-				<li>
+				<li className='block'>
 					<Button
 						size='sm'
-						className='bg-purple-600 hover:bg-purple-700'
+						className='bg-purple-600 hover:bg-purple-700 w-full md:w-auto'
 						asChild>
-						<Link href='/profile'>Profile</Link>
+						<Link
+							href='/profile'
+							onClick={onClick}>
+							Profile
+						</Link>
 					</Button>
 				</li>
 			)}
-			<li>
+			<li className='block'>
 				<SignoutButton />
 			</li>
 		</>
 	);
 };
 
-const SignedOut = () => {
+const SignedOut = ({ onClick }: { onClick?: () => void }) => {
 	return (
 		<>
-			<li>
+			<li className='block'>
 				<Button
 					variant='ghost'
 					size='default'
-					className='bg-transparent border-2 border-white hover:bg-slate-700 hover:bg-opacity-10 rounded-lg px-2 py-2 text-center font-medium'
+					className='bg-transparent border-2 border-white hover:bg-slate-700 hover:bg-opacity-10 rounded-lg px-2 py-2 text-center font-medium w-full md:w-auto'
 					asChild>
-					<Link href='/auth/signin'>Sign In</Link>
+					<Link
+						href='/auth/signin'
+						onClick={onClick}>
+						Sign In
+					</Link>
 				</Button>
 			</li>
-			<li>
+			<li className='block'>
 				<Button
 					size='default'
-					className='bg-transparent border-2 border-white hover:bg-slate-700 hover:bg-opacity-10 rounded-lg px-2 py-2 text-center font-medium'
+					className='bg-transparent border-2 border-white hover:bg-slate-700 hover:bg-opacity-10 rounded-lg px-2 py-2 text-center font-medium w-full md:w-auto'
 					asChild>
-					<Link href='/auth/signup'>Sign Up</Link>
+					<Link
+						href='/auth/signup'
+						onClick={onClick}>
+						Sign Up
+					</Link>
 				</Button>
 			</li>
 		</>

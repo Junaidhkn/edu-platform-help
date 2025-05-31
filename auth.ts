@@ -7,9 +7,8 @@ import { findUserByEmail } from '@/src/app/resources/queries';
 import { OAuthAccountAlreadyLinkedError } from '@/src/lib/custom-errors';
 import { authConfig } from '@/auth.config';
 
-// // Ensure we're using HTTPS in development
 if (process.env.NODE_ENV === 'development' && !process.env.AUTH_URL) {
-	process.env.AUTH_URL = 'http://localhost:3000';
+	process.env.AUTH_URL = 'https://edu-assign-help.vercel.app';
 }
 
 const { providers: authConfigProviders, ...authConfigRest } = authConfig;

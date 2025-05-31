@@ -15,34 +15,34 @@ export default function Home() {
 		<main className='flex flex-col items-center min-h-screen bg-slate-50'>
 			{/* Hero Section */}
 			<section className='w-full bg-gradient-to-br from-slate-900 via-purple-900 to-violet-800 text-white'>
-				<div className='max-w-7xl mx-auto px-4 sm:px-6 py-12 md:py-16 lg:py-20'>
-					<div className='flex lg:flex-row items-center justify-between gap-8 lg:gap-12'>
-						<div className='w-full lg:w-1/2 space-y-6  lg:text-left'>
-							<h1 className='text-3xl text-center sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight'>
+				<div className='max-w-7xl mx-auto px-4 sm:px-6 py-8 md:py-12 lg:py-16'>
+					<div className='flex flex-col-reverse lg:flex-row items-center justify-between gap-8 lg:gap-12'>
+						<div className='w-full lg:w-1/2 space-y-4 md:space-y-6 text-center lg:text-left'>
+							<h1 className='text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-extrabold tracking-tight leading-tight'>
 								Unlock Your Academic Potential
 							</h1>
-							<p className='text-base sm:text-lg md:text-xl opacity-90 max-w-xl mx-auto lg:mx-0'>
+							<p className='text-sm sm:text-base md:text-lg lg:text-xl opacity-90 max-w-xl mx-auto lg:mx-0'>
 								Premium academic solutions and expert freelance support,
 								tailored for your success.
 							</p>
-							<div className='flex  sm:flex-row gap-4 justify-center lg:justify-start'>
+							<div className='flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center lg:justify-start'>
 								<Link
 									href='/auth/signup'
-									className='bg-white text-center text-purple-700 hover:bg-purple-50 font-bold rounded-lg px-6 py-3 text-sm sm:text-base shadow-lg transform hover:scale-105 transition-all duration-300'>
+									className='bg-white text-center text-purple-700 hover:bg-purple-50 font-bold rounded-lg px-4 py-2.5 sm:px-6 sm:py-3 text-sm sm:text-base shadow-lg transform hover:scale-105 transition-all duration-300'>
 									Get Started Today
 								</Link>
 								<Link
 									href='#how-it-works'
-									className='bg-transparent text-center border-2 border-white text-white hover:bg-white/10 font-bold rounded-lg px-6 py-3 text-sm sm:text-base shadow-lg transform hover:scale-105 transition-all duration-300'>
+									className='bg-transparent text-center border-2 border-white text-white hover:bg-white/10 font-bold rounded-lg px-4 py-2.5 sm:px-6 sm:py-3 text-sm sm:text-base shadow-lg transform hover:scale-105 transition-all duration-300'>
 									Learn How It Works
 								</Link>
 							</div>
 						</div>
-						<div className='w-full lg:w-1/2 flex justify-center items-center mt-8 lg:mt-0'>
+						<div className='w-full lg:w-1/2 flex justify-center items-center mt-6 lg:mt-0'>
 							<Image
 								src={HomeImage}
 								alt='Academic Success Hero Image'
-								className='w-full max-w-sm sm:max-w-md lg:max-w-lg rounded-lg shadow-2xl'
+								className='w-full max-w-[280px] sm:max-w-sm md:max-w-md lg:max-w-lg rounded-lg shadow-2xl'
 								width={500}
 								height={500}
 								priority
@@ -182,8 +182,8 @@ export default function Home() {
 			</section>
 
 			{/* Testimonials */}
-			<section className='w-full py-12 md:py-16 lg:py-20 bg-white'>
-				<div className='max-w-7xl mx-auto px-4 sm:px-6'>
+			<section className='w-full py-12 md:py-16 lg:py-20 bg-white '>
+				<div className='max-w-7xl mx-auto px-2 sm:px-4 md:px-6 w-full overflow-hidden'>
 					<div className='text-center mb-12 md:mb-16'>
 						<h2 className='text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900'>
 							Voices of Our Valued Students
@@ -193,7 +193,9 @@ export default function Home() {
 							excellence.
 						</p>
 					</div>
-					<TestimonialSlider />
+					<div className='w-full'>
+						<TestimonialSlider />
+					</div>
 				</div>
 			</section>
 
