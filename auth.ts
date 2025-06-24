@@ -1,7 +1,8 @@
 import NextAuth from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
 import * as v from 'valibot';
-import argon2 from 'argon2';
+// import argon2 from 'argon2';
+import { verify } from '@node-rs/argon2';
 import { SigninSchema } from '@/validators/signin-validator';
 import { findUserByEmail } from '@/src/app/resources/queries';
 import { OAuthAccountAlreadyLinkedError } from '@/src/lib/custom-errors';
@@ -33,7 +34,7 @@ const nextAuth = NextAuth({
 
 					try {
 						// Use argon2 for both regular users and freelancers
-						passwordsMatch = await argon2.verify(user.password, password);
+						passwordsMatch = await verify(user.password, password);
 					} catch (error) {
 						console.error('Password verification error:', error);
 						return null;

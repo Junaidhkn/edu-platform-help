@@ -183,7 +183,7 @@ export default function Home() {
 
 			{/* Testimonials */}
 			<section className='w-full py-12 md:py-16 lg:py-20 bg-white '>
-				<div className='max-w-7xl mx-auto px-2 sm:px-4 md:px-6 w-full overflow-hidden'>
+				<div className='max-w-7xl mx-auto px-2 sm:px-4 md:px-6 w-full overflow-x-hidden'>
 					<div className='text-center mb-12 md:mb-16'>
 						<h2 className='text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900'>
 							Voices of Our Valued Students
