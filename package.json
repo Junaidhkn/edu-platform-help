@@ -12,12 +12,14 @@
 		"db:migrate": "tsx ./src/db/migrate.ts",
 		"db:seed": "cross-env DB_SEEDING=true tsx src/db/seed.ts"
 	},
+	"engines": {
+		"node": "20.x"
+	},
 	"dependencies": {
 		"@auth/drizzle-adapter": "^1.4.1",
 		"@hookform/resolvers": "^3.9.0",
 		"@icons-pack/react-simple-icons": "^10.2.0",
 		"@neondatabase/serverless": "^0.10.4",
-		"@node-rs/argon2": "^2.0.2",
 		"@radix-ui/react-accordion": "^1.1.2",
 		"@radix-ui/react-alert-dialog": "^1.0.5",
 		"@radix-ui/react-avatar": "^1.0.4",
@@ -46,6 +48,7 @@
 		"@uploadthing/react": "^7.3.0",
 		"@vercel/postgres": "^0.10.0",
 		"anchor-pki": "^0.3.2",
+		"argon2": "^0.43.0",
 		"autoprefixer": "10.4.15",
 		"bcryptjs": "^3.0.2",
 		"class-variance-authority": "^0.7.0",

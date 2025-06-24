@@ -4,8 +4,7 @@ import { findUserByEmail } from '@/src/app/resources/queries';
 import { findVerificationTokenByToken } from '@/src/app/resources/verification-token-queries';
 import { ResetPasswordSchema } from '@/validators/reset-password-validator';
 import * as v from 'valibot';
-// import argon2 from 'argon2';
-import { hash } from '@node-rs/argon2';
+import argon2 from 'argon2';
 import { eq } from 'drizzle-orm';
 import db from '@/src/db';
 import { users } from '@/src/db/schema';
@@ -62,7 +61,7 @@ export async function resetPasswordAction(
 	}
 
 	try {
-		const hashedPassword = await hash(password);
+		const hashedPassword = await argon2.hash(password);
 
 		await db
 			.update(users)
