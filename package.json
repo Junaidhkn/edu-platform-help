@@ -46,7 +46,6 @@
 		"@uploadthing/react": "^7.3.0",
 		"@vercel/postgres": "^0.10.0",
 		"anchor-pki": "^0.3.2",
-		"argon2": "^0.41.1",
 		"autoprefixer": "10.4.15",
 		"bcryptjs": "^3.0.2",
 		"class-variance-authority": "^0.7.0",
