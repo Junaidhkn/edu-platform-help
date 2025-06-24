@@ -1,6 +1,7 @@
 'use server';
 
-import argon2 from 'argon2';
+// import argon2 from 'argon2';
+import { hash } from '@node-rs/argon2';
 import * as v from 'valibot';
 import { SignupSchema } from '@/validators/signup-validator';
 
@@ -70,7 +71,7 @@ export async function signupUserAction(values: unknown): Promise<Res> {
 	}
 
 	try {
-		const hashedPassword = await argon2.hash(password);
+		const hashedPassword = await hash(password);
 		const adminEmails = await findAdminUserEmailAddresses();
 		const isAdmin = adminEmails.includes(email.toLowerCase());
 
