@@ -4,7 +4,9 @@ import db from '@/src/db';
 import { orders } from '@/src/db/schema';
 import { eq } from 'drizzle-orm';
 import { z } from 'zod';
-import { resend } from '../../../send/route';
+import { Resend } from 'resend';
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 // Validation schema for the request body
 const contactSchema = z.object({

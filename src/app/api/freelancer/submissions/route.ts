@@ -5,7 +5,9 @@ import { submissions } from '@/src/db/schema';
 import { orders } from '@/src/db/schema';
 import { users } from '@/src/db/schema';
 import { eq } from 'drizzle-orm';
-import { resend } from '../../send/route';
+import { Resend } from 'resend';
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(request: NextRequest) {
 	try {
