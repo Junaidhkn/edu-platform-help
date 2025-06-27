@@ -4,7 +4,7 @@ import db from '@/src/db';
 import { orders } from '@/src/db/schema';
 import { eq } from 'drizzle-orm';
 import { z } from 'zod';
-import transport from '@/src/lib/nodemailer';
+import { resend } from '../../../send/route';
 
 // Validation schema for the request body
 const statusUpdateSchema = z.object({
@@ -124,8 +124,8 @@ async function sendOrderStatusEmail({
 			completed: '#3b82f6',
 		}[status] || '#64748b';
 
-	await transport.sendMail({
-		from: `"Edu-assign-help Team" <${process.env.BREVO_SMTP_USER}>`,
+	const { data, error } = await resend.emails.send({
+		from: `Top Nerd Team ${process.env.ADMIN_NAME || 'admin@topnerd.co.uk'}`,
 		to: email,
 		subject: statusTitle,
 		html: `
@@ -151,5 +151,11 @@ async function sendOrderStatusEmail({
     `,
 	});
 
+	if (error) {
+		console.error('Error sending email:', error);
+		throw error;
+	}
+
 	console.log(`Order status email sent to ${email} for order ${orderId}`);
+	return data;
 }

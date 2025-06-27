@@ -12,9 +12,6 @@
 		"db:migrate": "tsx ./src/db/migrate.ts",
 		"db:seed": "cross-env DB_SEEDING=true tsx src/db/seed.ts"
 	},
-	"engines": {
-		"node": "20.x"
-	},
 	"dependencies": {
 		"@auth/drizzle-adapter": "^1.4.1",
 		"@hookform/resolvers": "^3.9.0",
@@ -67,7 +64,6 @@
 		"next-auth": "^5.0.0-beta.19",
 		"next-themes": "^0.2.1",
 		"nextjs-toploader": "^1.6.12",
-		"nodemailer": "^6.9.16",
 		"nuqs": "^1.19.1",
 		"pg": "^8.13.1",
 		"postgres": "^3.4.5",
@@ -79,6 +75,7 @@
 		"react-icons": "^5.5.0",
 		"react-slick": "^0.30.3",
 		"recharts": "^2.12.7",
+		"resend": "^4.6.0",
 		"server-only": "^0.0.1",
 		"sharp": "^0.32.5",
 		"slick-carousel": "^1.8.1",
@@ -98,7 +95,6 @@
 	"devDependencies": {
 		"@faker-js/faker": "^9.0.3",
 		"@types/node": "^20",
-		"@types/nodemailer": "^6.4.17",
 		"@types/pg": "^8.11.11",
 		"@types/react": "^18",
 		"@types/react-dom": "^18",

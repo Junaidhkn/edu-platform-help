@@ -4,7 +4,7 @@ import db from '@/src/db';
 import { orders } from '@/src/db/schema';
 import { eq } from 'drizzle-orm';
 import { z } from 'zod';
-import transport from '@/src/lib/nodemailer';
+import { resend } from '../../../send/route';
 
 // Validation schema for the request body
 const contactSchema = z.object({
@@ -94,8 +94,8 @@ async function sendContactEmail({
 	orderId,
 	adminName,
 }: EmailParams) {
-	await transport.sendMail({
-		from: `"Edu-assign-help Team" <${process.env.BREVO_SMTP_USER}>`,
+	await resend.emails.send({
+		from: `Top Nerd Team ${process.env.ADMIN_NAME || 'admin@topnerd.co.uk'}`,
 		to: email,
 		subject: subject,
 		html: `

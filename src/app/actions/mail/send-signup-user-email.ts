@@ -1,7 +1,7 @@
 'use server';
 
 import { VERIFICATION_TOKEN_EXP_MIN } from '@/src/lib/constants';
-import transport from '@/src/lib/nodemailer';
+import { resend } from '../../api/send/route';
 
 export async function sendSignupUserEmail({
 	email,
@@ -12,7 +12,7 @@ export async function sendSignupUserEmail({
 }) {
 	console.log(`Sending email to ${email} with token ${token}`);
 
-	await transport.sendMail({
+	await resend.emails.send({
 		from: `"Top Nerd Team" <${process.env.BREVO_SMTP_USER}>`,
 		to: email,
 		subject: 'Verify your email address',

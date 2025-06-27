@@ -1,7 +1,7 @@
 'use server';
 
 import { VERIFICATION_TOKEN_EXP_MIN } from '@/src/lib/constants';
-import transport from '@/src/lib/nodemailer';
+import { resend } from '../../api/send/route';
 
 export async function sendForgotPasswordEmail({
 	email,
@@ -12,8 +12,8 @@ export async function sendForgotPasswordEmail({
 }) {
 	console.log(`Sending email to ${email} with token ${token}`);
 
-	await transport.sendMail({
-		from: `"Top Nerd" <${process.env.BREVO_SMTP_USER}>`,
+	await resend.emails.send({
+		from: `Top Nerd Team ${process.env.ADMIN_NAME || 'admin@topnerd.co.uk'}`,
 		to: email,
 		subject: 'Reset your password',
 		html: `

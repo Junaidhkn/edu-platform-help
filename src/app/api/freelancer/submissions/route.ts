@@ -5,7 +5,7 @@ import { submissions } from '@/src/db/schema';
 import { orders } from '@/src/db/schema';
 import { users } from '@/src/db/schema';
 import { eq } from 'drizzle-orm';
-import transport from '@/src/lib/nodemailer';
+import { resend } from '../../send/route';
 
 export async function POST(request: NextRequest) {
 	try {
@@ -97,7 +97,10 @@ export async function POST(request: NextRequest) {
 
 		// Notify admin about new submission
 		try {
-			await transport.sendMail({
+			await resend.emails.send({
+				from: `Top Nerd Team ${
+					process.env.ADMIN_NAME || 'admin@topnerd.co.uk'
+				}`,
 				to: process.env.ADMIN_EMAIL || 'junaidhkn@gmail.com',
 				subject: `New Submission for Order #${orderId.slice(-6)}`,
 				text: `A freelancer has submitted work for order #${orderId.slice(

@@ -7,7 +7,7 @@ import { freelancers } from '@/src/db/schema';
 import { users } from '@/src/db/schema';
 import { eq } from 'drizzle-orm';
 import { USER_ROLES } from '@/src/lib/constants';
-import transport from '@/src/lib/nodemailer';
+import { resend } from '../../../send/route';
 
 export async function PATCH(
 	request: NextRequest,
@@ -125,7 +125,10 @@ export async function PATCH(
 									.join('')
 							: '';
 
-						await transport.sendMail({
+						await resend.emails.send({
+							from: `Top Nerd Team ${
+								process.env.ADMIN_NAME || 'admin@topnerd.co.uk'
+							}`,
 							to: userData.email,
 							subject: `Your Order #${orderData.id.slice(-6)} is Complete!`,
 							text: `Good news! Your order #${orderData.id.slice(
@@ -174,7 +177,10 @@ export async function PATCH(
 								adminFeedback || 'No specific feedback provided.'
 						  }`;
 
-				await transport.sendMail({
+				await resend.emails.send({
+					from: `Top Nerd Team ${
+						process.env.ADMIN_NAME || 'admin@topnerd.co.uk'
+					}`,
 					to: freelancerData.email,
 					subject: emailSubject,
 					text: emailText,
