@@ -4,7 +4,6 @@ import { findUserByEmail } from '@/src/app/resources/queries';
 import { findVerificationTokenByToken } from '@/src/app/resources/verification-token-queries';
 import { ResetPasswordSchema } from '@/validators/reset-password-validator';
 import * as v from 'valibot';
-import argon2 from 'argon2';
 import { eq } from 'drizzle-orm';
 import db from '@/src/db';
 import { users } from '@/src/db/schema';

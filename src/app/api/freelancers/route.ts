@@ -3,7 +3,6 @@ import { auth } from '@/auth';
 import db from '@/src/db';
 import { freelancers } from '@/src/db/schema';
 import { freelancerFormSchema } from '@/src/lib/validators/freelancer-schema';
-import argon2 from 'argon2';
 
 export async function GET() {
 	try {

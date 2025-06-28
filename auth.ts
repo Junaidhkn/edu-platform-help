@@ -1,7 +1,6 @@
 import NextAuth from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
 import * as v from 'valibot';
-import argon2 from 'argon2';
 import { SigninSchema } from '@/validators/signin-validator';
 import { findUserByEmail } from '@/src/app/resources/queries';
 import { OAuthAccountAlreadyLinkedError } from '@/src/lib/custom-errors';

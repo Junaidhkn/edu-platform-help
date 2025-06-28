@@ -15,8 +15,6 @@ import { USER_ROLES } from '@/src/lib/constants';
 import type { AdapterUser } from '@auth/core/adapters';
 import { getTableColumns } from 'drizzle-orm';
 import { findAdminUserEmailAddresses } from './src/app/resources/admin-user-email-address-queries';
-import { eq } from 'drizzle-orm';
-import { freelancers } from '@/src/db/schema';
 
 export const authConfig = {
 	adapter: {
