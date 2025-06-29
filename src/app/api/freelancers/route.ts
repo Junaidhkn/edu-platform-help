@@ -3,6 +3,7 @@ import { auth } from '@/auth';
 import db from '@/src/db';
 import { freelancers } from '@/src/db/schema';
 import { freelancerFormSchema } from '@/src/lib/validators/freelancer-schema';
+import bcrypt from 'bcryptjs';
 
 export async function GET() {
 	try {
@@ -68,8 +69,8 @@ export async function POST(request: NextRequest) {
 			);
 		}
 
-		// Hash the password using argon2
-		const hashedPassword = await argon2.hash(password);
+		const salt = bcrypt.genSaltSync(10);
+		const hashedPassword = bcrypt.hashSync(password, salt);
 
 		// Create the freelancer
 		const newFreelancer = await db

@@ -11,6 +11,7 @@ import { sendSignupUserEmail } from '@/src/app/actions/mail/send-signup-user-ema
 import db from '@/src/db';
 import { users } from '@/src/db/schema';
 import { lower } from '@/src/db/schema/user';
+import bcrypt from 'bcryptjs';
 
 type Res =
 	| { success: true }
@@ -69,7 +70,8 @@ export async function signupUserAction(values: unknown): Promise<Res> {
 	}
 
 	try {
-		const hashedPassword = await argon2.hash(password);
+		const salt = bcrypt.genSaltSync(10);
+		const hashedPassword = bcrypt.hashSync(password, salt);
 		const adminEmails = await findAdminUserEmailAddresses();
 		const isAdmin = adminEmails.includes(email.toLowerCase());
 

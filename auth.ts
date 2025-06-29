@@ -5,6 +5,7 @@ import { SigninSchema } from '@/validators/signin-validator';
 import { findUserByEmail } from '@/src/app/resources/queries';
 import { OAuthAccountAlreadyLinkedError } from '@/src/lib/custom-errors';
 import { authConfig } from '@/auth.config';
+import bcrypt from 'bcryptjs';
 
 if (process.env.NODE_ENV === 'development' && !process.env.AUTH_URL) {
 	process.env.AUTH_URL = 'https://edu-assign-help.vercel.app';
@@ -31,8 +32,7 @@ const nextAuth = NextAuth({
 					let passwordsMatch = false;
 
 					try {
-						// Use argon2 for both regular users and freelancers
-						passwordsMatch = await argon2.verify(user.password, password);
+						passwordsMatch = bcrypt.compareSync(user.password, password);
 					} catch (error) {
 						console.error('Password verification error:', error);
 						return null;

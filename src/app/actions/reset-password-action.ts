@@ -8,6 +8,7 @@ import { eq } from 'drizzle-orm';
 import db from '@/src/db';
 import { users } from '@/src/db/schema';
 import { verificationTokens } from '@/src/db/schema/user';
+import bcrypt from 'bcryptjs';
 
 type Res =
 	| { success: true }
@@ -60,7 +61,8 @@ export async function resetPasswordAction(
 	}
 
 	try {
-		const hashedPassword = await argon2.hash(password);
+		const salt = bcrypt.genSaltSync(10);
+		const hashedPassword = bcrypt.hashSync(password, salt);
 
 		await db
 			.update(users)
