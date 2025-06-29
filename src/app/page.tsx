@@ -51,7 +51,6 @@ export default function Home() {
 					</div>
 				</div>
 			</section>
-
 			{/* Services Section */}
 			<section className='w-full py-12 md:py-16 lg:py-20 bg-white'>
 				<div className='max-w-7xl mx-auto px-4 sm:px-6'>
@@ -115,7 +114,6 @@ export default function Home() {
 					</div>
 				</div>
 			</section>
-
 			{/* How It Works */}
 			<section
 				id='how-it-works'
@@ -180,10 +178,10 @@ export default function Home() {
 					</div>
 				</div>
 			</section>
-
 			{/* Testimonials */}
-			<section className='w-full py-12 md:py-16 lg:py-20 bg-white '>
-				<div className='max-w-7xl mx-auto px-2 sm:px-4 md:px-6 w-full overflow-x-hidden'>
+
+			<section className='w-full h-max py-12 md:py-16 lg:py-20 bg-white'>
+				<div className='max-w-7xl h-[600px] overflow-y-hidden mx-auto px-2 sm:px-4 md:px-6 w-full overflow-x-hidden'>
 					<div className='text-center mb-12 md:mb-16'>
 						<h2 className='text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900'>
 							Voices of Our Valued Students
@@ -198,7 +196,6 @@ export default function Home() {
 					</div>
 				</div>
 			</section>
-
 			{/* CTA Section */}
 			<section className='w-full py-12 md:py-16 lg:py-20 bg-gradient-to-r from-purple-600 to-indigo-700 text-white'>
 				<div className='max-w-7xl mx-auto px-4 sm:px-6 text-center'>
