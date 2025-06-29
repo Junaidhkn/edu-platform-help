@@ -41,6 +41,7 @@
 		"@stripe/react-stripe-js": "^3.4.0",
 		"@stripe/stripe-js": "^6.0.0",
 		"@tanstack/react-table": "^8.10.7",
+		"@tawk.to/tawk-messenger-react": "^2.0.2",
 		"@types/react-slick": "^0.23.13",
 		"@uploadthing/react": "^7.3.0",
 		"@vercel/postgres": "^0.10.0",
