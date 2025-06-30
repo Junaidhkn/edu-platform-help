@@ -8,7 +8,7 @@ import { extractRouterConfig } from 'uploadthing/server';
 import { ourFileRouter } from '@/src/app/api/uploadthing/core';
 import '@uploadthing/react/styles.css';
 import Footer from '@/src/components/Footer';
-import TawkChat from '../components/tawkChat';
+import TawkWidget from '../components/tawkWidget';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -30,8 +30,8 @@ export default function RootLayout({
 				<Providers>
 					<Navbar />
 					{children}
+					<TawkWidget />
 					<Footer />
-					<TawkChat />
 				</Providers>
 			</body>
 		</html>
