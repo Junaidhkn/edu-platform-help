@@ -47,7 +47,7 @@ export interface EmailPayload {
  * @throws An error if the fetch request or the API response fails.
  */
 export async function sendEmail(payload: EmailPayload): Promise<any> {
-	const apiEndpoint = '/api/send';
+	const apiEndpoint = '/send';
 
 	try {
 		const response = await fetch(apiEndpoint, {
