@@ -1,5 +1,6 @@
 // First export the tables without relations
 export { default as users } from './user';
+export { availabilityStatusEnum } from './freelancers';
 export { default as freelancers } from './freelancers';
 export { default as orders } from './order';
 export { default as transaction } from './transactions';

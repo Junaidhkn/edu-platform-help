@@ -10,7 +10,7 @@ import {
 
 import order from './order';
 
-const availabilityStatusEnum = pgEnum('availability_status', [
+export const availabilityStatusEnum = pgEnum('availability_status', [
 	'available',
 	'busy',
 ]);
