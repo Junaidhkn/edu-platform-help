@@ -3,9 +3,7 @@ import { Resend } from 'resend';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-const FROM_EMAIL = `Top Nerd Team ${
-	process.env.ADMIN_NAME || 'admin@topnerd.co.uk'
-}`;
+const FROM_EMAIL = 'admin@topnerd.co.uk';
 
 export async function POST(req: NextRequest) {
 	try {
