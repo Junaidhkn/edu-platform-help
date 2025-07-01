@@ -4,9 +4,7 @@ import db from '@/src/db';
 import { orders } from '@/src/db/schema';
 import { eq } from 'drizzle-orm';
 import { z } from 'zod';
-import { Resend } from 'resend';
-
-const resend = new Resend(process.env.RESEND_API_KEY);
+import { sendEmail } from '@/src/lib/utils';
 
 // Validation schema for the request body
 const contactSchema = z.object({
@@ -96,8 +94,7 @@ async function sendContactEmail({
 	orderId,
 	adminName,
 }: EmailParams) {
-	await resend.emails.send({
-		from: `Top Nerd Team ${process.env.ADMIN_NAME || 'admin@topnerd.co.uk'}`,
+	await sendEmail({
 		to: email,
 		subject: subject,
 		html: `

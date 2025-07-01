@@ -1,9 +1,7 @@
 'use server';
 
 import { VERIFICATION_TOKEN_EXP_MIN } from '@/src/lib/constants';
-import { Resend } from 'resend';
-
-const resend = new Resend(process.env.RESEND_API_KEY);
+import { sendEmail } from '@/src/lib/utils';
 
 export async function sendForgotPasswordEmail({
 	email,
@@ -14,8 +12,7 @@ export async function sendForgotPasswordEmail({
 }) {
 	console.log(`Sending email to ${email} with token ${token}`);
 
-	await resend.emails.send({
-		from: `Top Nerd Team ${process.env.ADMIN_NAME || 'admin@topnerd.co.uk'}`,
+	await sendEmail({
 		to: email,
 		subject: 'Reset your password',
 		html: `

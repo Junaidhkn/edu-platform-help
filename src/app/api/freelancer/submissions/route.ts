@@ -5,9 +5,7 @@ import { submissions } from '@/src/db/schema';
 import { orders } from '@/src/db/schema';
 import { users } from '@/src/db/schema';
 import { eq } from 'drizzle-orm';
-import { Resend } from 'resend';
-
-const resend = new Resend(process.env.RESEND_API_KEY);
+import { sendEmail } from '@/src/lib/utils';
 
 export async function POST(request: NextRequest) {
 	try {
@@ -99,15 +97,9 @@ export async function POST(request: NextRequest) {
 
 		// Notify admin about new submission
 		try {
-			await resend.emails.send({
-				from: `Top Nerd Team ${
-					process.env.ADMIN_NAME || 'admin@topnerd.co.uk'
-				}`,
+			await sendEmail({
 				to: process.env.ADMIN_EMAIL || 'junaidhkn@gmail.com',
 				subject: `New Submission for Order #${orderId.slice(-6)}`,
-				text: `A freelancer has submitted work for order #${orderId.slice(
-					-6,
-				)}. Please review it on the admin dashboard.`,
 				html: `
           <h2>New Work Submission</h2>
           <p>A freelancer has submitted work for order #${orderId.slice(

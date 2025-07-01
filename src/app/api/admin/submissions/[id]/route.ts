@@ -7,9 +7,7 @@ import { freelancers } from '@/src/db/schema';
 import { users } from '@/src/db/schema';
 import { eq } from 'drizzle-orm';
 import { USER_ROLES } from '@/src/lib/constants';
-import { Resend } from 'resend';
-
-const resend = new Resend(process.env.RESEND_API_KEY);
+import { sendEmail } from '@/src/lib/utils';
 
 export async function PATCH(
 	request: NextRequest,
@@ -127,15 +125,11 @@ export async function PATCH(
 									.join('')
 							: '';
 
-						await resend.emails.send({
-							from: `Top Nerd Team ${
-								process.env.ADMIN_NAME || 'admin@topnerd.co.uk'
-							}`,
+						await sendEmail({
 							to: userData.email,
-							subject: `Your Order #${orderData.id.slice(-6)} is Complete!`,
-							text: `Good news! Your order #${orderData.id.slice(
+							subject: `Good news!Your Order #${orderData.id.slice(
 								-6,
-							)} has been completed. You can download your files now.`,
+							)} is Complete!You can download your files now.`,
 							html: `
                 <h2>Good news! Your order is complete</h2>
                 <p>Your order #${orderData.id.slice(
@@ -179,13 +173,9 @@ export async function PATCH(
 								adminFeedback || 'No specific feedback provided.'
 						  }`;
 
-				await resend.emails.send({
-					from: `Top Nerd Team ${
-						process.env.ADMIN_NAME || 'admin@topnerd.co.uk'
-					}`,
+				await sendEmail({
 					to: freelancerData.email,
 					subject: emailSubject,
-					text: emailText,
 					html: `
             <h2>${
 							status === 'approved'

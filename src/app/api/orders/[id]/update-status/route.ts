@@ -4,9 +4,8 @@ import db from '@/src/db';
 import { orders } from '@/src/db/schema';
 import { eq } from 'drizzle-orm';
 import { z } from 'zod';
-import { Resend } from 'resend';
+import { sendEmail } from '@/src/lib/utils';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
 // Validation schema for the request body
 const statusUpdateSchema = z.object({
 	status: z.enum(['pending', 'accepted', 'rejected', 'completed']),
@@ -125,8 +124,7 @@ async function sendOrderStatusEmail({
 			completed: '#3b82f6',
 		}[status] || '#64748b';
 
-	const { data, error } = await resend.emails.send({
-		from: `Top Nerd Team ${process.env.ADMIN_NAME || 'admin@topnerd.co.uk'}`,
+	const { data, error } = await sendEmail({
 		to: email,
 		subject: statusTitle,
 		html: `
