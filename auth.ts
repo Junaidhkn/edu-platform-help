@@ -8,7 +8,7 @@ import { authConfig } from '@/auth.config';
 import bcrypt from 'bcryptjs';
 
 if (process.env.NODE_ENV === 'development' && !process.env.AUTH_URL) {
-	process.env.AUTH_URL = 'https://edu-assign-help.vercel.app';
+	process.env.AUTH_URL = 'https://topnerd.co.uk';
 }
 
 const { providers: authConfigProviders, ...authConfigRest } = authConfig;
