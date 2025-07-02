@@ -32,7 +32,7 @@ const nextAuth = NextAuth({
 					let passwordsMatch = false;
 
 					try {
-						passwordsMatch = bcrypt.compareSync(user.password, password);
+						passwordsMatch = await bcrypt.compare(user.password, password);
 					} catch (error) {
 						console.error('Password verification error:', error);
 						return null;

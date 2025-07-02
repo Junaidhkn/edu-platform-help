@@ -1,6 +1,8 @@
 import Script from 'next/script';
 
 const TawkWidget = () => {
+	const CHAT_LINK_SCOURCE = process.env.CHAT_LINK_SCOURCE as string;
+	console.log('CHAT_LINK_SCOURCE:', CHAT_LINK_SCOURCE);
 	return (
 		<Script
 			id='intercom-script'
@@ -11,7 +13,7 @@ const TawkWidget = () => {
  (function(){
  var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
  s1.async=true;
- s1.src=${process.env.CHAT_LINK_SCOURCE};
+ s1.src=${CHAT_LINK_SCOURCE};
  s1.charset='UTF-8';
  s1.setAttribute('crossorigin','*');
  s0.parentNode.insertBefore(s1,s0);
