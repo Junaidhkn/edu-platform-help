@@ -89,16 +89,6 @@ export const SigninForm = () => {
 					name='password'
 					render={({ field }) => (
 						<FormItem>
-							<div className='flex justify-between items-center'>
-								<FormLabel className='text-gray-700'>Password</FormLabel>
-								<Button
-									type='button'
-									variant='link'
-									size='sm'
-									className='h-auto p-0 text-xs font-normal'>
-									Forgot password?
-								</Button>
-							</div>
 							<FormControl>
 								<Input
 									type='password'
