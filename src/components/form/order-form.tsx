@@ -63,19 +63,40 @@ export function OrderForm({ onSubmit, isSubmitting = false }: OrderFormProps) {
 
 	const watchedValues = form.watch();
 
+	// useEffect(() => {
+	// 	const price = calculatePriceFromFormValues(watchedValues);
+	// 	form.setValue('price', price);
+	// 	form.setValue('totalPrice', price);
+	// 	setPricePreview(price);
+	// }, [
+	// 	watchedValues.wordCount,
+	// 	watchedValues.subject,
+	// 	watchedValues.typeCategory,
+	// 	watchedValues.academicLevel,
+	// 	watchedValues.deadline,
+	// 	form,
+	// 	watchedValues,
+	// ]);
+
 	useEffect(() => {
+		// Calculate the price based on the current form values
 		const price = calculatePriceFromFormValues(watchedValues);
-		form.setValue('price', price);
-		form.setValue('totalPrice', price);
-		setPricePreview(price);
+
+		// Only update the form state if the calculated price is different
+		// from the price already in the form. This is an extra optimization
+		// to prevent unnecessary re-renders.
+		if (price !== watchedValues.price) {
+			form.setValue('price', price, { shouldValidate: false });
+			form.setValue('totalPrice', price, { shouldValidate: false });
+		}
 	}, [
 		watchedValues.wordCount,
 		watchedValues.subject,
 		watchedValues.typeCategory,
 		watchedValues.academicLevel,
 		watchedValues.deadline,
-		form,
-		watchedValues,
+		watchedValues.price,
+		form.setValue,
 	]);
 
 	const handleFormSubmit = form.handleSubmit((data) => {
