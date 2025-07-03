@@ -374,11 +374,6 @@ export function OrderForm({ onSubmit, isSubmitting = false }: OrderFormProps) {
 	const watchedValues = form.watch();
 	const currentPrice = calculatePriceFromFormValues(watchedValues);
 
-	// The useEffect hook is now completely gone.
-
-	// --- STEP 2: WRAP THE SUBMIT HANDLER ---
-	// We intercept the data from react-hook-form's handleSubmit before
-	// passing it to the parent component's onSubmit function.
 	const handleFormSubmit = form.handleSubmit((validatedData) => {
 		// Create the final data object, injecting the most up-to-date price.
 		const finalData: OrderFormValues = {
