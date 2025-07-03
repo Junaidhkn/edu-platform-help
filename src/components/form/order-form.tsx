@@ -63,40 +63,19 @@
 
 // 	const watchedValues = form.watch();
 
-// 	// useEffect(() => {
-// 	// 	const price = calculatePriceFromFormValues(watchedValues);
-// 	// 	form.setValue('price', price);
-// 	// 	form.setValue('totalPrice', price);
-// 	// 	setPricePreview(price);
-// 	// }, [
-// 	// 	watchedValues.wordCount,
-// 	// 	watchedValues.subject,
-// 	// 	watchedValues.typeCategory,
-// 	// 	watchedValues.academicLevel,
-// 	// 	watchedValues.deadline,
-// 	// 	form,
-// 	// 	watchedValues,
-// 	// ]);
-
 // 	useEffect(() => {
-// 		// Calculate the price based on the current form values
 // 		const price = calculatePriceFromFormValues(watchedValues);
-
-// 		// Only update the form state if the calculated price is different
-// 		// from the price already in the form. This is an extra optimization
-// 		// to prevent unnecessary re-renders.
-// 		if (price !== watchedValues.price) {
-// 			form.setValue('price', price, { shouldValidate: false });
-// 			form.setValue('totalPrice', price, { shouldValidate: false });
-// 		}
+// 		form.setValue('price', price);
+// 		form.setValue('totalPrice', price);
+// 		setPricePreview(price);
 // 	}, [
 // 		watchedValues.wordCount,
 // 		watchedValues.subject,
 // 		watchedValues.typeCategory,
 // 		watchedValues.academicLevel,
 // 		watchedValues.deadline,
-// 		watchedValues.price,
-// 		form.setValue,
+// 		form,
+// 		watchedValues,
 // 	]);
 
 // 	const handleFormSubmit = form.handleSubmit((data) => {
@@ -327,7 +306,7 @@
 
 'use client';
 
-import React from 'react';
+import React from 'react'; // Removed useState and useEffect, they are no longer needed
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
@@ -371,6 +350,9 @@ interface OrderFormProps {
 }
 
 export function OrderForm({ onSubmit, isSubmitting = false }: OrderFormProps) {
+	// We no longer need useState for the price preview.
+	// const [pricePreview, setPricePreview] = useState(0);
+
 	const form = useForm<OrderFormValues>({
 		resolver: zodResolver(orderFormSchema),
 		defaultValues: {
@@ -381,35 +363,36 @@ export function OrderForm({ onSubmit, isSubmitting = false }: OrderFormProps) {
 			deadline: addDays(new Date(), 7),
 			description: '',
 			fileUrls: [],
-			// Price fields are no longer needed in defaultValues
+			// We remove price from defaultValues as it's now fully derived.
 		},
 	});
 
-	// --- STEP 1: WATCH and CALCULATE on every render ---
-	// `form.watch()` subscribes this component to form changes, causing a re-render.
-	// On each re-render, we simply recalculate the price. This is very fast.
+	// --- STEP 1: DERIVE THE PRICE ON EVERY RENDER ---
+	// `form.watch()` subscribes the component to any changes in the form.
+	// When a value changes, the component re-renders.
+	// On each re-render, we simply calculate the price from the latest values.
 	const watchedValues = form.watch();
 	const currentPrice = calculatePriceFromFormValues(watchedValues);
 
-	// --- STEP 2: Intercept the submission to inject the correct price ---
-	// This function wraps the original `onSubmit` prop.
-	const handleFormSubmit = form.handleSubmit((data) => {
-		// Create the final data object to be submitted.
-		// It includes all the validated form data PLUS the final calculated price.
-		const finalDataWithPrice: OrderFormValues = {
-			...data,
+	// The useEffect hook is now completely gone.
+
+	// --- STEP 2: WRAP THE SUBMIT HANDLER ---
+	// We intercept the data from react-hook-form's handleSubmit before
+	// passing it to the parent component's onSubmit function.
+	const handleFormSubmit = form.handleSubmit((validatedData) => {
+		// Create the final data object, injecting the most up-to-date price.
+		const finalData: OrderFormValues = {
+			...validatedData,
 			price: currentPrice,
 			totalPrice: currentPrice,
 		};
-		// Call the parent component's onSubmit function with the complete data.
-		onSubmit(finalDataWithPrice);
+		// Now call the original onSubmit with the complete, correct data.
+		onSubmit(finalData);
 	});
-
-	// No useEffect hook is needed!
 
 	return (
 		<Form {...form}>
-			{/* Use our custom submit handler here */}
+			{/* Use our wrapped submit handler here */}
 			<form
 				onSubmit={handleFormSubmit}
 				className='space-y-6'>
@@ -425,8 +408,10 @@ export function OrderForm({ onSubmit, isSubmitting = false }: OrderFormProps) {
 									type='number'
 									min={250}
 									step={250}
+									placeholder='500'
 									{...field}
 									onChange={(e) =>
+										// Ensure we parse to a number, defaulting to 0 if empty/invalid
 										field.onChange(parseInt(e.target.value, 10) || 0)
 									}
 								/>
@@ -439,7 +424,9 @@ export function OrderForm({ onSubmit, isSubmitting = false }: OrderFormProps) {
 					)}
 				/>
 
-				{/* Subject */}
+				{/* All other FormField components (Subject, Type, etc.) remain exactly the same */}
+				{/* ... */}
+
 				<FormField
 					control={form.control}
 					name='subject'
@@ -466,7 +453,6 @@ export function OrderForm({ onSubmit, isSubmitting = false }: OrderFormProps) {
 					)}
 				/>
 
-				{/* Type Category */}
 				<FormField
 					control={form.control}
 					name='typeCategory'
@@ -494,7 +480,6 @@ export function OrderForm({ onSubmit, isSubmitting = false }: OrderFormProps) {
 					)}
 				/>
 
-				{/* Academic Level */}
 				<FormField
 					control={form.control}
 					name='academicLevel'
@@ -520,7 +505,6 @@ export function OrderForm({ onSubmit, isSubmitting = false }: OrderFormProps) {
 					)}
 				/>
 
-				{/* Deadline */}
 				<FormField
 					control={form.control}
 					name='deadline'
@@ -565,7 +549,6 @@ export function OrderForm({ onSubmit, isSubmitting = false }: OrderFormProps) {
 					)}
 				/>
 
-				{/* Description */}
 				<FormField
 					control={form.control}
 					name='description'
@@ -584,7 +567,6 @@ export function OrderForm({ onSubmit, isSubmitting = false }: OrderFormProps) {
 					)}
 				/>
 
-				{/* File Upload */}
 				<FormField
 					control={form.control}
 					name='fileUrls'
@@ -605,8 +587,9 @@ export function OrderForm({ onSubmit, isSubmitting = false }: OrderFormProps) {
 					)}
 				/>
 
-				{/* --- STEP 3: DISPLAY the calculated price in the UI --- */}
-				{/* This now directly displays the `currentPrice` calculated on every render. */}
+				{/* --- STEP 3: DISPLAY THE DERIVED PRICE --- */}
+				{/* The UI always displays the `currentPrice` constant, which is
+				    always up-to-date because it's recalculated on every render. */}
 				<div className='bg-muted p-4 rounded-lg'>
 					<div className='flex justify-between items-center text-lg font-semibold'>
 						<span>Total Price:</span>
