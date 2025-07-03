@@ -266,14 +266,6 @@ export default async function OrderDetailPage({
 									</Button>
 								</Link>
 							)}
-							<Link href={`/dashboard/orders/${order.id}/contact`}>
-								<Button
-									className='w-full'
-									variant='outline'>
-									<Mail className='h-4 w-4 mr-2' />
-									Contact Customer
-								</Button>
-							</Link>
 						</div>
 					</div>
 

@@ -354,16 +354,6 @@ const SignedIn = async ({
 						If you have any questions or need assistance with your orders, our
 						customer service team is ready to help you.
 					</p>
-					<p className='mt-2 text-sm text-blue-700'>
-						Please note that you can contact us through WhatsApp currently, as
-						our real-time chat feature is under development.
-					</p>
-					<Button
-						variant='outline'
-						className='mt-4 bg-white hover:bg-blue-50'>
-						<span className='mr-2'>📱</span>
-						Contact Support
-					</Button>
 				</div>
 			</div>
 		</>

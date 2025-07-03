@@ -1,6 +1,5 @@
 import { NavItem } from '@/types';
 
-
 export const navItems: NavItem[] = [
 	{
 		title: 'Dashboard',
@@ -21,11 +20,11 @@ export const navItems: NavItem[] = [
 		label: 'profile',
 	},
 
-	{
-		title: 'Services',
-		href: '/dashboard/services',
-		label: 'services',
-	},
+	// {
+	// 	title: 'Services',
+	// 	href: '/dashboard/services',
+	// 	label: 'services',
+	// },
 	{
 		title: 'Transactions',
 		href: '/dashboard/transactions',
